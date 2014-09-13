@@ -1,0 +1,30 @@
+".container": {
+	backgroundColor:"black"
+},
+"Label": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color: "#999"
+},
+"Label[platform=android]": {
+	width: Ti.UI.FILL,
+	height: Ti.UI.FILL,
+	font: {
+		fontSize: '50dp',
+		fontStyle: 'normal'
+	}
+},
+"TableViewRow[platform=android]": {
+	height: '70dp',
+	backgroundColor: "black" ,
+},
+"Tab":{
+	font: {
+		fontSize: '50dp',
+		fontWeight: 'bold',
+		textStyle : Ti.UI.TEXT_STYLE_HEADLINE
+	},
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color: 'red'
+}

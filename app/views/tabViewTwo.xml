@@ -1,0 +1,9 @@
+<Alloy>
+  <Tab id="tab_two" title="Map View" fontSize="30dp">
+    <Window title="Map" class='container'>
+		   	<Button id="mapbutton" top="40">ClickForMAP Ti.MAP</Button>
+		   	<Button id="mapbutton2" top="100">ClickForMAP GMAP API V2</Button>
+		   	<Button id="mapbutton3" top="160">ClickForMAP Hybrid</Button>
+    </Window>
+  </Tab>
+</Alloy>

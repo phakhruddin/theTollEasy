@@ -1,0 +1,1 @@
+module.exports = [{"isApi":true,"priority":1000.004,"key":"Tab","style":{width:Ti.UI.SIZE,height:Ti.UI.SIZE,font:{fontFamily:"Helvetica",fontSize:"32dp",fontStyle:"normal",fontWeight:"normal",},}}];

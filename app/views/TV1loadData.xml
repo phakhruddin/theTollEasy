@@ -1,0 +1,21 @@
+<Alloy>
+	<Collection src="tollplaza" />
+	<Tab id="tab_loaddata" title="Load TollPlazas Loc">
+	<Window id="loaddatawindow" class="container" title="TollEasy">
+		<TableView id="loaddatatable">
+      		<!--TableViewRow  id="sandiego" Title="San Diego Test Data">
+      			<Label> Load San Diego Test Data </Label>
+    		</TableViewRow-->
+			<TableViewRow  id="newberlin" Title="Illinois Tollway TollPlazas">
+				<Label> Illinois Tollway TollPlazas </Label>
+    		</TableViewRow>
+    		<!--TableViewRow  id="chicago" Title="Chicago Test Data">
+				<Label> Chicago Test Data </Label>
+    		</TableViewRow>
+    		<TableViewRow id="milwaukee" Title="Milwaukee Test Data">
+				<Label> Milwaukee Test Data </Label>
+   			</TableViewRow-->	
+    	</TableView>
+	</Window>
+	</Tab>
+</Alloy>

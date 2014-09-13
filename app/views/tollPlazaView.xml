@@ -1,0 +1,71 @@
+<Alloy>
+	<Tab id="tab_tollplaza" title="List View">
+	<Window id="win_tollplaza" title="TollPlaza" class='container'>
+      <TableView id="tollplazatable" backgroundColor="black" editable="true" moveable="true">
+   		<TableViewRow id="tittle_toll_plaza" Title="Toll Plaza View > ">
+   		  <Label id="listoftoll" color="orange" top="5" left="20" text="Toll Plaza View > ">Toll Plaza View > </Label>
+   		</TableViewRow>
+   		<TableViewRow id="tableview_tollplaza_hit"  Title="Toll Plazas">
+   		  <Label id="plazahit" color="orange" top="5" left="20" fontSize="20" text="Toll plazas that was hit today">
+   		</TableViewRow>	
+   		<TableViewRow id="tableview_tollplaza" Title="Toll Plazas">
+   		  <Label id="plaza" color="#D8D8BF" top="5" left="20" text="Plaza 21 Waukegan IL >">
+   		</TableViewRow>	
+   		<TableViewRow id="tableview_tollplaza1" Title="Toll Plazas">
+   		  <Label id="plaza1" color="#D8D8BF" top="5" left="20" text="Plaza 24 Edens Spur IL >">
+   		</TableViewRow>	
+   		<TableViewRow id="tableview_tollplaza2" Title="Toll Plazas">
+   		  <Label id="plaza2" color="#D8D8BF" top="5" left="20" text="Plaza 31 O'Hare West IL >">
+   		</TableViewRow>	
+   		   		<TableViewRow id="tableview_tollplaza3" Title="Toll Plazas">
+   		  <Label id="plaz3" color="#D8D8BF" top="5" left="20" text="Plaza 35 Cermak Road  IL >">
+   		</TableViewRow>	
+   		   		<TableViewRow id="tableview_tollplaza4" Title="Toll Plazas">
+   		  <Label id="plaz4" color="#D8D8BF" top="5" left="20" text="Plaza 36 82nd Street IL >">
+   		</TableViewRow>	
+   		   		<TableViewRow id="tableview_tollplaza5" Title="Toll Plazas">
+   		  <Label id="plaza5" color="#D8D8BF" top="5" left="20" text="Plaza 39 83rd Street IL >">
+   		</TableViewRow>	
+   		<TableViewRow id="tableview_tollplaza6" Title="Toll Plazas">
+   		  <Label id="plaza6" color="#D8D8BF" top="5" left="20" text="Plaza 43 I-80, Westbound IL >">
+   		</TableViewRow>	
+   		<TableViewRow id="tableview_tollplaza7" Title="Toll Plazas">
+   		  <Label id="plaza7" color="#D8D8BF" top="5" left="20" text="Plaza 44 I-80, Westbound IL >">
+   		</TableViewRow>	
+   		<TableViewRow id="tableview_tollplaza8" Title="Toll Plazas">
+   		  <Label id="plaza8" color="#D8D8BF" top="5" left="20" text="Plaza 45 I-80, Westbound IL >">
+   		</TableViewRow>	
+   		<TableViewRow id="tableview_tollplaza9" Title="Toll Plazas">
+   		  <Label id="plaza9" color="#D8D8BF" top="5" left="20" text="Plaza 46 I-80, Westbound IL >">
+   		 </TableViewRow>	
+   		 <TableViewRow id="tableview_tollplaza10" Title="Toll Plazas">
+   		  <Label id="plaza10" color="#D8D8BF" top="5" left="20" text="Plaza 47 I-80, Westbound IL >">
+   		 </TableViewRow>	
+   		 <TableViewRow id="tableview_tollplaza11" Title="Toll Plazas">
+   		  <Label id="plaza11" color="#D8D8BF" top="5" left="20" text="Plaza 48 I-80, Westbound IL >">
+   		 </TableViewRow>	
+   		 <TableViewRow id="tableview_tollplaza12" Title="Toll Plazas">
+   		  <Label id="plaza12" color="#D8D8BF" top="5" left="20" text="Plaza 49 I-80, Westbound IL >">
+   		 </TableViewRow>	
+   		 <TableViewRow id="tableview_tollplaza13" Title="Toll Plazas">
+   		  <Label id="plaza13" color="#D8D8BF" top="5" left="20" text="Plaza 50 I-80, Westbound IL >">
+   		</TableViewRow>				
+   		 <TableViewRow id="tableview_tollplaza14" Title="Toll Plazas">
+   		  <Label id="plaza14" color="#D8D8BF" top="5" left="20" text="Plaza 51 I-80, Westbound IL >">
+   		</TableViewRow>				
+   		<TableViewRow id="tableview_tollplaza15" Title="Toll Plazas">
+   		  <Label id="plaza15" color="#D8D8BF" top="5" left="20" text="Plaza 52 I-80, Westbound IL >">
+   		</TableViewRow>				
+   		<TableViewRow id="tableview_tollplaza16" Title="Toll Plazas">
+   		  <Label id="plaza16" color="#D8D8BF" top="5" left="20" text="Plaza 53 I-80, Westbound IL >">
+   		  	</TableViewRow>	
+   		 <TableViewRow id="tableview_tollplaza17" Title="Toll Plazas">
+   		  <Label id="plaza17" color="#D8D8BF" top="5" left="20" text="Plaza 54 I-80, Westbound IL >">
+   		  	</TableViewRow>	
+   		  	   		   		<TableViewRow id="tableview_tollplaza18" Title="Toll Plazas">
+   		  <Label id="plaza18" color="#D8D8BF" top="5" left="20" text="Plaza 55 I-80, Westbound IL >">
+   		</TableViewRow>							
+      </TableView>
+    </Window>
+    </Tab>
+</Alloy>

@@ -1,0 +1,66 @@
+<Alloy>
+	<Collection src="plazano" />
+	<Model src="dummy"/>
+	<Tab id="tab_settings">
+	<Window id="win_settings" title="Settings" class="container">
+		<TableView id="table_settings">
+			<TableViewSection headerTitle="Loc Capture Options">
+			<TableViewRow id="row_contupdfg" Title="Continous FG Update">
+				 <Label id="label_contupdfg" color="white" top="5" left="20" text="TURN ON FG location capture">Detect TollPlaza ON/OFF
+				 </Label>
+				 <Label id="label_contupdfg1" color="gray" top="30" left="20" text="FG LOC">Turn ON/OFF FOREGROUND continous capture</Label>
+			 	<Switch id="switch_contupdfg" right="20" titleOff="OFF" titleOn="ON" value="ON"/>
+			</TableViewRow>
+			</TableViewSection>
+			<TableViewSection headerTitle="Data (Optional)">
+			<TableViewRow id="row_loaddata" Title="Load Data">
+			  	<Label id="label_loaddata" color="gray" top="5" left="20" text="Load Data">Load Data >
+			 	</Label>
+			</TableViewRow>	
+			<TableViewRow id="row_loaddataoutput" Title="Load Data">
+			  	<Label id="label_loaddataoutput" color="gray" top="5" left="20" text="Load Data">Load Data Output >
+			 	</Label>
+			</TableViewRow>	
+			</TableViewSection>
+			<TableViewSection headerTitle="Utilities">
+			<TableViewRow id="row_debug" Title="Debug">
+				 <Label id="label_debug" color="white" top="5" left="20" text="TURN ON debugging">Debugging ON/OFF
+				 </Label>
+				 <Switch id="switch_debug" right="20" titleOff="OFF" titleOn="ON" value="{dummy.debugvalue}"/>
+			</TableViewRow>
+			<TableViewRow id="row_mindebug" Title="Debug">
+				 <Label id="label_mindebug" color="white" top="5" left="20" text="TURN ON debugging">Minimum Debugging ON/OFF
+				 </Label>
+				 <Switch id="switch_mindebug" right="20" titleOff="OFF" titleOn="ON" value="true"/>
+			</TableViewRow>
+			<TableViewRow id="row_emaildebug" Title="Email Debug">
+				 <Label id="label_emaildebug" color="orange" left="20" >Email Debug Data</Label>
+			</TableViewRow>
+			<!--TableViewRow id="row_skin" Title="Skin">
+				 <Label id="label_skinwhite" color="orange" left="20" >Switch Background to white</Label>
+			</TableViewRow-->
+			<TableViewRow id="row_caplocdata" Title="CapLocData">
+				 <Label id="label_caplocdata" color="white" left="20" >Captured Location Data</Label>
+			</TableViewRow>
+			<!--TableViewRow id="row_payment" Title="location">
+	   		  <Label id="payment" color="gray" top="5" left="20" textid="Payment Status > " text="Payment Status > ">Payment Status > </Label>
+	   		</TableViewRow-->  
+			</TableViewSection>
+			<!--TableViewSection headerTitle="Variables">
+			   <TableViewRow  id="row_distanceFilter" Title="Distance Filter" height="Ti.UI.Size" backgroundColor="#E0E0E0">
+			   		<Label id="label_distancefilter" top="5" text="{dummy.distanceFilter}"/>
+		      		<TextField id="distanceFilter_tf"></TextField>
+					<Button id="save_distanceFilter_button"></Button>
+			   </TableViewRow>
+			   <TableViewRow  id="row_detectionRange" Title="Detection Range" height="Ti.UI.Size" backgroundColor="#E0E0E0">
+			   		<Label id="label_detectionRange" top="5" text="{dummy.detectionRange}"/>
+		      		<TextField id="detectionRange_tf"></TextField>
+					<Button id="save_detectionRange_button"></Button>
+			   </TableViewRow>
+			   <TableViewRow backgroundColor="#E0E0E0"/>
+			</TableViewSection>
+			<TableViewSection headerTitle="Device Response"/-->
+    	</TableView>
+	</Window>
+	</Tab>
+</Alloy>

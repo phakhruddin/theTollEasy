@@ -1,0 +1,29 @@
+<Alloy>
+<Model src="dummy" />
+	<Tab id="tab_tpfounddetail" >
+	<Window id="win_tpftdetail" title="TollPlaza Details" class='container'>
+      	<TableView id="table_tpftdetail" backgroundColor="black">
+      		<TableViewSection headerTitle="TollPlaza">
+	   		<TableViewRow id="row_tollplaza" Title="Toll Plaza " height="250">
+	   		  <Label id="title" top="30" text="{dummy.title}" />
+	   		  <Label id="cost" top="140"  text="{dummy.cost}" />
+	   		  <Label id="datetime" top="174" text="{dummy.datetime}" />
+	   		  <Label id="lat" left="20" top="196" text="{dummy.lattext}" />
+	   		  <Label id="lon" left="190" top="196" text="{dummy.lontext}" />
+	   		</TableViewRow>
+	   		</TableViewSection>
+	   		<TableViewSection headerTitle="ACTION">
+	   		<TableViewRow id="row_map" left="20" Title="MAP ">
+	   		  <ImageView image="dark_flag.png" left="20"/>
+	   		  <Label id="map" color="orange" text="Click to locate in a MAP" >  Click to locate in a MAP >   </Label>
+	   		</TableViewRow>
+	   		<TableViewRow id="row_pay" left="20" Title="Pay ">
+	   		  <ImageView image="dark_download.png" right="20"/>
+	   		  <Label id="pay" color="orange" text="Click to Pay >" >  Click on cart below to pay   </Label>
+	   		  <Require src="paywindow"/> 
+	   		</TableViewRow>
+	   		</TableViewSection>
+   		</TableView>
+   	</Window>
+   </Tab>
+</Alloy>

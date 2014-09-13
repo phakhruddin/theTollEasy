@@ -1,0 +1,1 @@
+module.exports=[{isApi:!0,priority:1000.0018,key:"Label",style:{width:Ti.UI.SIZE,height:Ti.UI.SIZE,color:"white"}},{isApi:!0,priority:1000.0019,key:"Window",style:{backgroundColor:"transparent",barColor:"#6d0a0c"}},{isApi:!0,priority:1000.002,key:"TableView",style:{backgroundColor:"black"}},{isClass:!0,priority:10000.0017,key:"container",style:{backgroundColor:"black"}}];

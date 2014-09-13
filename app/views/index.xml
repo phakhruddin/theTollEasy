@@ -1,0 +1,10 @@
+<Alloy>
+<Collection src="found" />
+  <TabGroup>
+    <!-- Tab included via <Require> tag -->
+    <Require src="tabViewOne"/>
+    <!-- Tab included via <Require> tag -->
+    <!--Require src="tabViewTwo"/-->
+    <Require src="paywindow"/>    
+  </TabGroup>
+</Alloy>

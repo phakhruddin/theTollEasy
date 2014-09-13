@@ -1,0 +1,9 @@
+<Alloy>
+	<Window id="mypoi_win" title="My POIs" class='container'>
+      <TableView id="mypoi_view" backgroundColor="black">
+   		<TableViewRow id="mypoi_row" Title="Title Toll Plaza">
+   		  <Label id="mypoi_label" color="white" top="5" left="20" text="My Point of Interest ">My Point of Interest > </Label>
+   		</TableViewRow>		
+      </TableView>
+    </Window>
+</Alloy>

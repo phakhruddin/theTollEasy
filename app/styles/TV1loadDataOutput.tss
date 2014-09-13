@@ -1,0 +1,28 @@
+".container": {
+	backgroundColor:"white"
+},
+"#label_header": {
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	font: {
+		fontSize: '16',
+		fontStyle: 'bold',
+	}
+},
+"#label_body": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	left: "110",
+	font: {
+		fontSize: '10',
+		fontStyle: 'normal',
+	}
+},
+"Window": {
+	backgroundColor: "black",
+	barColor: 'white'
+},
+"TableView" : {
+	backgroundColor: "black"
+}

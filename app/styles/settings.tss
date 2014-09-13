@@ -1,0 +1,75 @@
+".container": {
+	backgroundColor:"black"
+},
+"Label": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color: "#999"
+},
+"Window": {
+	backgroundColor: "transparent",
+	barColor: 'white'
+},
+"TableView" : {
+	backgroundColor: "black"
+},
+"#label_contupd1": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color: "gray",
+	font: {
+        fontFamily:'Helvetica',
+        fontSize: '8dp',
+        fontStyle: 'normal',
+        fontWeight: 'normal'	}
+},
+"#distanceFilter_tf" : {
+		height: 40,
+		top:50,
+		width:250,
+		keyboardType: Titanium.UI.KEYBOARD_DECIMAL_PAD,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+		backgroundColor: "gray",
+		hintText:'Geocode trigger (meter): 100'
+},
+"#save_distanceFilter_button" :{
+		title:"Save",
+		height:Ti.UI.SIZE,
+		width:80,
+		top:20
+},
+"#detectionRange_tf" : {
+		height: 40,
+		top:50,
+		width:250,
+		keyboardType: Titanium.UI.KEYBOARD_DECIMAL_PAD,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+		backgroundColor: "gray",
+		hintText:'Detection range (feet): 200'
+},
+"#save_detectionRange_button" :{
+		title:"Save",
+		height:Ti.UI.SIZE,
+		width:80,
+		top:20
+},
+"#label_contupdfg1": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color: "gray",
+	font: {
+        fontFamily:'Helvetica',
+        fontSize: '8dp',
+        fontStyle: 'normal',
+        fontWeight: 'normal'	}
+},
+"#label_contupd1": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color: "gray",
+	font: {
+        fontFamily:'Helvetica',
+        fontSize: '8dp',
+        fontStyle: 'normal',
+        fontWeight: 'normal'	}
+}

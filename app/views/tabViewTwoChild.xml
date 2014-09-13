@@ -1,0 +1,6 @@
+<Alloy>
+	  <Window id="child_window_two" title="MAP">
+	  	<Label id="map_label"  top="20" >Map Window Label</Label>
+	  	<Button id="check_map">MAP</Button>
+  </Window>
+</Alloy>

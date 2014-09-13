@@ -1,0 +1,15 @@
+<Alloy>
+<Collection src="found" />
+	<Tab id="tab_tpfound">
+	<Window id="win_tpfound" title="TollPlaza Detected" class="container">
+		<TableView id="table_tpfound" editable="true" moveable="true" backgroundColor="black" dataCollection="found" dataTransform="transformFunction">
+			<SearchBar id="search_tpfound" height="24" />
+			<TableViewRow id="row_returnloc" height="Ti.UI.SIZE" title="{title}">
+				<Label id="label_header" top="5" color="#D8D8BF" width="300" height="Ti.UI.SIZE" text="{tollplaza}"/>
+				<ImageView image="dark_info.png" top="30" right="10"/>
+				<Label id="label_footnote" top="50" color="gray" text="{custom}"/> 
+			</TableViewRow>
+      </TableView>
+	</Window>
+	</Tab>
+</Alloy>

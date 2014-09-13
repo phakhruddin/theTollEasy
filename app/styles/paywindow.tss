@@ -1,0 +1,9 @@
+"Tab": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	font: {
+        fontFamily:'Helvetica',
+        fontSize: '32dp',
+        fontStyle: 'normal',
+        fontWeight: 'normal'	}
+}

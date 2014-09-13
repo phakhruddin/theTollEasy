@@ -1,0 +1,42 @@
+".container": {
+	backgroundColor:"black"
+},
+"#label_header":{
+    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+    backgroundColor: 'transparent',
+    font: {
+        fontFamily:'Helvetica',
+        fontSize: '20dp',
+        fontStyle: 'bold',
+        fontWeight: 'normal'
+    }	
+},
+"#label_body":{
+    color: 'blue',
+    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+    backgroundColor: 'transparent',
+    font: {
+        fontFamily:'Helvetica',
+        fontSize: '12dp',
+        fontStyle: 'normal',
+        fontWeight: 'normal'
+    }	
+},
+"#label_footnote":{
+    color: 'gray',
+    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+    backgroundColor: 'transparent',
+    font: {
+        fontFamily:'Helvetica',
+        fontSize: '10dp',
+        fontStyle: 'normal',
+        fontWeight: 'normal'
+    }	
+},
+"Window": {
+	backgroundColor: "transparent",
+	barColor: 'white'
+},
+"TableView" : {
+	backgroundColor: "black"
+}

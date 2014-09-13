@@ -1,0 +1,15 @@
+".container": {
+	backgroundColor:"black"
+},
+"Label": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color: "white"
+},
+"Window": {
+	backgroundColor: "transparent",
+	barColor: 'white'
+},
+"TableView" : {
+	backgroundColor: "black"
+}

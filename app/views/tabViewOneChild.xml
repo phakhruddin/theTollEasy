@@ -1,0 +1,6 @@
+<Alloy>
+  <Window id="child_window" title="Curr Coordinates">
+    <Label  top="20" fontSize='100dp'>Current Location</Label>
+    	<Button id="check_loc">Press to Check Location</Button>
+  </Window>
+</Alloy>

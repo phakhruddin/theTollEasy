@@ -1,0 +1,96 @@
+".container": {
+	backgroundColor:"black"
+},
+"TableViewRow": {
+	width: Ti.UI.SIZE,
+	height: "36"
+},
+"Label": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color: "#999"
+},
+"#label_contupdfg1": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color: "gray",
+	font: {
+        fontFamily:'Helvetica',
+        fontSize: '8dp',
+        fontStyle: 'normal',
+        fontWeight: 'normal'	}
+},
+"#label_contupd1": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color: "gray",
+	font: {
+        fontFamily:'Helvetica',
+        fontSize: '8dp',
+        fontStyle: 'normal',
+        fontWeight: 'normal'	}
+},
+"#label_localtime": {
+	width: Ti.UI.SIZE,
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+	height: Ti.UI.SIZE,
+	font: {
+        fontFamily:'Helvetica',
+        fontSize: '70dp',
+        fontStyle: 'bold',
+        fontWeight: 'normal'	}
+},
+"#label_localdate": {
+	width: Ti.UI.SIZE,
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+	height: Ti.UI.SIZE,
+	color: "gray",
+	font: {
+        fontFamily:'Helvetica',
+        fontSize: '20dp',
+        fontStyle: 'normal',
+        fontWeight: 'light'	}
+},
+"#label_currentaddr": {
+	width: Ti.UI.SIZE,
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+	height: Ti.UI.SIZE,
+	color: "gray",
+	font: {
+        fontFamily:'Helvetica',
+        fontSize: '12dp',
+        fontStyle: 'normal',
+        fontWeight: 'light'	}
+},
+"#label_lastclosesttoll": {
+	width: Ti.UI.SIZE,
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+	height: Ti.UI.SIZE,
+	color: "gray",
+	font: {
+        fontFamily:'Helvetica',
+        fontSize: '12dp',
+        fontStyle: 'normal',
+        fontWeight: 'light'	}
+},
+"#label_currentHeading": {
+	width: Ti.UI.SIZE,
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+	height: Ti.UI.SIZE,
+	color: "gray",
+	font: {
+        fontFamily:'Helvetica',
+        fontSize: '12dp',
+        fontStyle: 'normal',
+        fontWeight: 'light'	}
+},
+"Tab":{
+	font: {
+		fontSize: '50dp',
+		fontWeight: 'bold',
+		textStyle : Ti.UI.TEXT_STYLE_HEADLINE
+	},
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color: 'white'
+}

@@ -1,0 +1,12 @@
+<Alloy>
+	<Window id="win_payment" title="payment" class='container'>
+      <TableView id="paymenttable" backgroundColor="black">
+   		<TableViewRow id="tittle_toll_plaza" Title="Toll Plaza View > ">
+   		  <Label id="listoftoll" color="orange" top="5" left="20" text="Your Cost is $1.75. Click to Pay  > ">Your Cost is $1.75. Click to Pay  > </Label>
+   		</TableViewRow>
+   		<TableViewRow id="tableview_payment" Title="Toll Plazas">
+   		  <Label id="plazahit" color="orange" top="5" left="20" fontSize="20" text="Click for Location">
+   		</TableViewRow>	
+      </TableView>
+    </Window>
+</Alloy>

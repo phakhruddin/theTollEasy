@@ -1,0 +1,13 @@
+<Alloy>
+	<Collection src="tollplaza" />
+	<Tab id="tab_tv1loaddataoutput">
+	<Window id="win_loaddataoutput" title="TollPlazas Data" class='container'>
+		<TableView id="table_loaddataoutput" editable="true" moveable="true"  backgroundColor="black" dataCollection="tollplaza" dataTransform="transformFunction">
+		<SearchBar id="search_loaddataoutput" height="24" />
+			<TableViewRow id="row_returnloc" title="{title}">
+				<Label id="label_header" color="#D8D8BF"  text="{tollplaza}"/>
+			</TableViewRow>
+      </TableView>
+    </Window>
+   </Tab>
+</Alloy>

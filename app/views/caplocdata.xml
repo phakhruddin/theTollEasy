@@ -1,0 +1,13 @@
+<Alloy>
+<Collection src="plazano" />
+	<Tab id="tab_caplocdata">
+	<Window id="win_caplocdata" title="TollPlaza Detected" class="container">
+		<TableView id="table_caplocdata" editable="true" moveable="true" backgroundColor="black" dataCollection="plazano" dataTransform="transformFunction">
+			<TableViewRow id="row_returnloc" height="Ti.UI.SIZE" title="{title}">
+				<Label id="label_header" top="5" color="#D8D8BF" width="300" height="Ti.UI.SIZE" text="{tollplaza}"/>
+				<Label id="label_footnote" top="47" color="gray" text="{custom}"/> 
+			</TableViewRow>
+      </TableView>
+	</Window>
+	</Tab>
+</Alloy>

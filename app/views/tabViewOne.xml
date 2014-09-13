@@ -1,0 +1,46 @@
+<Alloy>
+<Collection src="found" />
+<Collection src="tollplaza" />
+<Model src="dummy"/>
+  <Tab id="tab_one" title="Main" icon="light_home.png">
+    <Window title="TollEasy" class='container'>
+      <TableView id="table" backgroundColor="black">
+      	<TableViewSection headerTitle="Location capture switch">
+	   		<TableViewRow id="row_contupd" Title="Continous Update" height="40">
+				 <Label id="label_contupd" color="white" top="5" left="20" text="TURN ON location capture">Detect TollPlaza ON/OFF
+				 </Label>
+				 <Label id="label_contupd1" color="gray" top="30" left="20" text="bg loc cap">Turn ON/OFF BACKGROUND continous capture</Label>
+			 	<Switch id="switch_contupd" right="20" titleOff="OFF" titleOn="ON" value="false"/>
+			</TableViewRow>
+      	</TableViewSection>
+      	<TableViewSection headerTitle="Time and GEO Coding Display">
+      		<TableViewRow id="time" height="218" Title="time">
+      			<Label id="label_localtime" color="white" top="10" text="{dummy.localtime}"/>
+      			<Label id="label_localdate" color="gray" top="90" text="{dummy.localdate}"/>      			
+      			<Label id="label_lastclosesttoll" color="gray" top="120" text="{dummy.lastclosesttoll}"/>
+      			<Label id="label_currentaddr" color="gray" top="142" text="{dummy.currentaddr}"/>
+      			<Label id="label_currentHeading" color="gray" top="196" text="{dummy.currentHeading}"/>
+      		</TableViewRow>
+      	</TableViewSection>
+      	<TableViewSection headerTitle="TollPlaza">
+	      	<TableViewRow id="location" Title="location">
+	      	  <ImageView image="dark_locate.png" left="10"/>
+	   		  <Label id="currloc" color="orange" top="5" left="50" textid="Current Location >" text="Current Location >"/>
+	   	    </TableViewRow>
+	   	    <TableViewRow id="row_tpfound" Title="TP Found">
+	   	    	<ImageView image="dark_target.png" left="10"/>
+			  	<Label id="label_tpfound" color="white" top="5" left="50" text="TP Found">Toll Plaza Found >
+			 	</Label>
+			</TableViewRow>		
+   		</TableViewSection>
+   		<TableViewSection headerTitle="Utilities">
+			<TableViewRow id="row_settings" Title="Settings">
+				<ImageView image="dark_gears.png" left="10"/>
+			  	<Label id="label_settings" color="orange" top="5" left="50" text="Settings">Settings >
+			 	</Label>
+			</TableViewRow>	
+		</TableViewSection>	
+      </TableView>
+    </Window>
+  </Tab>
+</Alloy>

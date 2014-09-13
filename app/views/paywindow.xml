@@ -1,0 +1,7 @@
+<Alloy>
+	<Tab id="paytab" title="Pay" icon="light_cart.png">
+    <Window id="payWindow" modal="true">
+        <WebView id="payView"/>
+   	 </Window>
+    </Tab>
+</Alloy>

@@ -1,0 +1,33 @@
+<Alloy>
+	<Tab id="tab_geobg">
+	<Window id="win_geobg" title="TollEasy PRO" class='container'>
+		<TableView>
+ 	   	<TableViewSection headerTitle="TollEasy PRO">
+	   		<TableViewRow id="row_mypoi" Title="My POI" >
+	   		  <Label id="mypoi" color="gray" top="5" left="20" textid="My Point of Interest > " text="My Point of Interest > ">My Point of Interest ></Label>
+	   		  <Require src="myPOI"/>
+	   		</TableViewRow>
+	   		<TableViewRow id="row_poi" Title="location" leftimage="dark_locate.png">
+	   		  <Label id="poi" color="gray" top="5" left="50" leftimage="dark_locate.png" textid="Point of Interest > " text="Point of Interest > ">Point of Interest > </Label>
+	   		</TableViewRow>
+	   		<TableViewRow id="row_rest" Title="location">
+	   		  <Label id="rest" color="gray" top="5" left="20" textid="Rest Area > " text="Nearby Rest Area > ">Rest Area > </Label>
+	   		</TableViewRow> 
+	   		 <TableViewRow id="row_gas" Title="location">
+	   		  <Label id="gas" color="gray" top="5" left="20" textid="Gas Station > " text="Nearby Gas Station > ">Gas Station > </Label>
+	   		</TableViewRow> 
+	   		<TableViewRow id="row_emergency" Title="location">
+	   		  <Label id="emergency" color="gray" top="5" left="20" textid="Emergency Numbers > " text="Emergency Numbers > ">Emergency Numbers > </Label>
+	   		</TableViewRow>
+	   		<TableViewRow id="row_food" Title="location">
+	   		  <Label id="food" color="gray" top="5" left="20" textid="Food & Drinks > " text="Nearby Food & Drinks > ">Food & Drinks > </Label>
+	   		</TableViewRow>	
+	  		<TableViewRow id="row_plaza" Title="location">
+	   		  <Label id="plaza" color="white" top="5" left="20" text="Toll Plaza View > ">Toll Plaza View (Sample) > </Label>
+	   		</TableViewRow>
+	   		<TableViewRow id="row_empty" />
+   		</TableViewSection>	
+   		</TableView>
+    </Window>
+   </Tab>
+</Alloy>

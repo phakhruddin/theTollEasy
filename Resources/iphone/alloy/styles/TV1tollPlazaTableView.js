@@ -1,0 +1,1 @@
+module.exports = [{"isId":true,"priority":100000.0016,"key":"label_header","style":{width:Ti.UI.SIZE,height:Ti.UI.SIZE,left:"20",font:{fontSize:"14",fontStyle:"bold",},}},{"isId":true,"priority":100000.0017,"key":"label_body","style":{width:Ti.UI.SIZE,height:Ti.UI.SIZE,left:"110",font:{fontSize:"10",fontStyle:"normal",},}}];
