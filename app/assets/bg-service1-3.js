@@ -285,7 +285,7 @@ var bgLocFound = function(loc){
 						///updateFound(tollplaza,longitude,latitude,timestamp,cost,type,hwy);
 						if (foundentry == "1") {
 							console.log((new Date())+": add ENTRY with "+tollplaza+": foundentry="+foundentry+":foundexit="+foundexit);
-							tollentry.push({tollplaza:tollplaza,cancel:altitude,other:heading,type:type});
+							tollentry.push({tollplaza:tollplaza,cancel:altitude,other:heading,type:type,longitude:longitude,latitude:latitude,cost:cost,timestamp:timestamp});
 							var multipleToll = heading.split('|'); // check for multiple toll with same coord
 							console.log("ENTRY multipleToll.length : "+multipleToll.length+" multipleToll : "+multipleToll);
 							if (heading != "0") {
@@ -304,15 +304,15 @@ var bgLocFound = function(loc){
 												}													
 											}
 										}
-										if ( hasstartentry == "1") {
-											console.log ("tollplaza: "+othertoll+" has start entry");
-											tollexit.push({"tollplaza":othertoll,"cancel":"0","other":"0","checkpoint":"0","type":"end"});
-										} else {
-											console.log ("tollplaza: "+othertoll+" has NO start entry, need a cancellation");
-											tollcancel.push({"tollplaza":othertoll});
+										if ( hasstartentry == "1") { /// mistake here
+											tollexit.push({tollplaza:othertoll,"cancel":"0","other":"0","checkpoint":"0","type":"end",longitude:longitude,latitude:latitude,cost:cost,timestamp:timestamp});
+											console.log ("tollplaza: "+othertoll+" has start entry: "+JSON.stringify(tollexit));
+										} else {		
+											tollcancel.push(othertoll.trim());
+											console.log ("tollplaza: "+othertoll+" has NO start entry, need a cancellation: "+JSON.stringify(tollcancel));
 										}
 									} else {
-									tollentry.push({"tollplaza": multipleToll[i].split('@')[0].trim(),"cancel":"0","other":"0","checkpoint":"0","type":"start"});
+									tollentry.push({"tollplaza": multipleToll[i].split('@')[0].trim(),"cancel":"0","other":"0","checkpoint":"0","type":"start",longitude:longitude,latitude:latitude,cost:cost,timestamp:timestamp});
 									}
 								}
 							};
@@ -322,7 +322,7 @@ var bgLocFound = function(loc){
 								console.log("adding CANCELled toll entry: "+altitude);
 								var multipleCancel = altitude.split('|');
 								for (var i=0;i < multipleCancel.length;i++) {
-									tollcancel.push({"tollplaza": multipleCancel[i]});
+									tollcancel.push(multipleCancel[i].trim());
 								};
 							};
 							console.log("tollcancel : length "+tollcancel.length+" : "+JSON.stringify(tollcancel));	
@@ -330,16 +330,18 @@ var bgLocFound = function(loc){
 						};
 						if (foundexit == "1") {
 							console.log((new Date())+": add exit with "+tollplaza+": foundentry="+foundentry+":foundexit="+foundexit);
-							tollexit.push({tollplaza:tollplaza,cancel:altitude,other:heading,type:type});
+							tollexit.push({tollplaza:tollplaza,cancel:altitude,other:heading,type:type,longitude:longitude,latitude:latitude,cost:cost,timestamp:timestamp});
 							var multipleToll = heading.split('|'); // check for multiple toll with same coord
 							console.log("EXIT multipleToll.length : "+multipleToll.length+" multipleToll : "+multipleToll);
 							if (heading != "0") {
 								console.log("adding more line in EXIT with: "+heading);
 								for (var i=0;i < multipleToll.length;i++) {
 									if ( multipleToll[i].split('@')[1].trim() == "end") {
-										tollexit.push({"tollplaza": multipleToll[i].split('@')[0].trim(),"cancel":"0","other":"0","checkpoint":"0","type":"end"});
+										tollexit.push({"tollplaza":multipleToll[i].split('@')[0].trim(),"cancel":"0","other":"0","checkpoint":"0","type":"end",longitude:longitude,latitude:latitude,cost:cost,timestamp:timestamp});
+										console.log ("tollplaza: "+multipleToll[i].split('@')[0].trim()+" has end entry: "+JSON.stringify(tollexit));
 									} else {
-										tollentry.push({"tollplaza": multipleToll[i].split('@')[0].trim(),"cancel":"0","other":"0","checkpoint":"0","type":"start"});
+										tollentry.push({"tollplaza": multipleToll[i].split('@')[0].trim(),"cancel":"0","other":"0","checkpoint":"0","type":"start",longitude:longitude,latitude:latitude,cost:cost,timestamp:timestamp});
+										console.log ("tollplaza: "+multipleToll[i].split('@')[0].trim()+" has start entry from foundexit=1: "+JSON.stringify(tollentry));
 									}
 								};
 							};
@@ -349,7 +351,7 @@ var bgLocFound = function(loc){
 								console.log("adding CANCELled toll entry: "+altitude);
 								var multipleCancel = altitude.split('|');
 								for (var i=0;i < multipleCancel.length;i++) {
-									tollcancel.push({"tollplaza": multipleCancel[i]});
+									tollcancel.push(multipleCancel[i].trim());
 								};
 							};
 							console.log("tollcancel : length "+tollcancel.length+" : "+JSON.stringify(tollcancel));	
@@ -374,57 +376,81 @@ var bgLocFound = function(loc){
 			 			if ( tollentry.length > "0" && tollexit.length > "0") {
 			 				for ( var i=0;i<tollentry.length;i++ ) {
 			 					for ( var j=0;j<tollexit.length;j++ ) {
-			 						console.log ( " tollentry[i].tollplaza vs. tollexit[j].tollplaza "+tollentry[i].tollplaza+" vs. "+tollexit[j].tollplaza);
-			 						if ( tollentry[i].tollplaza == tollexit[j].tollplaza ){
-			 							hastollentryexit.push({"tollplaza":tollentry[i].tollplaza});
+			 						console.log ( " tollentry["+i+"].tollplaza vs. tollexit["+j+"].tollplaza "+tollentry[i].tollplaza+" vs. "+tollexit[j].tollplaza);
+			 						if ( tollentry[i].tollplaza.trim() == tollexit[j].tollplaza.trim() ){
+			 							hastollentryexit.push(tollentry[i].tollplaza.trim());
 			 							console.log("hastollentryexit : "+JSON.stringify(hastollentryexit));
 			 						}
 			 					}
 			 				}
 			 			}
+			 			///reset data
+			 			tollentrytime = tollentry; /// save data to diff obj for timestamp.
+			 			tollexittime = tollexit;
+			 			console.log((new Date())+"toll ENTRY being xferred to diff obj: "+JSON.stringify(tollentrytime));
+			 			console.log((new Date())+"toll EXIT being xferred to diff obj: "+JSON.stringify(tollexittime));
+			 			tollentry = [];
+			 			tollexit = [];
 			 			console.log("check again hastollentryexit : "+JSON.stringify(hastollentryexit));
 			 			if ( hastollentryexit.length > 0 && tollcancel.length > 0 ) {
-			 				var hastollentryexitsort = hastollentryexit.sort(function(a, b)	{ return a.tollplaza - b.tollplaza;});
-							var hastollentryexitsortuniq = [{"tollplaza":hastollentryexitsort[0].tollplaza}];
+			 				var hastollentryexitsort = hastollentryexit.sort();
+							var hastollentryexitsortuniq = [hastollentryexitsort[0].trim()];
 							for (var i = 1; i < hastollentryexitsort.length; i++) {
-								if ( hastollentryexitsort[i].tollplaza !== hastollentryexitsort[i-1].tollplaza) {
-									hastollentryexitsortuniq.push({"tollplaza":hastollentryexitsort[i].tollplaza});
+								if ( hastollentryexitsort[i].trim() !== hastollentryexitsort[i-1].trim()) {
+									hastollentryexitsortuniq.push(hastollentryexitsort[i].trim());
 								}
 							}
+							///reset data
+							hastollentryexit = [];
 							console.log("hastollentryexitsortuniq.length: "+hastollentryexitsortuniq.length+" hastollentryexitsortuniq : "+JSON.stringify(hastollentryexitsortuniq));
-							var tollcancelsort = tollcancel.sort(function(a, b)	{ return a.tollplaza - b.tollplaza;});
-							var tollcancelsortuniq = [{"tollplaza":tollcancelsort[0].tollplaza}];
+							var tollcancelsort = tollcancel.sort();
+							var tollcancelsortuniq = [tollcancelsort[0].trim()];
 							for (var i = 1; i < tollcancelsort.length; i++) {
-								if ( tollcancelsort[i].tollplaza !== tollcancelsort[i-1].tollplaza) {
-									tollcancelsortuniq.push({"tollplaza":tollcancelsort[i].tollplaza});
+								if ( tollcancelsort[i].trim() !== tollcancelsort[i-1].trim()) {
+									tollcancelsortuniq.push(tollcancelsort[i].trim());
 								}
 							}
+							tollcancel = [];
 							console.log("tollcancelsortuniq.length: "+tollcancelsortuniq.length +" tollcancelsortuniq : "+JSON.stringify(tollcancelsortuniq)); 				
 			 				for ( var i=0; i<hastollentryexitsortuniq.length; i++){
 			 					var needtocancel = "0";
 			 					for (var j=0;j<tollcancelsortuniq.length;j++){
-			 						console.log("hastollentryexitsortuniq[i].tollplaza !=  tollcancelsortuniq[j].tollplaza :"+hastollentryexitsortuniq[i].tollplaza+" vs ."+tollcancelsortuniq[j].tollplaza);
-			 						if (hastollentryexitsortuniq[i].tollplaza ==  tollcancelsortuniq[j].tollplaza){
+			 						console.log("hastollentryexitsortuniq[i] !=  tollcancelsortuniq[j] :"+hastollentryexitsortuniq[i]+" vs ."+tollcancelsortuniq[j]);
+			 						if (hastollentryexitsortuniq[i] ==  tollcancelsortuniq[j]){
 			 							var needtocancel = 1;
 			 						}
 			 					}
 			 					if ( needtocancel == "0" ) {
-			 						tolltoupdate.push({"tollplaza":hastollentryexitsortuniq[i].tollplaza});
-			 						if (tolltoupdate.length > 2){
-			 							var tolltoupdatesort = tolltoupdate.sort(function(a, b)	{ return a.tollplaza - b.tollplaza;});
-			 							var tolltoupdatesortuniq = [{"tollplaza":tolltoupdatesort[0].tollplaza}];
-			 							for (var i = 1; i < tolltoupdatesort.length; i++) {
-											if ( tolltoupdatesort[i].tollplaza !== tolltoupdatesort[i-1].tollplaza) {
-												tolltoupdatesortuniq.push({"tollplaza":tolltoupdatesort[i].tollplaza});
+			 						tolltoupdate.push(hastollentryexitsortuniq[i]);
+			 						console.log("1st tolltoupdate.push: "+JSON.stringify(tolltoupdate));
+			 						if (tolltoupdate.length > 1){
+			 							var tolltoupdatesort = tolltoupdate.sort();
+			 							var tolltoupdatesortuniq = [tolltoupdatesort[0]];
+			 							for (var i = 1; i < tolltoupdate.length; i++) {
+											if ( tolltoupdatesort[i] !== tolltoupdatesort[i-1]) {
+												tolltoupdatesortuniq.push(tolltoupdatesort[i]);
 											}
 										}							
 			 						}
-			 						( tolltoupdatesortuniq ) && console.log("tolltoupdatesortuniq.length :"+tolltoupdatesortuniq.length+" tolltoupdatesortuniq : "+JSON.stringify(tolltoupdatesortuniq));					
+			 											
+									( tolltoupdatesort ) && console.log("tolltoupdatesort.length :"+tolltoupdatesort.length+" tolltoupdatesort : "+JSON.stringify(tolltoupdatesort));					
 			 						console.log("tolltoupdate.length: "+tolltoupdate.length+" tolltoupdate : "+JSON.stringify(tolltoupdate));
+									( tolltoupdate.length > 1 ) && console.log("tolltoupdatesortuniq.length :"+tolltoupdatesortuniq.length+" tolltoupdatesortuniq : "+JSON.stringify(tolltoupdatesortuniq));
+			
 			 					} 					
 			 				}
 			 			}
 			 		}
+		 			/*//UPDATE HERE
+					///updateFound(tollplaza,longitude,latitude,timestamp,cost,type,hwy);
+					tolltoupdate.length > 1?tolltoupdatedb=tolltoupdatesortuniq:tolltoupdatedb=tolltoupdate; ///Use unique only when toll to update 2 or more.
+					for (var i=0;i<tolltoupdatedb.length;i++) {
+						for (var j=0;j<tollentrytime.length;j++) {
+							if (tolltoupdatedb[i].trim() == tollentrytime[j].tollplaza){
+								console.log("updateFound("+tollentrytime[j].tollplaza+","+tollentrytime[j].longitude+","+tollentrytime[j].latitude+","+tollentrytime[j].timestamp+","+tollentrytime[j].cost+","+tollentrytime[j].type+","+tollentrytime[j].hwy+")");
+							}
+						}					
+					}	*/						
 				} else {
 					//if (maildebug==1){
 						var now = new Date();
