@@ -416,10 +416,10 @@ var bgLocFound = function(loc){
 					
 					///Logics for toll determination START
 					if (tollentry.length > "0" && tollexit.length > "0"&& closestdist[0].dist > calcrange) {
-						Titanium.Geolocation.distanceFilter = 125; /// reduce det freq when POI > 1 mile
+						Titanium.Geolocation.distanceFilter = 300; /// reduce det freq when POI > 1 mile
 			 			///reset data
 			 			//console.log((new Date())+": tollentry.length: "+tollentry.length+": tollexit.length: "+tollexit.length+" "+closestdist[0].tolltollplaza+" at "+closestdist[0].dist+"ft away");
-			 			console.log((new Date())+"DO CALC: entry:"+tollentry.length+":exit:"+tollexit.length+"/"+tollcancel.length+" : "+closestdist[0].tolltollplaza+" is "+closestdist[0].dist+" near "+calcrange+" , "+Titanium.Geolocation.getDistanceFilter());
+			 			console.log((new Date())+"DO CALC: entry:"+tollentry.length+":exit:"+tollexit.length+"/"+tollcancel.length+" : "+closestdist[0].tolltollplaza+" : "+closestdist[0].dist+"/"+calcrange+" , "+Titanium.Geolocation.getDistanceFilter());
 						if ( tollentry.length > "0" && tollexit.length > "0") {
 			 				for ( var i=0;i<tollentry.length;i++ ) {
 			 					for ( var j=0;j<tollexit.length;j++ ) {
@@ -476,11 +476,11 @@ var bgLocFound = function(loc){
 			 							var tolltoupdatesortuniq = [tolltoupdatesort[0]];
 			 							for (var i = 1; i < tolltoupdate.length; i++) {
 											if ( tolltoupdatesort[i] !== tolltoupdatesort[i-1]) {
-												tolltoupdatesortuniq.push(tolltoupdatesort[i]);
+												tolltoupdatesortuniq.push(tolltoupdatesort[i]);			
 											}
 										}							
 			 						}
-			 											
+							
 									( tolltoupdatesort ) && console.log("tolltoupdatesort.length :"+tolltoupdatesort.length+" tolltoupdatesort : "+JSON.stringify(tolltoupdatesort));					
 			 						console.log("tolltoupdate.length: "+tolltoupdate.length+" tolltoupdate : "+JSON.stringify(tolltoupdate));
 									( tolltoupdate.length > 1 ) && console.log("tolltoupdatesortuniq.length :"+tolltoupdatesortuniq.length+" tolltoupdatesortuniq : "+JSON.stringify(tolltoupdatesortuniq));
@@ -489,12 +489,25 @@ var bgLocFound = function(loc){
 			 				}
 			 			}
 			 			///Logics for toll determination END HERE
+			 			///UPDATE THE DB then RESET var
+				 		//UPDATE HERE
+						///updateFound(tollplaza,longitude,latitude,timestamp,cost,type,hwy);
+						tolltoupdate.length > 1?tolltoupdatedb=tolltoupdatesortuniq:tolltoupdatedb=tolltoupdate; ///Use unique only when toll to update 2 or more.
+						for (var i=0;i<tolltoupdatedb.length;i++) {
+							for (var j=0;j<tollentrytime.length;j++) {
+								if (tolltoupdatedb[i].trim() == tollentrytime[j].tollplaza){
+									console.log("UPDATE DB: updateFound("+tollentrytime[j].tollplaza+","+tollentrytime[j].longitude+","+tollentrytime[j].latitude+","+tollentrytime[j].timestamp+","+tollentrytime[j].cost+","+tollentrytime[j].type+","+tollentrytime[j].hwy+")");
+									updateFound(tollentrytime[j].tollplaza,tollentrytime[j].longitude,tollentrytime[j].latitude,tollentrytime[j].timestamp,tollentrytime[j].cost,tollentrytime[j].type,tollentrytime[j].hwy);
+								}
+							}					
+						}	
 			 			///reset array
 			 			tollentrytime = [];
 			 			tollexittime = [];
 			 			tollcanceltime = [];
 					} else {
-						console.log((new Date())+": entry:"+tollentry.length+":exit:"+tollexit.length+"/"+tollcancel.length+" :"+closestdist[0].tolltollplaza+" is "+closestdist[0].dist+" near "+calcrange+" skip calculation, "+Titanium.Geolocation.getDistanceFilter());
+						console.log((new Date())+": entry:"+tollentry.length+":exit:"+tollexit.length+"/"+tollcancel.length+" :"+closestdist[0].tolltollplaza+" : "+closestdist[0].dist+" / "+calcrange+" skip calculation, "+Titanium.Geolocation.getDistanceFilter()+"ft");						
+						closestdist[0].dist > calcrange?Titanium.Geolocation.distanceFilter = 300:Titanium.Geolocation.distanceFilter = 75;
 					}				
 				}
 				//*console.log(" timestamp after set prop "+Titanium.App.Properties.getString('timelastupd'));
