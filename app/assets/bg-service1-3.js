@@ -415,7 +415,7 @@ var bgLocFound = function(loc){
 					//}
 					
 					///Logics for toll determination START
-					if (tollentry.length > "0" && tollexit.length > "0"&& closestdist[0].dist > calcrange) {
+					if (tollentry.length > "0" && tollexit.length > "0") {
 						closestdist[0].dist > 10000?Titanium.Geolocation.distanceFilter = 600:Titanium.Geolocation.distanceFilter = 300; /// reduce det freq when POI > 1 mile
 			 			///reset data
 			 			//console.log((new Date())+": tollentry.length: "+tollentry.length+": tollexit.length: "+tollexit.length+" "+closestdist[0].tolltollplaza+" at "+closestdist[0].dist+"ft away");
