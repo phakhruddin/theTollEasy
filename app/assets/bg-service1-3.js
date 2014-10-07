@@ -403,11 +403,11 @@ var bgLocFound = function(loc){
 							maildebug==1 || mindebug ==1 && console.log(mmsg);	
 							var multipleCancel = " "; /// reset multiple cancel value
 						};
-						var foundentry = "0"; // reset entry
-						var foundexit = "0"; // reset exit
 						//*console.log("timestamp is :" +timestamp);
 						Titanium.App.Properties.setString('timelastupd',timestamp);
 						Titanium.App.Properties.setString('tolllastupd',tollplaza);
+						var foundentry = "0"; // reset entry
+						var foundexit = "0"; // reset exit
 						var distmatch = []; //reset the array
 						var foundNotif = Ti.App.iOS.scheduleLocalNotification({
 							alertBody: (new Date())+" : tollplaza "+tollplaza+" was detected less than "+closestdist[0].dist+" ft away",
@@ -558,6 +558,8 @@ var bgLocFound = function(loc){
 									} 			
 			 					} 					
 			 				}
+			 				///RESET THE CANCELLED TOLLPLAZA
+			 				var tollcancelsortuniq = []; var tollcancelsort = [];
 			 			}
 			 			///Logics for toll determination END HERE
 			 			///UPDATE THE DB then RESET var
