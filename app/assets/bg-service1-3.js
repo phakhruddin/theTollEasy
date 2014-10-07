@@ -254,8 +254,8 @@ var bgLocFound = function(loc){
 				maildebug == 1 && console.log("JSON closestdist : "+JSON.stringify(closestdist));
 				Ti.App.Properties.setString('distmatchobj', JSON.stringify(distmatch));
 				maildebug == 1 && console.log("set distmatchobj"); 
-				//*console.log("JSON distance SORT :" +JSON.stringify(closestdist));
-				var closesttollbydist = closestdist[0].tolltollplaza;
+				//console.log("JSON distance SORT :" +JSON.stringify(closestdist));
+				//var closesttollbydist = closestdist[0].tolltollplaza;
 				var closesttollbydist0 = closestdist[0].tolltollplaza;
 				var closestdist0 = closestdist[0].dist;
 				var outputclosesttollbydist0 = closestdist[0].tolltollplaza+" distance : "+closestdist[0].dist;
@@ -271,7 +271,7 @@ var bgLocFound = function(loc){
 				var tolllastupd = Titanium.App.Properties.getString('tolllastupd') || "None";
 				var timelastupd = parseFloat(timelastupd);
 				var timediff = time1 - timelastupd;
-				var timerange = 10000;
+				var timerange = 100; // timediff from the next found for the same toll. Now. 0.1sec.
 				var calctimerange = 60000;
 				//*console.log("time diff is : time 1 - timelastupd : "+time1+" - "+timelastupd+" = "+timediff);
 				///Change 20140914. When the vehicle is not near range (150ft), then run logics for toll detection.
@@ -313,7 +313,7 @@ var bgLocFound = function(loc){
 									var othertoll = multipleToll[i].split('@')[0].trim();
 									var othertolltype = multipleToll[i].split('@')[1].trim();
 									var mmsg = "othertoll : "+othertoll+" othertolltype: "+othertolltype;
-									mmsg +="multipleToll[i].split('@')[1].trim() multipleToll[i].split('@')[1].trim() "+multipleToll[i].split('@')[0].trim()+" "+multipleToll[i].split('@')[1].trim();
+									//mmsg +="multipleToll[i].split('@')[0].trim()+" : "+multipleToll[i].split('@')[1].trim();
 									maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
 									maildebug==1 || mindebug ==1 && console.log(mmsg);
 									///if other entry is the end POI, it should already has start POI. If not, ignore it.
@@ -564,16 +564,21 @@ var bgLocFound = function(loc){
 				 		//UPDATE HERE
 						///updateFound(tollplaza,longitude,latitude,timestamp,cost,type,hwy);
 						tolltoupdate.length > 1?tolltoupdatedb=tolltoupdatesortuniq:tolltoupdatedb=tolltoupdate; ///Use unique only when toll to update 2 or more.
-						for (var i=0;i<tolltoupdatedb.length;i++) {
-							for (var j=0;j<tollentrytime.length;j++) {
-								if (tolltoupdatedb[i].trim() == tollentrytime[j].tollplaza){
-									var mmsg = "UPDATE DB: updateFound("+tollentrytime[j].tollplaza+","+tollentrytime[j].longitude+","+tollentrytime[j].latitude+","+tollentrytime[j].timestamp+","+tollentrytime[j].cost+","+tollentrytime[j].type+","+tollentrytime[j].hwy+")";
-									maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
-				 					maildebug==1 || mindebug ==1 && console.log(mmsg);
-									updateFound(tollentrytime[j].tollplaza,tollentrytime[j].longitude,tollentrytime[j].latitude,tollentrytime[j].timestamp,tollentrytime[j].cost,tollentrytime[j].type,tollentrytime[j].hwy);
-								}
-							}					
-						}	
+						var mmsg = "RIGH b4 tolltoupdateDB: tolltoupdatedb.length: "+tolltoupdatedb.length+" tolltoupdatedb : "+JSON.stringify(tolltoupdatedb);
+						maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
+				 		maildebug==1 || mindebug ==1 && console.log(mmsg);
+				 		if (tolltoupdatedb.length>0){
+							for (var i=0;i<tolltoupdatedb.length;i++) {
+								for (var j=0;j<tollentrytime.length;j++) {
+									if (tolltoupdatedb[i].trim() == tollentrytime[j].tollplaza){
+										var mmsg = "UPDATE DB: updateFound("+tollentrytime[j].tollplaza+","+tollentrytime[j].longitude+","+tollentrytime[j].latitude+","+tollentrytime[j].timestamp+","+tollentrytime[j].cost+","+tollentrytime[j].type+","+tollentrytime[j].hwy+")";
+										maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
+					 					maildebug==1 || mindebug ==1 && console.log(mmsg);
+										updateFound(tollentrytime[j].tollplaza,tollentrytime[j].longitude,tollentrytime[j].latitude,tollentrytime[j].timestamp,tollentrytime[j].cost,tollentrytime[j].type,tollentrytime[j].hwy);
+									}
+								}					
+							}	
+						}
 			 			///reset array
 			 			tollentrytime = [];
 			 			tollexittime = [];
