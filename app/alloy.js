@@ -25,6 +25,12 @@ var thefile5 = loc+"1.txt";
 var file5 = Ti.Filesystem.getFile(
 				Ti.Filesystem.tempDirectory, thefile5
 			);
+var urlsourcefile = Ti.Filesystem.getFile(
+				Ti.Filesystem.tempDirectory, "urlsource.txt"
+			);
+var alturlsourcefile = Ti.Filesystem.getFile(
+				Ti.Filesystem.tempDirectory, "alturlsource.txt"
+			);
 
 Alloy.Globals.writeFile = function (content, filename){
 			var file = Ti.Filesystem.getFile(
@@ -97,6 +103,9 @@ xhr.send();
 return theplaza;
 };
 
+/// Initial Collection creation
+Alloy.Collections.tollsources = Alloy.createCollection("tollsource");
+
 Alloy.Globals.checkLoc = function() {
 	if (Ti.Geolocation.locationServicesEnabled) {
 	    Titanium.Geolocation.purpose = 'Get Current Location';
@@ -162,7 +171,8 @@ Alloy.Globals.updateTollPlazaTable = function(tollplaza,latitude,longitude,altit
 };
 
 Alloy.Globals.updateTollPlazaAlternate = function(loc) {
-		alert("downloading data using a backup site instead");
+		var mmsg = (new Date())+": error downloading data using a backup site instead";
+		Alloy.Globals.appendFile(mmsg,debugfile); console.log(mmsg);
 		Alloy.Collections.tollplaza.deleteAll();
 		var url1 = "https://spreadsheets.google.com/feeds/list/1Omzwq1RKWeptvtV4H0ryLi3IP2fFdPFNqBPq2_nuuCc/od6/public/basic?hl=en_US&alt=json";
 		var xhr1 = Ti.Network.createHTTPClient({
@@ -200,7 +210,7 @@ Alloy.Globals.updateTollPlazaAlternate = function(loc) {
 			    } catch(ee){
 						Ti.API.info("cathing e: "+ee);
 						var mmsg = (new Date())+": load file error cathing ee: "+JSON.stringify(ee);
-						(Titanium.App.Properties.getInt('maildebug'))==1 && Alloy.Globals.appendFile(mmsg,debugfile);
+						(Titanium.App.Properties.getInt('maildebug'))==1 && Alloy.Globals.appendFile(mmsg,debugfile);console.log(mmsg);
 				}
 			}	
 		});			
@@ -239,13 +249,15 @@ Alloy.Globals.updateTollPlaza = function(loc) {
 				}
 			} catch(e){
 				Ti.API.info("cathing e: "+e);
-				alert("error downloading data from primary site, "+url+" , data is not in the right format");
+				var mmsg = (new Date())+": error downloading data from primary site, "+url+" , data is not in the right format";
+				Alloy.Globals.appendFile(mmsg,debugfile);console.log(mmsg);
 				Alloy.Globals.updateTollPlazaAlternate(loc);
 			}
 		}
 	});
 	xhr.onerror = function(e){
-		alert("error downloading data from primary site, "+url+" , downloading data using a backup site instead");
+		var mmsg = (new Date())+": error downloading data from primary site, "+url+" , downloading data using a backup site instead";
+		Alloy.Globals.appendFile(mmsg,debugfile);console.log(mmsg);
 		//*console.log(e);
 		// backup sites
 		Alloy.Collections.tollplaza.deleteAll();
@@ -288,7 +300,7 @@ Alloy.Globals.updateTollPlaza = function(loc) {
 			}	
 		});			
 		var mmsg = (new Date())+": load file error cathing e: "+JSON.stringify(e);
-		(Titanium.App.Properties.getInt('maildebug'))==1 && Alloy.Globals.appendFile(mmsg,debugfile);
+		(Titanium.App.Properties.getInt('maildebug'))==1 && Alloy.Globals.appendFile(mmsg,debugfile);console.log(mmsg);
 		xhr1.open("GET", url1);
 		xhr1.send();
 	};
@@ -532,7 +544,7 @@ if(contents && contents.text){
 }
 
 var mmsg = "json data : "+JSON.stringify(json);
-(Titanium.App.Properties.getInt('maildebug'))==1 && Alloy.Globals.appendFile(mmsg,debugfile);
+///(Titanium.App.Properties.getInt('maildebug'))==1 && Alloy.Globals.appendFile(mmsg,debugfile);
 var lon1 = lat1 = time1 = timelastdebug = 0;
 
 	var locationCallback = function(e)
@@ -783,3 +795,100 @@ Alloy.Globals.createAnnotations = function () {
 
     return annotationData ;
 };
+
+Alloy.Globals.updatetollsourceTable = function(state,country,city,tollprovider,data1,data2,data3,data4) {
+	var tollsourceModel = Alloy.createModel("tollsource",{
+		state : state,
+		country : country,
+		city :  city,
+		tollprovider : tollprovider,				
+		data1 : data1,
+		data2 : data2,
+		data3 : data3,
+		data4 : data4
+	});			
+	tollsourceModel.save();
+};
+
+Alloy.Globals.updatetollsourceAlternate = function(loc) {
+		var mmsg = (new Date())+": error downloading data using a backup site instead";
+		Alloy.Globals.appendFile(mmsg,debugfile); console.log(mmsg);
+		Alloy.Collections.tollsource.deleteAll();
+		var alturlsource = "https://spreadsheets.google.com/feeds/list/1RfpiZtO0iFMVJljVMKvhuGzfn0-BR4OADSddoONF948/od6/public/basic?hl=en_US&alt=json";
+		var altxhrsource = Ti.Network.createHTTPClient({
+		    onload: function(ee) {
+			    try {
+	Alloy.Collections.tollsource.deleteCountry(country); // delete intended location only
+			    	json = JSON.parse(this.responseText);
+			    	console.log("JSON after tollsource load : "+JSON.stringify(json));
+			    	var out = '{ "poi" : ['+"\n";
+			    	for (var i=0; i < json.feed.entry.length; i++) {
+			    		var state = json.feed.entry[i].title.$t.trim();
+						var country = json.feed.entry[i].content.$t.split(',')[0].split(':')[1].trim();
+						var city = json.feed.entry[i].content.$t.split(',')[1].split(':')[1].trim();
+						var tollprovider = json.feed.entry[i].content.$t.split(',')[2].split(':')[1].trim() || "none";
+						var data1 = json.feed.entry[i].content.$t.split(',')[3].split(':')[1].trim() || "none";
+						var data2 = json.feed.entry[i].content.$t.split(',')[4].split(':')[1].trim() || "none";
+						var data3 = json.feed.entry[i].content.$t.split(',')[5].split(':')[1].trim() || "none";
+						var data4 = json.feed.entry[i].content.$t.split(',')[6].split(':')[1].trim() || "none";
+						Alloy.Globals.updatetollsourceTable(state,country,city,tollprovider,data1,data2,data3,data4);	
+						if ( i == (json.feed.entry.length - 1)) {
+							out += '{ "state" : "'+state+'" , "country" : "'+country+'" , "city" : "'+city+'" , "tollprovider" : "'+tollprovider+'"  , "data1" : "'+data1+'" , "data2" : "'+data2+'" , "data3" : "'+data3+'" }]}'+"\n";
+						} else {
+							out += '{ "state" : "'+state+'" , "country" : "'+country+'" , "city" : "'+city+'" , "tollprovider" : "'+tollprovider+'"  , "data1" : "'+data1+'" , "data2" : "'+data2+'" , "data3" : "'+data3+'" },'+"\n";
+						}
+			    	}
+					alturlsourcefile.write(out);
+					urlsourcefile.write(out);
+					var json = out;
+			    } catch(ee){
+						Ti.API.info("cathing e: "+ee);
+						var mmsg = (new Date())+": load file error cathing ee: "+JSON.stringify(ee);
+						(Titanium.App.Properties.getInt('maildebug'))==1 && Alloy.Globals.appendFile(mmsg,debugfile);console.log(mmsg);
+				}
+			}	
+		});			
+		altxhrsource.open("GET", alturlsource);
+		altxhrsource.send();
+};
+
+Alloy.Globals.updatetollsource = function() {
+	var url = "http://23.21.53.150:10000/tollsource.json";
+	var xhr = Ti.Network.createHTTPClient({
+	    onload: function(e) {
+	    try {
+	Alloy.Collections.tollsource.deleteCountry(country); // delete intended location only
+				// parse the retrieved data, turning it into a JavaScript object
+		    	json = JSON.parse(this.responseText);
+				// update DB
+				for (var i=0; i < +json.poi.length; i++) {
+					var state = json.poi[i].state;
+					var country = json.poi[i].country;
+					var city = json.poi[i].city;
+					var tollprovider = json.poi[i].tollprovider || "none";
+					var data1 = json.poi[i].data1 || "none";
+					var data2 = json.poi[i].data2 || "none";
+					var data3 = json.poi[i].data3 || "none";
+					var data4 = json.poi[i].data4 || "none";
+					Alloy.Globals.updatetollsourceTable(state,country,city,tollprovider,data1,data2,data3,data4);	
+				}
+			} catch(e){
+				Ti.API.info("cathing e: "+e);
+				var mmsg = (new Date())+": error downloading data from primary site, "+url+" , data is not in the right format";
+				Alloy.Globals.appendFile(mmsg,debugfile);console.log(mmsg);
+				Alloy.Globals.updatetollsourceAlternate();
+			}
+		}
+	});
+	xhr.onerror = function(e){
+		var mmsg = (new Date())+": error downloading data from primary site, "+url+" , downloading data using a backup site instead";
+		Alloy.Globals.appendFile(mmsg,debugfile);console.log(mmsg);
+		Alloy.Globals.updatetollsourceAlternate();		
+		var mmsg = (new Date())+": load file error cathing e: "+JSON.stringify(e);
+		(Titanium.App.Properties.getInt('maildebug'))==1 && Alloy.Globals.appendFile(mmsg,debugfile);console.log(mmsg);
+	};
+	xhr.open("GET", url);
+	xhr.send();
+};
+
+Alloy.Globals.updatetollsource();

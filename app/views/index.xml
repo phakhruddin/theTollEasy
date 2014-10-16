@@ -1,5 +1,6 @@
 <Alloy>
 <Collection src="found" />
+<Collection src="tollsource" />
   <TabGroup>
     <!-- Tab included via <Require> tag -->
     <Require src="tabViewOne"/>
