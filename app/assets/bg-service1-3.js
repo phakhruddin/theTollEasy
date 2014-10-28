@@ -292,9 +292,10 @@ var bgLocFound = function(loc){
 					var hwy = closestdist[0].hwy;
 					type == "start"?foundentry=1:foundentry=0;
 					type == "end"?foundexit=1:foundexit=0;
-					var mmsg = (new Date())+": foundentry = "+foundentry+" foundexit = "+foundexit+" DistanceFilter: "+Titanium.Geolocation.getDistanceFilter();
 					var sametoll = "NO";if ( closesttollbydist0 == tolllastupd && timediff < 30000 ) { var sametoll = "YES";}; // makesure they are not detecting the same toll.
-					if ( foundentry == "1" || foundexit == "1" && sametoll== "NO" ) {
+					var mmsg = (new Date())+": "+foundentry+"/"+foundexit+" DF:"+Titanium.Geolocation.getDistanceFilter()+" sametoll:"+sametoll+": "+closesttollbydist0+" / "+tolllastupd;
+					maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);console.log(mmsg);
+					if ( (foundentry == "1" || foundexit == "1") && sametoll== "NO" ) {
 						Titanium.Geolocation.distanceFilter = 5; // increase the detection more frequent approaching POI
 						var mmsg = (new Date())+": entry or exit IS DETECTED for "+tollplaza+": foundentry="+foundentry+":foundexit="+foundexit;
 						mmsg += "executing a function, updateFound("+tollplaza+','+longitude+','+latitude+','+timestamp+','+cost+','+type+','+hwy+')';
@@ -352,13 +353,24 @@ var bgLocFound = function(loc){
 							maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
 							maildebug==1 || mindebug ==1 && console.log(mmsg);
 							if (altitude != "0") {
-								var mmsg = "adding CANCELled toll entry: "+altitude;
-								maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
-								maildebug==1 || mindebug ==1 && console.log(mmsg);
-								var multipleCancel = altitude.split('|');
-								for (var i=0;i < multipleCancel.length;i++) {
-									tollcancel.push(multipleCancel[i].trim());
-								};
+								/// On ENTRY, if there is complete entry then exit, cancel is ENABLED.
+								var cancancel = 0;
+								for (var j=0;j<tollexit.length;j++){
+									if (tollplaza == tollexit[j].tollplaza) {
+										var cancancel = 1;
+									}
+								}
+								if (cancancel == 1) {
+									var mmsg = "cancancel: "+cancancel+" adding CANCELLed toll entry: "+altitude;
+									maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
+									maildebug==1 || mindebug ==1 && console.log(mmsg);
+									var multipleCancel = altitude.split('|');
+									for (var i=0;i < multipleCancel.length;i++) {
+										tollcancel.push(multipleCancel[i].trim());
+									};
+								} else {
+									var mmsg = "cancancel: "+cancancel+" cancelled entry: "+altitude+" not added";
+								}
 							};
 							var mmsg = "tollcancel : length "+tollcancel.length+" : "+JSON.stringify(tollcancel);
 							maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
@@ -395,13 +407,24 @@ var bgLocFound = function(loc){
 							maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
 							maildebug==1 || mindebug ==1 && console.log(mmsg);
 							if (altitude != "0") {
-								var mmsg="adding CANCELled toll entry: "+altitude;
-								maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
-								maildebug==1 || mindebug ==1 && console.log(mmsg);
-								var multipleCancel = altitude.split('|');
-								for (var i=0;i < multipleCancel.length;i++) {
-									tollcancel.push(multipleCancel[i].trim());
-								};
+								var cancancel = 0;
+								// On EXIT, if there is complete entry and exit then cancel is ENABLED.
+								for (var j=0;j<tollentry.length;j++){
+									if (tollplaza == tollentry[j].tollplaza) {
+										var cancancel = 1;
+									}
+								}
+								if (cancancel == 1) {
+									var mmsg = "cancancel: "+cancancel+" adding CANCELLed toll entry: "+altitude;
+									maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
+									maildebug==1 || mindebug ==1 && console.log(mmsg);
+									var multipleCancel = altitude.split('|');
+									for (var i=0;i < multipleCancel.length;i++) {
+										tollcancel.push(multipleCancel[i].trim());
+									};
+								} else {
+									var mmsg = "cancancel: "+cancancel+" cancelled entry: "+altitude+" not added";
+								}			
 							};
 							var mmsg="tollcancel : length "+tollcancel.length+" : "+JSON.stringify(tollcancel);
 							maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
@@ -487,20 +510,22 @@ var bgLocFound = function(loc){
 			 					}
 			 				}
 			 			}
-			 			tollentrytime = tollentrytime.concat(tollentry); /// concatenate data to diff obj for timestamp.
-			 			tollexittime = tollexittime.concat(tollexit);
-			 			tollcanceltime = tollcanceltime.concat(tollcancel);
-			 			var mmsg = (new Date())+": toll ENTRY being xferred to diff obj: "+JSON.stringify(tollentrytime);
-			 			mmsg +=(new Date())+": toll EXIT being xferred to diff obj: "+JSON.stringify(tollexittime);
-			 			mmsg +=(new Date())+": toll CANCEL being xferred to diff obj: "+JSON.stringify(tollcanceltime);
-			 			maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
-				 		maildebug==1 || mindebug ==1 && console.log(mmsg);
-			 			tollentry = [];
-			 			tollexit = [];
+			 			if (hastollentryexit.length > 0) {
+				 			tollentrytime = tollentrytime.concat(tollentry); /// concatenate data to diff obj for timestamp.
+				 			tollexittime = tollexittime.concat(tollexit);
+				 			tollcanceltime = tollcanceltime.concat(tollcancel);
+				 			var mmsg = (new Date())+": toll ENTRY being xferred to diff obj: "+JSON.stringify(tollentrytime);
+				 			mmsg +=(new Date())+": toll EXIT being xferred to diff obj: "+JSON.stringify(tollexittime);
+				 			mmsg +=(new Date())+": toll CANCEL being xferred to diff obj: "+JSON.stringify(tollcanceltime);
+				 			maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
+					 		maildebug==1 || mindebug ==1 && console.log(mmsg);
+				 			tollentry = [];
+				 			tollexit = [];
+			 			}
 			 			var mmsg = (new Date())+": check again hastollentryexit : "+JSON.stringify(hastollentryexit);
 			 			maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
-				 		maildebug==1 || mindebug ==1 && console.log(mmsg);
-			 			if ( hastollentryexit.length > 0 && tollcancel.length > 0 ) {
+				 		maildebug==1 || mindebug ==1 && console.log(mmsg);				 		
+			 			if ( hastollentryexit.length > 0 ) {
 			 				var hastollentryexitsort = hastollentryexit.sort();
 							var hastollentryexitsortuniq = [hastollentryexitsort[0].trim()];
 							for (var i = 1; i < hastollentryexitsort.length; i++) {
@@ -513,25 +538,31 @@ var bgLocFound = function(loc){
 							var mmsg = "hastollentryexitsortuniq.length: "+hastollentryexitsortuniq.length+" hastollentryexitsortuniq : "+JSON.stringify(hastollentryexitsortuniq);
 							maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
 				 			maildebug==1 || mindebug ==1 && console.log(mmsg);
-							var tollcancelsort = tollcanceltime.sort();
-							var tollcancelsortuniq = [tollcancelsort[0].trim()];
-							for (var i = 1; i < tollcancelsort.length; i++) {
-								if ( tollcancelsort[i].trim() !== tollcancelsort[i-1].trim()) {
-									tollcancelsortuniq.push(tollcancelsort[i].trim());
+				 			if (tollcancel.length > 0) {
+					 			var tollcancelsort = tollcanceltime.sort();
+								var tollcancelsortuniq = [tollcancelsort[0].trim()];
+								for (var i = 1; i < tollcancelsort.length; i++) {
+									if ( tollcancelsort[i].trim() !== tollcancelsort[i-1].trim()) {
+										tollcancelsortuniq.push(tollcancelsort[i].trim());
+									}
 								}
-							}
-							tollcancel = [];
-							var mmsg = "tollcancelsortuniq.length: "+tollcancelsortuniq.length +" tollcancelsortuniq : "+JSON.stringify(tollcancelsortuniq); 				
-			 				maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
-				 			maildebug==1 || mindebug ==1 && console.log(mmsg);
+								tollcancel = [];	
+								var mmsg = "tollcancelsortuniq.length: "+tollcancelsortuniq.length +" tollcancelsortuniq : "+JSON.stringify(tollcancelsortuniq); 				
+				 				maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
+					 			maildebug==1 || mindebug ==1 && console.log(mmsg);
+				 			}														
 			 				for ( var i=0; i<hastollentryexitsortuniq.length; i++){
 			 					var needtocancel = "0";
-			 					for (var j=0;j<tollcancelsortuniq.length;j++){
-			 						var mmsg ="hastollentryexitsortuniq[i] !=  tollcancelsortuniq[j] :"+hastollentryexitsortuniq[i]+" vs ."+tollcancelsortuniq[j];
-									maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
-				 					maildebug==1 || mindebug ==1 && console.log(mmsg);
-			 						if (hastollentryexitsortuniq[i] ==  tollcancelsortuniq[j]){
-			 							var needtocancel = 1;
+			 					if (tollcancelsortuniq) { 
+			 						if (tollcancelsortuniq.length > 0) {
+					 					for (var j=0;j<tollcancelsortuniq.length;j++){
+					 						var mmsg ="hastollentryexitsortuniq[i] !=  tollcancelsortuniq[j] :"+hastollentryexitsortuniq[i]+" vs ."+tollcancelsortuniq[j];
+											maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
+						 					maildebug==1 || mindebug ==1 && console.log(mmsg);
+					 						if (hastollentryexitsortuniq[i] ==  tollcancelsortuniq[j]){
+					 							var needtocancel = 1;
+					 						}
+				 						}		
 			 						}
 			 					}
 			 					if ( needtocancel == "0" ) {
@@ -583,15 +614,20 @@ var bgLocFound = function(loc){
 					 					maildebug==1 || mindebug ==1 && console.log(mmsg);
 										updateFound(tollentrytime[j].tollplaza,tollentrytime[j].longitude,tollentrytime[j].latitude,tollentrytime[j].timestamp,tollentrytime[j].cost,tollentrytime[j].type,tollentrytime[j].hwy);
 									}
-								}					
+								}
+								///reset array											 			
+					 			tollentrytime = [];
+					 			tollexittime = [];
+					 			tollcanceltime = [];											
 							}
 							///ZERO out tolltoupdate once the value is updated in the DB	
 							tolltoupdate = [];
 						}
 			 			///reset array
+			 			/*
 			 			tollentrytime = [];
 			 			tollexittime = [];
-			 			tollcanceltime = [];
+			 			tollcanceltime = [];*/
 					} else {
 						if (timediff > 60000){
 							var mmsg = (new Date())+": entry:"+tollentry.length+":exit:"+tollexit.length+"/"+tollcancel.length+" :"+closestdist[0].tolltollplaza+" : "+closestdist[0].dist+" / "+calcrange+" skip calculation, "+Titanium.Geolocation.getDistanceFilter()+"ft";											
