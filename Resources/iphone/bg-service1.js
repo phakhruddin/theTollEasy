@@ -54,7 +54,7 @@ var downloadTollplaza = function(loc) {
                 try {
                     json = JSON.parse(this.responseText);
                     var out = '{ "poi" : [\n';
-                    for (var i = 0; json.feed.entry.length > i; i++) {
+                    for (var i = 0; i < json.feed.entry.length; i++) {
                         var tollplaza = json.feed.entry[i].title.$t.trim();
                         var latitude = json.feed.entry[i].content.$t.split(",")[0].split(":")[1].trim();
                         var longitude = json.feed.entry[i].content.$t.split(",")[1].split(":")[1].trim();
@@ -63,10 +63,16 @@ var downloadTollplaza = function(loc) {
                         var speed = json.feed.entry[i].content.$t.split(",")[4].split(":")[1].trim() || "none";
                         var hwy = json.feed.entry[i].content.$t.split(",")[5].split(":")[1].trim() || "interstate";
                         var cost = json.feed.entry[i].content.$t.split(",")[6].split(":")[1].trim() || "0";
-                        json.feed.entry[i].content.$t.split(",")[7].split(":")[1].trim() || "none";
-                        json.feed.entry[i].content.$t.split(",")[8].split(":")[1].trim() || "unknown";
-                        json.feed.entry[i].content.$t.split(",")[9].split(":")[1].trim() || "unknown";
-                        out += i == json.feed.entry.length - 1 ? '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" }]}' + "\n" : '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" },' + "\n";
+                        {
+                            json.feed.entry[i].content.$t.split(",")[7].split(":")[1].trim() || "none";
+                        }
+                        {
+                            json.feed.entry[i].content.$t.split(",")[8].split(":")[1].trim() || "unknown";
+                        }
+                        {
+                            json.feed.entry[i].content.$t.split(",")[9].split(":")[1].trim() || "unknown";
+                        }
+                        out += i == json.feed.entry.length - 1 ? '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" }]}\n' : '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" },\n';
                     }
                     file5.write(out);
                     file4.write(out);
@@ -107,7 +113,7 @@ var calcDistance = function(tollplaza, lat1, lon1, lat2, lon2, unit) {
     var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
     dist = Math.acos(dist);
     dist = 180 * dist / Math.PI;
-    dist = 1.1515 * 60 * dist;
+    dist = 60 * dist * 1.1515;
     "K" == unit && (dist = 1.609344 * dist);
     "N" == unit && (dist = .8684 * dist);
     "F" == unit && (dist = 5280 * dist);
@@ -153,7 +159,7 @@ var bgLocFound = function() {
         }
         Ti.API.info(mmsg);
         Titanium.App.Properties.setInt("count", count);
-        for (i = 0; json.poi.length > i; i++) {
+        for (i = 0; i < json.poi.length; i++) {
             var tolltollplaza = json.poi[i].plaza;
             var lat2 = json.poi[i].latitude;
             var lon2 = json.poi[i].longitude;
@@ -175,7 +181,7 @@ var bgLocFound = function() {
         closestdist[0].tolltollplaza;
         var closesttollbydist0 = closestdist[0].tolltollplaza;
         closestdist[0].dist;
-        var outputclosesttollbydist0 = closestdist[0].tolltollplaza + "(BG)" + " distance : " + closestdist[0].dist;
+        var outputclosesttollbydist0 = closestdist[0].tolltollplaza + "(BG) distance : " + closestdist[0].dist;
         Titanium.App.Properties.setString("outputclosesttollbydist0", outputclosesttollbydist0);
         var range = 100;
         var timelastupd = Titanium.App.Properties.getString("timelastupd") || 0;
@@ -183,7 +189,7 @@ var bgLocFound = function() {
         var timelastupd = parseFloat(timelastupd);
         var timediff = time1 - timelastupd;
         var timerange = 1e4;
-        if (range > closestdist[0].dist && timediff > timerange && closesttollbydist0 != tolllastupd) {
+        if (closestdist[0].dist < range && timediff > timerange && closesttollbydist0 != tolllastupd) {
             var tollplaza = closestdist[0].tolltollplaza;
             var longitude = closestdist[0].longitude;
             var latitude = closestdist[0].latitude;
@@ -195,10 +201,12 @@ var bgLocFound = function() {
             updateFound(tollplaza, longitude, latitude, timestamp, cost, type, hwy);
             Titanium.App.Properties.setString("timelastupd", timestamp);
             Titanium.App.Properties.setString("tolllastupd", tollplaza);
-            Ti.App.iOS.scheduleLocalNotification({
-                alertBody: new Date() + " : tollplaza " + tollplaza + " was detected less than " + closestdist[0].dist + " ft away",
-                date: new Date(new Date().getTime() + 1e4)
-            });
+            {
+                Ti.App.iOS.scheduleLocalNotification({
+                    alertBody: new Date() + " : tollplaza " + tollplaza + " was detected less than " + closestdist[0].dist + " ft away",
+                    date: new Date(new Date().getTime() + 1e4)
+                });
+            }
             var mmsg = new Date() + " : tollplaza " + tollplaza + " was detected less than " + closestdist[0].dist + " ft away";
             1 == maildebug && appendFile(mmsg, debugfile);
         } else if (1 == maildebug) {
@@ -239,10 +247,12 @@ var bgLocFound = function() {
             var trueHeading = "No compass available";
             Titanium.App.Properties.setString("currentHeading", trueHeading);
         }
-    } else Ti.App.iOS.scheduleLocalNotification({
-        alertBody: "Please enable location services :" + new Date() + ".",
-        date: new Date(new Date().getTime() + 3e3)
-    });
+    } else {
+        Ti.App.iOS.scheduleLocalNotification({
+            alertBody: "Please enable location services :" + new Date() + ".",
+            date: new Date(new Date().getTime() + 3e3)
+        });
+    }
 };
 
 bgLocFound(loc);

@@ -18,6 +18,10 @@ var thefile5 = loc + "1.txt";
 
 var file5 = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, thefile5);
 
+var urlsourcefile = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, "urlsource.txt");
+
+var alturlsourcefile = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, "alturlsource.txt");
+
 Alloy.Globals.writeFile = function(content, filename) {
     var file = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, filename);
     file.write(content + "\n");
@@ -71,6 +75,8 @@ Alloy.Globals.getLocation = function() {
     xhr.send();
     return theplaza;
 };
+
+Alloy.Collections.tollsources = Alloy.createCollection("tollsource");
 
 Alloy.Globals.checkLoc = function() {
     if (Ti.Geolocation.locationServicesEnabled) {
@@ -127,7 +133,9 @@ Alloy.Globals.updateTollPlazaTable = function(tollplaza, latitude, longitude, al
 };
 
 Alloy.Globals.updateTollPlazaAlternate = function(loc) {
-    alert("downloading data using a backup site instead");
+    var mmsg = new Date() + ": error downloading data using a backup site instead";
+    Alloy.Globals.appendFile(mmsg, debugfile);
+    console.log(mmsg);
     Alloy.Collections.tollplaza.deleteAll();
     var url1 = "https://spreadsheets.google.com/feeds/list/1Omzwq1RKWeptvtV4H0ryLi3IP2fFdPFNqBPq2_nuuCc/od6/public/basic?hl=en_US&alt=json";
     var xhr1 = Ti.Network.createHTTPClient({
@@ -136,7 +144,7 @@ Alloy.Globals.updateTollPlazaAlternate = function(loc) {
                 Alloy.Collections.tollplaza.deleteLOC(loc);
                 json = JSON.parse(this.responseText);
                 var out = '{ "poi" : [\n';
-                for (var i = 0; json.feed.entry.length > i; i++) {
+                for (var i = 0; i < json.feed.entry.length; i++) {
                     var tollplaza = json.feed.entry[i].title.$t.trim();
                     var latitude = json.feed.entry[i].content.$t.split(",")[0].split(":")[1].trim();
                     var longitude = json.feed.entry[i].content.$t.split(",")[1].split(":")[1].trim();
@@ -150,7 +158,7 @@ Alloy.Globals.updateTollPlazaAlternate = function(loc) {
                     var location = json.feed.entry[i].content.$t.split(",")[9].split(":")[1].trim() || "unknown";
                     var note = i;
                     Alloy.Globals.updateTollPlazaTable(tollplaza, latitude, longitude, altitude, heading, speed, hwy, cost, type, source, location, note);
-                    out += i == json.feed.entry.length - 1 ? '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" , "type" : "' + type + '" }]}' + "\n" : '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" , "type" : "' + type + '" },' + "\n";
+                    out += i == json.feed.entry.length - 1 ? '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" , "type" : "' + type + '" }]}\n' : '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" , "type" : "' + type + '" },\n';
                 }
                 file5.write(out);
                 file4.write(out);
@@ -159,6 +167,7 @@ Alloy.Globals.updateTollPlazaAlternate = function(loc) {
                 Ti.API.info("cathing e: " + ee);
                 var mmsg = new Date() + ": load file error cathing ee: " + JSON.stringify(ee);
                 1 == Titanium.App.Properties.getInt("maildebug") && Alloy.Globals.appendFile(mmsg, debugfile);
+                console.log(mmsg);
             }
         }
     });
@@ -173,7 +182,7 @@ Alloy.Globals.updateTollPlaza = function(loc) {
             try {
                 Alloy.Collections.tollplaza.deleteLOC(loc);
                 json = JSON.parse(this.responseText);
-                for (var i = 0; +json.poi.length > i; i++) {
+                for (var i = 0; i < +json.poi.length; i++) {
                     var tollplaza = json.poi[i].plaza;
                     var latitude = json.poi[i].latitude;
                     var longitude = json.poi[i].longitude;
@@ -190,13 +199,17 @@ Alloy.Globals.updateTollPlaza = function(loc) {
                 }
             } catch (e) {
                 Ti.API.info("cathing e: " + e);
-                alert("error downloading data from primary site, " + url + " , data is not in the right format");
+                var mmsg = new Date() + ": error downloading data from primary site, " + url + " , data is not in the right format";
+                Alloy.Globals.appendFile(mmsg, debugfile);
+                console.log(mmsg);
                 Alloy.Globals.updateTollPlazaAlternate(loc);
             }
         }
     });
     xhr.onerror = function(e) {
-        alert("error downloading data from primary site, " + url + " , downloading data using a backup site instead");
+        var mmsg = new Date() + ": error downloading data from primary site, " + url + " , downloading data using a backup site instead";
+        Alloy.Globals.appendFile(mmsg, debugfile);
+        console.log(mmsg);
         Alloy.Collections.tollplaza.deleteAll();
         var url1 = "https://spreadsheets.google.com/feeds/list/1Omzwq1RKWeptvtV4H0ryLi3IP2fFdPFNqBPq2_nuuCc/od6/public/basic?hl=en_US&alt=json";
         var xhr1 = Ti.Network.createHTTPClient({
@@ -205,7 +218,7 @@ Alloy.Globals.updateTollPlaza = function(loc) {
                     Alloy.Collections.tollplaza.deleteLOC(loc);
                     json = JSON.parse(this.responseText);
                     var out = '{ "poi" : [\n';
-                    for (var i = 0; json.feed.entry.length > i; i++) {
+                    for (var i = 0; i < json.feed.entry.length; i++) {
                         var tollplaza = json.feed.entry[i].title.$t.trim();
                         var latitude = json.feed.entry[i].content.$t.split(",")[0].split(":")[1].trim();
                         var longitude = json.feed.entry[i].content.$t.split(",")[1].split(":")[1].trim();
@@ -219,7 +232,7 @@ Alloy.Globals.updateTollPlaza = function(loc) {
                         var location = json.feed.entry[i].content.$t.split(",")[9].split(":")[1].trim() || "unknown";
                         var note = i;
                         Alloy.Globals.updateTollPlazaTable(tollplaza, latitude, longitude, altitude, heading, speed, hwy, cost, type, source, location, note);
-                        out += i == json.feed.entry.length - 1 ? '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" }]}' + "\n" : '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" },' + "\n";
+                        out += i == json.feed.entry.length - 1 ? '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" , "type" : "' + type + '" }]}\n' : '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" , "type" : "' + type + '" },\n';
                     }
                     file5.write(out);
                     file4.write(out);
@@ -231,6 +244,7 @@ Alloy.Globals.updateTollPlaza = function(loc) {
         });
         var mmsg = new Date() + ": load file error cathing e: " + JSON.stringify(e);
         1 == Titanium.App.Properties.getInt("maildebug") && Alloy.Globals.appendFile(mmsg, debugfile);
+        console.log(mmsg);
         xhr1.open("GET", url1);
         xhr1.send();
     };
@@ -248,7 +262,7 @@ Alloy.Globals.calcDistance = function(tollplaza, lat1, lon1, lat2, lon2, unit) {
     var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
     dist = Math.acos(dist);
     dist = 180 * dist / Math.PI;
-    dist = 1.1515 * 60 * dist;
+    dist = 60 * dist * 1.1515;
     "K" == unit && (dist = 1.609344 * dist);
     "N" == unit && (dist = .8684 * dist);
     "F" == unit && (dist = 5280 * dist);
@@ -314,13 +328,25 @@ Alloy.Globals.distanceDetectTollPlaza = function(loc) {
                 var closestdist = distmatch.sort(function(a, b) {
                     return a.dist - b.dist;
                 });
-                closestdist[0].tolltollplaza;
+                {
+                    closestdist[0].tolltollplaza;
+                }
                 var closesttollbydist0 = closestdist[0].tolltollplaza;
-                closestdist[0].dist;
-                closestdist[1].tolltollplaza;
-                closestdist[1].dist;
-                closestdist[2].tolltollplaza;
-                closestdist[2].dist;
+                {
+                    closestdist[0].dist;
+                }
+                {
+                    closestdist[1].tolltollplaza;
+                }
+                {
+                    closestdist[1].dist;
+                }
+                {
+                    closestdist[2].tolltollplaza;
+                }
+                {
+                    closestdist[2].dist;
+                }
                 var outputclosesttollbydist0 = closestdist[0].tolltollplaza + " distance : " + closestdist[0].dist;
                 Titanium.App.Properties.setString("outputclosesttollbydist0", outputclosesttollbydist0);
                 var range = detectionRange;
@@ -329,7 +355,7 @@ Alloy.Globals.distanceDetectTollPlaza = function(loc) {
                 var timelastupd = parseFloat(timelastupd);
                 var timediff = time1 - timelastupd;
                 var timerange = 1e4;
-                if (range > closestdist[0].dist && timediff > timerange && closesttollbydist0 != tolllastupd) {
+                if (closestdist[0].dist < range && timediff > timerange && closesttollbydist0 != tolllastupd) {
                     var tollplaza = closestdist[0].tolltollplaza;
                     var longitude = closestdist[0].longitude;
                     var latitude = closestdist[0].latitude;
@@ -385,8 +411,7 @@ Alloy.Globals.eventDetectTollPlaza = function(loc, action) {
         var preParseData = contents.text;
         var json = json || JSON.parse(preParseData);
     }
-    var mmsg = "json data : " + JSON.stringify(json);
-    1 == Titanium.App.Properties.getInt("maildebug") && Alloy.Globals.appendFile(mmsg, debugfile);
+    "json data : " + JSON.stringify(json);
     lat1 = time1 = timelastdebug = 0;
     var locationCallback = function(e) {
         if (e.length) {
@@ -418,10 +443,16 @@ Alloy.Globals.eventDetectTollPlaza = function(loc, action) {
             var thearray = 5280 > thedistanceNearbyFilter ? closestdistarray : json.poi;
             1 == mindebug && console.log("The First Toll distance is at  " + thedistanceNearbyFilter);
             Titanium.App.Properties.setInt("count", count);
-            if (thearray.length) for (i = 0; thearray.length > i; i++) {
+            if (thearray.length) for (i = 0; i < thearray.length; i++) {
                 var tolltollplaza = thearray[i].plaza || thearray[i].tolltollplaza;
                 var lat2 = thearray[i].latitude;
                 var lon2 = thearray[i].longitude;
+                var alt2 = thearray[i].altitude;
+                var head2 = thearray[i].heading;
+                var hwy = thearray[i].hwy;
+                var cost = thearray[i].cost;
+                var type = thearray[i].type;
+                var note = thearray[i].note;
                 var mmsg = new Date() + "," + tolltollplaza + "," + lat2 + "," + lon2;
                 1 == mindebug && console.log(mmsg);
                 var dist = Alloy.Globals.calcDistance(tolltollplaza, lat1, lon1, lat2, lon2, "F");
@@ -430,6 +461,8 @@ Alloy.Globals.eventDetectTollPlaza = function(loc, action) {
                     dist: dist,
                     latitude: lat2,
                     longitude: lon2,
+                    altitude: alt2,
+                    heading: head2,
                     hwy: hwy,
                     cost: cost,
                     type: type,
@@ -440,13 +473,25 @@ Alloy.Globals.eventDetectTollPlaza = function(loc, action) {
             var closestdist = distmatch.sort(function(a, b) {
                 return a.dist - b.dist;
             });
-            closestdist[0].tolltollplaza;
+            {
+                closestdist[0].tolltollplaza;
+            }
             var closesttollbydist0 = closestdist[0].tolltollplaza;
-            closestdist[0].dist;
-            closestdist[1].tolltollplaza;
-            closestdist[1].dist;
-            closestdist[2].tolltollplaza;
-            closestdist[2].dist;
+            {
+                closestdist[0].dist;
+            }
+            {
+                closestdist[1].tolltollplaza;
+            }
+            {
+                closestdist[1].dist;
+            }
+            {
+                closestdist[2].tolltollplaza;
+            }
+            {
+                closestdist[2].dist;
+            }
             var outputclosesttollbydist0 = closestdist[0].tolltollplaza + " distance : " + closestdist[0].dist;
             Titanium.App.Properties.setString("outputclosesttollbydist0", outputclosesttollbydist0);
             var range = detectionRange;
@@ -455,10 +500,16 @@ Alloy.Globals.eventDetectTollPlaza = function(loc, action) {
             var timelastupd = parseFloat(timelastupd);
             var timediff = time1 - timelastupd;
             var timerange = 1e4;
-            if (range > closestdist[0].dist && timediff > timerange && closesttollbydist0 != tolllastupd) {
+            if (closestdist[0].dist < range && timediff > timerange && closesttollbydist0 != tolllastupd) {
                 var tollplaza = closestdist[0].tolltollplaza;
                 var longitude = closestdist[0].longitude;
                 var latitude = closestdist[0].latitude;
+                {
+                    closestdist[0].altitude;
+                }
+                {
+                    closestdist[0].heading;
+                }
                 var timestamp = time1;
                 var cost = closestdist[0].cost;
                 var type = closestdist[0].type;
@@ -467,10 +518,12 @@ Alloy.Globals.eventDetectTollPlaza = function(loc, action) {
                 Alloy.Globals.updateFound(tollplaza, longitude, latitude, timestamp, cost, type, hwy);
                 Titanium.App.Properties.setString("timelastupd", timestamp);
                 Titanium.App.Properties.setString("tolllastupd", tollplaza);
-                Ti.App.iOS.scheduleLocalNotification({
-                    alertBody: new Date() + " : tollplaza " + tollplaza + " was detected less than " + closestdist[0].dist + " ft away",
-                    date: new Date(new Date().getTime() + 1e3)
-                });
+                {
+                    Ti.App.iOS.scheduleLocalNotification({
+                        alertBody: new Date() + " : tollplaza " + tollplaza + " was detected less than " + closestdist[0].dist + " ft away",
+                        date: new Date(new Date().getTime() + 1e3)
+                    });
+                }
                 var mmsg = new Date() + " : tollplaza " + tollplaza + " was detected less than " + closestdist[0].dist + " ft away";
                 1 == Titanium.App.Properties.getInt("maildebug") && Alloy.Globals.appendFile(mmsg, debugfile);
             } else if (1 == Titanium.App.Properties.getInt("maildebug")) {
@@ -562,5 +615,101 @@ Alloy.Globals.createAnnotations = function() {
     }
     return annotationData;
 };
+
+Alloy.Globals.updatetollsourceTable = function(state, country, city, tollprovider, data1, data2, data3, data4) {
+    var tollsourceModel = Alloy.createModel("tollsource", {
+        state: state,
+        country: country,
+        city: city,
+        tollprovider: tollprovider,
+        data1: data1,
+        data2: data2,
+        data3: data3,
+        data4: data4
+    });
+    tollsourceModel.save();
+};
+
+Alloy.Globals.updatetollsourceAlternate = function() {
+    var mmsg = new Date() + ": error downloading data using a backup site instead";
+    Alloy.Globals.appendFile(mmsg, debugfile);
+    console.log(mmsg);
+    Alloy.Collections.tollsource.deleteAll();
+    var alturlsource = "https://spreadsheets.google.com/feeds/list/1RfpiZtO0iFMVJljVMKvhuGzfn0-BR4OADSddoONF948/od6/public/basic?hl=en_US&alt=json";
+    var altxhrsource = Ti.Network.createHTTPClient({
+        onload: function(ee) {
+            try {
+                Alloy.Collections.tollsource.deleteCountry(country);
+                json = JSON.parse(this.responseText);
+                console.log("JSON after tollsource load : " + JSON.stringify(json));
+                var out = '{ "poi" : [\n';
+                for (var i = 0; i < json.feed.entry.length; i++) {
+                    var state = json.feed.entry[i].title.$t.trim();
+                    var country = json.feed.entry[i].content.$t.split(",")[0].split(":")[1].trim();
+                    var city = json.feed.entry[i].content.$t.split(",")[1].split(":")[1].trim();
+                    var tollprovider = json.feed.entry[i].content.$t.split(",")[2].split(":")[1].trim() || "none";
+                    var data1 = json.feed.entry[i].content.$t.split(",")[3].split(":")[1].trim() || "none";
+                    var data2 = json.feed.entry[i].content.$t.split(",")[4].split(":")[1].trim() || "none";
+                    var data3 = json.feed.entry[i].content.$t.split(",")[5].split(":")[1].trim() || "none";
+                    var data4 = json.feed.entry[i].content.$t.split(",")[6].split(":")[1].trim() || "none";
+                    Alloy.Globals.updatetollsourceTable(state, country, city, tollprovider, data1, data2, data3, data4);
+                    out += i == json.feed.entry.length - 1 ? '{ "state" : "' + state + '" , "country" : "' + country + '" , "city" : "' + city + '" , "tollprovider" : "' + tollprovider + '"  , "data1" : "' + data1 + '" , "data2" : "' + data2 + '" , "data3" : "' + data3 + '" }]}\n' : '{ "state" : "' + state + '" , "country" : "' + country + '" , "city" : "' + city + '" , "tollprovider" : "' + tollprovider + '"  , "data1" : "' + data1 + '" , "data2" : "' + data2 + '" , "data3" : "' + data3 + '" },\n';
+                }
+                alturlsourcefile.write(out);
+                urlsourcefile.write(out);
+                var json = out;
+            } catch (ee) {
+                Ti.API.info("cathing e: " + ee);
+                var mmsg = new Date() + ": load file error cathing ee: " + JSON.stringify(ee);
+                1 == Titanium.App.Properties.getInt("maildebug") && Alloy.Globals.appendFile(mmsg, debugfile);
+                console.log(mmsg);
+            }
+        }
+    });
+    altxhrsource.open("GET", alturlsource);
+    altxhrsource.send();
+};
+
+Alloy.Globals.updatetollsource = function() {
+    var url = "http://23.21.53.150:10000/tollsource.json";
+    var xhr = Ti.Network.createHTTPClient({
+        onload: function(e) {
+            try {
+                Alloy.Collections.tollsource.deleteCountry(country);
+                json = JSON.parse(this.responseText);
+                for (var i = 0; i < +json.poi.length; i++) {
+                    var state = json.poi[i].state;
+                    var country = json.poi[i].country;
+                    var city = json.poi[i].city;
+                    var tollprovider = json.poi[i].tollprovider || "none";
+                    var data1 = json.poi[i].data1 || "none";
+                    var data2 = json.poi[i].data2 || "none";
+                    var data3 = json.poi[i].data3 || "none";
+                    var data4 = json.poi[i].data4 || "none";
+                    Alloy.Globals.updatetollsourceTable(state, country, city, tollprovider, data1, data2, data3, data4);
+                }
+            } catch (e) {
+                Ti.API.info("cathing e: " + e);
+                var mmsg = new Date() + ": error downloading data from primary site, " + url + " , data is not in the right format";
+                Alloy.Globals.appendFile(mmsg, debugfile);
+                console.log(mmsg);
+                Alloy.Globals.updatetollsourceAlternate();
+            }
+        }
+    });
+    xhr.onerror = function(e) {
+        var mmsg = new Date() + ": error downloading data from primary site, " + url + " , downloading data using a backup site instead";
+        Alloy.Globals.appendFile(mmsg, debugfile);
+        console.log(mmsg);
+        Alloy.Globals.updatetollsourceAlternate();
+        var mmsg = new Date() + ": load file error cathing e: " + JSON.stringify(e);
+        1 == Titanium.App.Properties.getInt("maildebug") && Alloy.Globals.appendFile(mmsg, debugfile);
+        console.log(mmsg);
+    };
+    xhr.open("GET", url);
+    xhr.send();
+};
+
+Alloy.Globals.updatetollsource();
 
 Alloy.createController("index");

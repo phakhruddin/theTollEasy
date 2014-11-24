@@ -286,9 +286,9 @@ Alloy.Globals.updateTollPlaza = function(loc) {
 						var note = i;
 						Alloy.Globals.updateTollPlazaTable(tollplaza,latitude,longitude,altitude,heading,speed,hwy,cost,type,source,location,note);	
 						if ( i == (json.feed.entry.length - 1)) {
-							out += '{ "plaza" : "'+tollplaza+'" , "latitude" : "'+latitude+'" , "longitude" : "'+longitude+'"  , "altitude" : "'+altitude+'" , "heading" : "'+heading+'" , "speed" : "'+speed+'" , "hwy" : "'+hwy+'" , "cost" : "'+cost+'" }]}'+"\n";
+							out += '{ "plaza" : "'+tollplaza+'" , "latitude" : "'+latitude+'" , "longitude" : "'+longitude+'"  , "altitude" : "'+altitude+'" , "heading" : "'+heading+'" , "speed" : "'+speed+'" , "hwy" : "'+hwy+'" , "cost" : "'+cost+'" , "type" : "'+type+'" }]}'+"\n";
 						} else {
-							out += '{ "plaza" : "'+tollplaza+'" , "latitude" : "'+latitude+'" , "longitude" : "'+longitude+'"  , "altitude" : "'+altitude+'" , "heading" : "'+heading+'" , "speed" : "'+speed+'" , "hwy" : "'+hwy+'" , "cost" : "'+cost+'" },'+"\n";
+							out += '{ "plaza" : "'+tollplaza+'" , "latitude" : "'+latitude+'" , "longitude" : "'+longitude+'"  , "altitude" : "'+altitude+'" , "heading" : "'+heading+'" , "speed" : "'+speed+'" , "hwy" : "'+hwy+'" , "cost" : "'+cost+'" , "type" : "'+type+'" },'+"\n";
 						}
 			    	}
 					file5.write(out);
@@ -618,6 +618,12 @@ var lon1 = lat1 = time1 = timelastdebug = 0;
 		   		var tolltollplaza = thearray[i].plaza || thearray[i].tolltollplaza;
 		   		var lat2 = thearray[i].latitude;
 		   		var lon2 = thearray[i].longitude;
+	   			var alt2 = thearray[i].altitude;
+		   		var head2 = thearray[i].heading;
+		   		var hwy = thearray[i].hwy;
+		   		var cost = thearray[i].cost;
+		   		var type = thearray[i].type;
+		   		var note = thearray[i].note;	
 		   		var mmsg = new Date()+','+tolltollplaza+','+lat2+','+lon2;
 		   		mindebug == 1 && console.log(mmsg);
 		   		var dist = Alloy.Globals.calcDistance(tolltollplaza,lat1,lon1,lat2,lon2,"F");
@@ -627,6 +633,8 @@ var lon1 = lat1 = time1 = timelastdebug = 0;
 		        		dist:dist,
 		        		latitude:lat2,
 		        		longitude:lon2,
+		        		altitude:alt2,
+		        		heading:head2,
 		        		hwy:hwy,
 		        		cost:cost,
 		        		type:type,
@@ -666,6 +674,8 @@ var lon1 = lat1 = time1 = timelastdebug = 0;
 			var tollplaza = closestdist[0].tolltollplaza;			
 			var longitude = closestdist[0].longitude;
 			var latitude = closestdist[0].latitude;
+			var altitude = closestdist[0].altitude;
+			var heading = closestdist[0].heading;
 			var timestamp = time1;
 			var cost = closestdist[0].cost;
 			var type = closestdist[0].type;

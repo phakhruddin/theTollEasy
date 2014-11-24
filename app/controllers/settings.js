@@ -49,9 +49,9 @@ $.switch_debug.addEventListener("change", function(e){
 	var switchdebugValue = $.switch_debug.value;
 	Ti.API.info("debugging is :" +switchdebugValue);
 	if ( switchdebugValue == true ) {
-		Titanium.App.Properties.setInt('maildebug', "1");
+		Titanium.App.Properties.setInt('maildebug', "1") ; someDummy.set('debugvalue',true);
 	} else {
-		Titanium.App.Properties.setInt('maildebug', "0");
+		Titanium.App.Properties.setInt('maildebug', "0") ; someDummy.set('debugvalue',false);
 	};
 });
 

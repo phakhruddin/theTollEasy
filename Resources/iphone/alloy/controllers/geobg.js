@@ -1,9 +1,26 @@
+function __processArg(obj, key) {
+    var arg = null;
+    if (obj) {
+        arg = obj[key] || null;
+        delete obj[key];
+    }
+    return arg;
+}
+
 function Controller() {
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "geobg";
-    arguments[0] ? arguments[0]["__parentSymbol"] : null;
-    arguments[0] ? arguments[0]["$model"] : null;
-    arguments[0] ? arguments[0]["__itemTemplate"] : null;
+    if (arguments[0]) {
+        {
+            __processArg(arguments[0], "__parentSymbol");
+        }
+        {
+            __processArg(arguments[0], "$model");
+        }
+        {
+            __processArg(arguments[0], "__itemTemplate");
+        }
+    }
     var $ = this;
     var exports = {};
     $.__views.win_geobg = Ti.UI.createWindow({
@@ -12,21 +29,21 @@ function Controller() {
         title: "TollEasy PRO",
         classes: [ "container" ]
     });
-    var __alloyId40 = [];
-    $.__views.__alloyId41 = Ti.UI.createTableViewSection({
+    var __alloyId43 = [];
+    $.__views.__alloyId44 = Ti.UI.createTableViewSection({
         apiName: "Ti.UI.TableViewSection",
         headerTitle: "TollEasy PRO",
-        id: "__alloyId41",
+        id: "__alloyId44",
         classes: []
     });
-    __alloyId40.push($.__views.__alloyId41);
+    __alloyId43.push($.__views.__alloyId44);
     $.__views.row_mypoi = Ti.UI.createTableViewRow({
         apiName: "Ti.UI.TableViewRow",
         id: "row_mypoi",
         Title: "My POI",
         classes: []
     });
-    $.__views.__alloyId41.add($.__views.row_mypoi);
+    $.__views.__alloyId44.add($.__views.row_mypoi);
     $.__views.mypoi = Ti.UI.createLabel({
         text: "My Point of Interest >",
         apiName: "Ti.UI.Label",
@@ -38,13 +55,13 @@ function Controller() {
         classes: []
     });
     $.__views.row_mypoi.add($.__views.mypoi);
-    $.__views.__alloyId42 = Alloy.createController("myPOI", {
+    $.__views.__alloyId45 = Alloy.createController("myPOI", {
         apiName: "Alloy.Require",
-        id: "__alloyId42",
+        id: "__alloyId45",
         classes: [],
         __parentSymbol: $.__views.row_mypoi
     });
-    $.__views.__alloyId42.setParent($.__views.row_mypoi);
+    $.__views.__alloyId45.setParent($.__views.row_mypoi);
     $.__views.row_poi = Ti.UI.createTableViewRow({
         apiName: "Ti.UI.TableViewRow",
         id: "row_poi",
@@ -52,7 +69,7 @@ function Controller() {
         leftimage: "dark_locate.png",
         classes: []
     });
-    $.__views.__alloyId41.add($.__views.row_poi);
+    $.__views.__alloyId44.add($.__views.row_poi);
     $.__views.poi = Ti.UI.createLabel({
         text: "Point of Interest >",
         apiName: "Ti.UI.Label",
@@ -71,7 +88,7 @@ function Controller() {
         Title: "location",
         classes: []
     });
-    $.__views.__alloyId41.add($.__views.row_rest);
+    $.__views.__alloyId44.add($.__views.row_rest);
     $.__views.rest = Ti.UI.createLabel({
         text: "Rest Area >",
         apiName: "Ti.UI.Label",
@@ -89,7 +106,7 @@ function Controller() {
         Title: "location",
         classes: []
     });
-    $.__views.__alloyId41.add($.__views.row_gas);
+    $.__views.__alloyId44.add($.__views.row_gas);
     $.__views.gas = Ti.UI.createLabel({
         text: "Gas Station >",
         apiName: "Ti.UI.Label",
@@ -107,7 +124,7 @@ function Controller() {
         Title: "location",
         classes: []
     });
-    $.__views.__alloyId41.add($.__views.row_emergency);
+    $.__views.__alloyId44.add($.__views.row_emergency);
     $.__views.emergency = Ti.UI.createLabel({
         text: "Emergency Numbers >",
         apiName: "Ti.UI.Label",
@@ -125,7 +142,7 @@ function Controller() {
         Title: "location",
         classes: []
     });
-    $.__views.__alloyId41.add($.__views.row_food);
+    $.__views.__alloyId44.add($.__views.row_food);
     $.__views.food = Ti.UI.createLabel({
         text: "Food & Drinks >",
         apiName: "Ti.UI.Label",
@@ -143,7 +160,7 @@ function Controller() {
         Title: "location",
         classes: []
     });
-    $.__views.__alloyId41.add($.__views.row_plaza);
+    $.__views.__alloyId44.add($.__views.row_plaza);
     $.__views.plaza = Ti.UI.createLabel({
         text: "Toll Plaza View (Sample) >",
         apiName: "Ti.UI.Label",
@@ -159,14 +176,14 @@ function Controller() {
         id: "row_empty",
         classes: []
     });
-    $.__views.__alloyId41.add($.__views.row_empty);
-    $.__views.__alloyId39 = Ti.UI.createTableView({
-        data: __alloyId40,
+    $.__views.__alloyId44.add($.__views.row_empty);
+    $.__views.__alloyId42 = Ti.UI.createTableView({
+        data: __alloyId43,
         apiName: "Ti.UI.TableView",
-        id: "__alloyId39",
+        id: "__alloyId42",
         classes: []
     });
-    $.__views.win_geobg.add($.__views.__alloyId39);
+    $.__views.win_geobg.add($.__views.__alloyId42);
     $.__views.tab_geobg = Ti.UI.createTab({
         window: $.__views.win_geobg,
         apiName: "Ti.UI.Tab",

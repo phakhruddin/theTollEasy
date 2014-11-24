@@ -1,3 +1,12 @@
+function __processArg(obj, key) {
+    var arg = null;
+    if (obj) {
+        arg = obj[key] || null;
+        delete obj[key];
+    }
+    return arg;
+}
+
 function Controller() {
     function display() {
         someDummy.set("distanceFilter", "Distance Filter : " + Titanium.App.Properties.getInt("distanceFilter", 0));
@@ -22,19 +31,27 @@ function Controller() {
         var lines = csv.split("\n");
         var result = [];
         var headers = lines[0].split(",");
-        for (var i = 1; lines.length > i; i++) {
+        for (var i = 1; i < lines.length; i++) {
             var obj = {};
             var currentline = lines[i].split(",");
-            for (var j = 0; headers.length > j; j++) obj[headers[j]] = currentline[j];
+            for (var j = 0; j < headers.length; j++) obj[headers[j]] = currentline[j];
             result.push(obj);
         }
         return JSON.stringify(result);
     }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "settings";
-    arguments[0] ? arguments[0]["__parentSymbol"] : null;
-    arguments[0] ? arguments[0]["$model"] : null;
-    arguments[0] ? arguments[0]["__itemTemplate"] : null;
+    if (arguments[0]) {
+        {
+            __processArg(arguments[0], "__parentSymbol");
+        }
+        {
+            __processArg(arguments[0], "$model");
+        }
+        {
+            __processArg(arguments[0], "__itemTemplate");
+        }
+    }
     var $ = this;
     var exports = {};
     Alloy.Collections.instance("plazano");
@@ -47,21 +64,21 @@ function Controller() {
         title: "Settings",
         classes: [ "container" ]
     });
-    var __alloyId56 = [];
-    $.__views.__alloyId57 = Ti.UI.createTableViewSection({
+    var __alloyId61 = [];
+    $.__views.__alloyId62 = Ti.UI.createTableViewSection({
         apiName: "Ti.UI.TableViewSection",
         headerTitle: "Loc Capture Options",
-        id: "__alloyId57",
+        id: "__alloyId62",
         classes: []
     });
-    __alloyId56.push($.__views.__alloyId57);
+    __alloyId61.push($.__views.__alloyId62);
     $.__views.row_contupdfg = Ti.UI.createTableViewRow({
         apiName: "Ti.UI.TableViewRow",
         id: "row_contupdfg",
         Title: "Continous FG Update",
         classes: []
     });
-    $.__views.__alloyId57.add($.__views.row_contupdfg);
+    $.__views.__alloyId62.add($.__views.row_contupdfg);
     $.__views.label_contupdfg = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -102,20 +119,20 @@ function Controller() {
         classes: []
     });
     $.__views.row_contupdfg.add($.__views.switch_contupdfg);
-    $.__views.__alloyId58 = Ti.UI.createTableViewSection({
+    $.__views.__alloyId63 = Ti.UI.createTableViewSection({
         apiName: "Ti.UI.TableViewSection",
         headerTitle: "Data (Optional)",
-        id: "__alloyId58",
+        id: "__alloyId63",
         classes: []
     });
-    __alloyId56.push($.__views.__alloyId58);
+    __alloyId61.push($.__views.__alloyId63);
     $.__views.row_loaddata = Ti.UI.createTableViewRow({
         apiName: "Ti.UI.TableViewRow",
         id: "row_loaddata",
         Title: "Load Data",
         classes: []
     });
-    $.__views.__alloyId58.add($.__views.row_loaddata);
+    $.__views.__alloyId63.add($.__views.row_loaddata);
     $.__views.label_loaddata = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -134,7 +151,7 @@ function Controller() {
         Title: "Load Data",
         classes: []
     });
-    $.__views.__alloyId58.add($.__views.row_loaddataoutput);
+    $.__views.__alloyId63.add($.__views.row_loaddataoutput);
     $.__views.label_loaddataoutput = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -147,20 +164,20 @@ function Controller() {
         classes: []
     });
     $.__views.row_loaddataoutput.add($.__views.label_loaddataoutput);
-    $.__views.__alloyId59 = Ti.UI.createTableViewSection({
+    $.__views.__alloyId64 = Ti.UI.createTableViewSection({
         apiName: "Ti.UI.TableViewSection",
         headerTitle: "Utilities",
-        id: "__alloyId59",
+        id: "__alloyId64",
         classes: []
     });
-    __alloyId56.push($.__views.__alloyId59);
+    __alloyId61.push($.__views.__alloyId64);
     $.__views.row_debug = Ti.UI.createTableViewRow({
         apiName: "Ti.UI.TableViewRow",
         id: "row_debug",
         Title: "Debug",
         classes: []
     });
-    $.__views.__alloyId59.add($.__views.row_debug);
+    $.__views.__alloyId64.add($.__views.row_debug);
     $.__views.label_debug = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -174,7 +191,6 @@ function Controller() {
     });
     $.__views.row_debug.add($.__views.label_debug);
     $.__views.switch_debug = Ti.UI.createSwitch({
-        value: false,
         apiName: "Ti.UI.Switch",
         id: "switch_debug",
         right: "20",
@@ -189,7 +205,7 @@ function Controller() {
         Title: "Debug",
         classes: []
     });
-    $.__views.__alloyId59.add($.__views.row_mindebug);
+    $.__views.__alloyId64.add($.__views.row_mindebug);
     $.__views.label_mindebug = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -218,7 +234,7 @@ function Controller() {
         Title: "Email Debug",
         classes: []
     });
-    $.__views.__alloyId59.add($.__views.row_emaildebug);
+    $.__views.__alloyId64.add($.__views.row_emaildebug);
     $.__views.label_emaildebug = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -236,7 +252,7 @@ function Controller() {
         Title: "CapLocData",
         classes: []
     });
-    $.__views.__alloyId59.add($.__views.row_caplocdata);
+    $.__views.__alloyId64.add($.__views.row_caplocdata);
     $.__views.label_caplocdata = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -250,7 +266,7 @@ function Controller() {
     $.__views.row_caplocdata.add($.__views.label_caplocdata);
     $.__views.table_settings = Ti.UI.createTableView({
         backgroundColor: "black",
-        data: __alloyId56,
+        data: __alloyId61,
         apiName: "Ti.UI.TableView",
         id: "table_settings",
         classes: []
@@ -263,7 +279,15 @@ function Controller() {
         classes: []
     });
     $.__views.tab_settings && $.addTopLevelView($.__views.tab_settings);
-    exports.destroy = function() {};
+    var __alloyId65 = function() {
+        $.switch_debug.value = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["debugvalue"] : _.template("<%=dummy.debugvalue%>", {
+            dummy: Alloy.Models.dummy.toJSON()
+        });
+    };
+    Alloy.Models.dummy.on("fetch change destroy", __alloyId65);
+    exports.destroy = function() {
+        Alloy.Models.dummy.off("fetch change destroy", __alloyId65);
+    };
     _.extend($, $.__views);
     arguments[0] || {};
     var someDummy = Alloy.Models.dummy;
@@ -299,7 +323,13 @@ function Controller() {
     $.switch_debug.addEventListener("change", function() {
         var switchdebugValue = $.switch_debug.value;
         Ti.API.info("debugging is :" + switchdebugValue);
-        true == switchdebugValue ? Titanium.App.Properties.setInt("maildebug", "1") : Titanium.App.Properties.setInt("maildebug", "0");
+        if (true == switchdebugValue) {
+            Titanium.App.Properties.setInt("maildebug", "1");
+            someDummy.set("debugvalue", true);
+        } else {
+            Titanium.App.Properties.setInt("maildebug", "0");
+            someDummy.set("debugvalue", false);
+        }
     });
     $.switch_mindebug.addEventListener("change", function() {
         var switchmindebugValue = $.switch_mindebug.value;
@@ -316,7 +346,7 @@ function Controller() {
             var contents = csvJSON(contentsin.text);
             console.log(contents);
             var contents = JSON.parse(contents);
-            for (var i = 0; +contents.length > i; i++) {
+            for (var i = 0; i < +contents.length; i++) {
                 Update = contents[i].Date ? 1 : 0;
                 console.log("Updating location DB with :" + contents[i].Date + "," + contents[i].LAT + "," + contents[i].LON + "," + contents[i].Timestamp);
                 if (1 == Update) {

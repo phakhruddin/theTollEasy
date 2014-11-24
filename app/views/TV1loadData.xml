@@ -1,80 +1,12 @@
 <Alloy>
-	<Collection src="tollplaza" />
+	<Collection src="tollsource" />
 	<Tab id="tab_loaddata" title="Load TollPlazas Loc">
 	<Window id="loaddatawindow" class="container" title="TollEasy">
-		<TableView id="loaddatatable">
-      		<TableViewRow  id="california" Title="San Diego Test Data">
-      			<Label> California Toll Plazas </Label>
+		<TableView id="loaddatatable" editable="true" moveable="true" dataCollection="tollsource" dataTransform="transformFunction">
+		<SearchBar id="search_loaddatatable" height="24" />
+      		<TableViewRow  id="tollsourcerow" title="{title}">
+      			<Label id="tollsourcelabel" text="{title}"/> 
     		</TableViewRow>
-    		<TableViewRow  id="colorado" Title="San Diego Test Data">
-      			<Label> Colorado Toll Plazas </Label>
-    		</TableViewRow>
-    		<TableViewRow  id="delaware" Title="San Diego Test Data">
-      			<Label> Delaware Toll Plazas </Label>
-    		</TableViewRow>
-    		<TableViewRow  id="florida" Title="San Diego Test Data">
-      			<Label> Florida Toll Plazas </Label>
-    		</TableViewRow>
-			<TableViewRow  id="illinois" Title="Illinois Tollway TollPlazas">
-				<Label> Illinois Tollway Toll Plazas </Label>
-    		</TableViewRow>
-    		<TableViewRow  id="kansas" Title="Illinois Tollway TollPlazas">
-				<Label> Kansas Tollway Toll Plazas </Label>
-    		</TableViewRow>
-    		<TableViewRow  id="Louisiana" Title="Illinois Tollway TollPlazas">
-				<Label> Louisiana Tollway Toll Plazas </Label>
-    		</TableViewRow>
-    		<TableViewRow  id="Maine" Title="Illinois Tollway TollPlazas">
-				<Label> Maine Tollway Toll Plazas </Label>
-    		</TableViewRow>
-    		<TableViewRow  id="maryland" Title="Illinois Tollway TollPlazas">
-				<Label> Maryland  Toll Plazas </Label>
-    		</TableViewRow>
-    		<TableViewRow  id="Massachusetts" Title="Illinois Tollway TollPlazas">
-				<Label> Massachusetts  Toll Plazas </Label>
-    		</TableViewRow>
-    		<TableViewRow  id="Minnesota" Title="Illinois Tollway TollPlazas">
-				<Label> Minnesota  Toll Plazas </Label>
-    		</TableViewRow>
-    		<TableViewRow  id="NewHampshire" Title="Chicago Test Data">
-				<Label> New Hampshire Toll Plazas </Label>
-    		</TableViewRow>
-    		<TableViewRow  id="NewJersey" Title="Illinois Tollway TollPlazas">
-				<Label> New Jersey Toll Plazas </Label>
-    		</TableViewRow>
-    		<TableViewRow  id="newyork" Title="Chicago Test Data">
-				<Label> New York Toll Plazas </Label>
-    		</TableViewRow>
-    		<TableViewRow id="Ohio" Title="Milwaukee Test Data">
-				<Label> Ohio Toll Plazas </Label>
-   			</TableViewRow>	
-   			<TableViewRow id="Oklahoma" Title="Milwaukee Test Data">
-				<Label> Oklahoma Toll Plazas </Label>
-   			</TableViewRow>	
-   			<TableViewRow id="Pennsylvania" Title="Milwaukee Test Data">
-				<Label> Pennsylvania Toll Plazas </Label>
-   			</TableViewRow>	
-   			<!--TableViewRow id="PuertoRico" Title="Milwaukee Test Data">
-				<Label> Puerto Rico Toll Plazas </Label>
-   			</TableViewRow>
-   			<TableViewRow id="SouthCarolina" Title="Milwaukee Test Data">
-				<Label> South Carolina Toll Plazas </Label>
-   			</TableViewRow>
-   			<TableViewRow id="Texas" Title="Milwaukee Test Data">
-				<Label> Texas Toll Plazas </Label>
-   			</TableViewRow>	
-   			<TableViewRow id="Utah" Title="Milwaukee Test Data">
-				<Label> Utah Toll Plazas </Label>
-   			</TableViewRow>	
-   			<TableViewRow id="Virginia" Title="Milwaukee Test Data">
-				<Label> Virginia Toll Plazas </Label>
-   			</TableViewRow>	
-   			<TableViewRow id="WashingtonDC" Title="Milwaukee Test Data">
-				<Label> Washington D.C. Toll Plazas </Label>
-   			</TableViewRow>	
-   			<TableViewRow id="West Virginia" Title="Milwaukee Test Data">
-				<Label> West Virginia Toll Plazas </Label>
-   			</TableViewRow-->	
     	</TableView>
 	</Window>
 	</Tab>

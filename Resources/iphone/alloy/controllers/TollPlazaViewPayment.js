@@ -1,9 +1,26 @@
+function __processArg(obj, key) {
+    var arg = null;
+    if (obj) {
+        arg = obj[key] || null;
+        delete obj[key];
+    }
+    return arg;
+}
+
 function Controller() {
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "TollPlazaViewPayment";
-    arguments[0] ? arguments[0]["__parentSymbol"] : null;
-    arguments[0] ? arguments[0]["$model"] : null;
-    arguments[0] ? arguments[0]["__itemTemplate"] : null;
+    if (arguments[0]) {
+        {
+            __processArg(arguments[0], "__parentSymbol");
+        }
+        {
+            __processArg(arguments[0], "$model");
+        }
+        {
+            __processArg(arguments[0], "__itemTemplate");
+        }
+    }
     var $ = this;
     var exports = {};
     $.__views.win_payment = Ti.UI.createWindow({
@@ -14,14 +31,14 @@ function Controller() {
         classes: [ "container" ]
     });
     $.__views.win_payment && $.addTopLevelView($.__views.win_payment);
-    var __alloyId30 = [];
+    var __alloyId33 = [];
     $.__views.tittle_toll_plaza = Ti.UI.createTableViewRow({
         apiName: "Ti.UI.TableViewRow",
         id: "tittle_toll_plaza",
         Title: "Toll Plaza View > ",
         classes: []
     });
-    __alloyId30.push($.__views.tittle_toll_plaza);
+    __alloyId33.push($.__views.tittle_toll_plaza);
     $.__views.listoftoll = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -40,7 +57,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId30.push($.__views.tableview_payment);
+    __alloyId33.push($.__views.tableview_payment);
     $.__views.plazahit = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -55,7 +72,7 @@ function Controller() {
     });
     $.__views.tableview_payment.add($.__views.plazahit);
     $.__views.paymenttable = Ti.UI.createTableView({
-        data: __alloyId30,
+        data: __alloyId33,
         apiName: "Ti.UI.TableView",
         id: "paymenttable",
         backgroundColor: "black",

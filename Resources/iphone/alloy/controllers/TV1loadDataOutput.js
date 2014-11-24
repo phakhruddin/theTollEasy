@@ -1,20 +1,29 @@
+function __processArg(obj, key) {
+    var arg = null;
+    if (obj) {
+        arg = obj[key] || null;
+        delete obj[key];
+    }
+    return arg;
+}
+
 function Controller() {
-    function __alloyId29(e) {
+    function __alloyId32(e) {
         if (e && e.fromAdapter) return;
-        __alloyId29.opts || {};
-        var models = __alloyId28.models;
+        __alloyId32.opts || {};
+        var models = __alloyId31.models;
         var len = models.length;
         var rows = [];
         for (var i = 0; len > i; i++) {
-            var __alloyId25 = models[i];
-            __alloyId25.__transform = transformFunction(__alloyId25);
-            var __alloyId26 = Ti.UI.createTableViewRow({
+            var __alloyId28 = models[i];
+            __alloyId28.__transform = transformFunction(__alloyId28);
+            var __alloyId29 = Ti.UI.createTableViewRow({
                 apiName: "Ti.UI.TableViewRow",
-                title: "undefined" != typeof __alloyId25.__transform["title"] ? __alloyId25.__transform["title"] : __alloyId25.get("title"),
+                title: "undefined" != typeof __alloyId28.__transform["title"] ? __alloyId28.__transform["title"] : __alloyId28.get("title"),
                 classes: []
             });
-            rows.push(__alloyId26);
-            var __alloyId27 = Ti.UI.createLabel({
+            rows.push(__alloyId29);
+            var __alloyId30 = Ti.UI.createLabel({
                 textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
                 width: Ti.UI.SIZE,
                 height: Ti.UI.SIZE,
@@ -24,15 +33,16 @@ function Controller() {
                 },
                 apiName: "Ti.UI.Label",
                 color: "#D8D8BF",
-                text: "undefined" != typeof __alloyId25.__transform["tollplaza"] ? __alloyId25.__transform["tollplaza"] : __alloyId25.get("tollplaza"),
+                text: "undefined" != typeof __alloyId28.__transform["tollplaza"] ? __alloyId28.__transform["tollplaza"] : __alloyId28.get("tollplaza"),
                 classes: []
             });
-            __alloyId26.add(__alloyId27);
+            __alloyId29.add(__alloyId30);
         }
         $.__views.table_loaddataoutput.setData(rows);
     }
     function transformFunction(model) {
         var transform = model.toJSON();
+        console.log("transform data : " + JSON.stringify(transform));
         transform.title = transform.tollplaza + "," + transform.latitude + "," + transform.longitude + "," + transform.cost + "," + transform.hwy + "," + transform.note + "," + transform.timestamp;
         transform.timestamp = new Date(transform.timestamp);
         transform.latitude = "LAT : " + transform.latitude;
@@ -41,9 +51,17 @@ function Controller() {
     }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "TV1loadDataOutput";
-    arguments[0] ? arguments[0]["__parentSymbol"] : null;
-    arguments[0] ? arguments[0]["$model"] : null;
-    arguments[0] ? arguments[0]["__itemTemplate"] : null;
+    if (arguments[0]) {
+        {
+            __processArg(arguments[0], "__parentSymbol");
+        }
+        {
+            __processArg(arguments[0], "$model");
+        }
+        {
+            __processArg(arguments[0], "__itemTemplate");
+        }
+    }
     var $ = this;
     var exports = {};
     Alloy.Collections.instance("tollplaza");
@@ -71,8 +89,8 @@ function Controller() {
         classes: []
     });
     $.__views.win_loaddataoutput.add($.__views.table_loaddataoutput);
-    var __alloyId28 = Alloy.Collections["tollplaza"] || tollplaza;
-    __alloyId28.on("fetch destroy change add remove reset", __alloyId29);
+    var __alloyId31 = Alloy.Collections["tollplaza"] || tollplaza;
+    __alloyId31.on("fetch destroy change add remove reset", __alloyId32);
     $.__views.tab_tv1loaddataoutput = Ti.UI.createTab({
         window: $.__views.win_loaddataoutput,
         apiName: "Ti.UI.Tab",
@@ -81,7 +99,7 @@ function Controller() {
     });
     $.__views.tab_tv1loaddataoutput && $.addTopLevelView($.__views.tab_tv1loaddataoutput);
     exports.destroy = function() {
-        __alloyId28.off("fetch destroy change add remove reset", __alloyId29);
+        __alloyId31.off("fetch destroy change add remove reset", __alloyId32);
     };
     _.extend($, $.__views);
     arguments[0] || {};

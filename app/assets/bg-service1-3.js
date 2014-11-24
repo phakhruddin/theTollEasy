@@ -21,6 +21,7 @@ var tollentrytime = [];
 var tollexittime = [];
 var tollcanceltime = [];
 var approachtoll = 1;
+var lastapproachtoll = "none";
 
 
  var initialNotif = Ti.App.iOS.scheduleLocalNotification({
@@ -179,6 +180,21 @@ var updateFound = function(tollplaza,longitude,latitude,timestamp,cost,type,hwy)
 	db.close();
 };
 
+var pushTollExit = function(tollplaza,altitude,heading,type,longitude,latitude,cost,timestamp){
+	if ( tollentry.length > "0") {
+		for ( var i=0;i<tollentry.length;i++ ) {
+			if ( tollplaza == tollentry[i].tollplaza.trim() ){									
+				var mmsg = (new Date())+": add exit with "+tollplaza+": foundentry="+foundentry+":foundexit="+foundexit;
+				tollexit.push({tollplaza:tollplaza,cancel:altitude,other:heading,type:type,longitude:longitude,latitude:latitude,cost:cost,timestamp:timestamp});
+			}	
+		}
+	} else {
+		var mmsg = (new Date())+": NOT add exit with "+tollplaza+": foundentry="+foundentry+":foundexit="+foundexit;
+	}
+	maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
+	maildebug==1 || mindebug ==1 && console.log(mmsg);
+};
+
 var bgLocFound = function(loc){
 
 	var contents = "";
@@ -188,11 +204,14 @@ var bgLocFound = function(loc){
 		var preParseData = (contents.text); 
 		var json = json || JSON.parse(preParseData);
 	}
-	var mmsg = "json data : "+JSON.stringify(json);
+	var mmsg = "json data : "+JSON.stringify(json.poi[0]);
 	maildebug==1 && appendFile(mmsg,debugfile);
 		
 		var locationCallback = function(e)
 		{
+			if(e.error){
+				Ti.API.info("Error is: "+e.error);
+			} else {
 			var distmatch = [];
 			var count = Titanium.App.Properties.getInt('count');count++; // todebug count
 			maildebug == 1 && console.log("count:"+count);
@@ -219,7 +238,7 @@ var bgLocFound = function(loc){
 	        maildebug == 1 && console.log("The First Toll distance is at  "+thedistanceNearbyFilter);
 	        Titanium.App.Properties.setInt('count', count); // todebug count
 	        // reduce down to number of JSON objects
-			   for (i=0;i< thearray.length;i++){
+			for (i=0;i< thearray.length;i++){
 			   		var tolltollplaza = thearray[i].plaza || thearray[i].tolltollplaza;
 			   		var lat2 = thearray[i].latitude;
 			   		var lon2 = thearray[i].longitude;
@@ -230,7 +249,7 @@ var bgLocFound = function(loc){
 			   		var type = thearray[i].type;
 			   		var note = thearray[i].note;		   		
 			   		var dist = calcDistance(tolltollplaza,lat1,lon1,lat2,lon2,"F");
-			   		if (dist < 528000 ) { //* 100 miles radius
+			   		///if (dist < 528000 ) { //* 100 miles radius
 			   			distmatch.push({
 			        		tolltollplaza:tolltollplaza, 
 			        		dist:dist,
@@ -243,10 +262,11 @@ var bgLocFound = function(loc){
 			        		type:type,
 			        		note:note
 			        	});        			
-			   		}    	
+			   		///}    	
 			   }	   		   
 			   // JSON FILE ENDS
 			maildebug == 1 && console.log("JSON distance unsort :" +JSON.stringify(distmatch));
+			
 			
 				var closestdist = distmatch.sort(function(a, b)
 				{
@@ -276,8 +296,16 @@ var bgLocFound = function(loc){
 				var timerange = 100; // timediff from the next found for the same toll. Now. 0.1sec.
 				var calctimerange = 60000;
 				///Check if the vehicle is moving away from tollplaza or moving into. 
-				closestdist0 > distlastupd?approachtoll=0:approachtoll=1;								
+				closestdist0 > distlastupd?approachtoll=0:approachtoll=1;
+				///Check if a U-TURN
+				var lastapproachtoll = Titanium.App.Properties.getString('lastapproachtoll');
+				console.log(closesttollbydist0+" || "+tolllastupd+" || last: " +lastapproachtoll +"/"+approachtoll);
+				if ( closesttollbydist0 == tolllastupd && lastapproachtoll == 0 && approachtoll == 1 ) {
+					var tolllastupd = Titanium.App.Properties.getString('tolllastupd');
+					Titanium.App.Properties.setString('tolllastupd',tolllastupd+"(U-TURN)");
+				} 		
 				Titanium.App.Properties.setString('distlastupd',closestdist0);
+				Titanium.App.Properties.setString('lastapproachtoll',approachtoll);
 				//*console.log("time diff is : time 1 - timelastupd : "+time1+" - "+timelastupd+" = "+timediff);
 				///Change 20140914. When the vehicle is not near range (150ft), then run logics for toll detection.
 				if (closestdist[0].dist < range && timediff > timerange && approachtoll == 1 ) {
@@ -293,7 +321,7 @@ var bgLocFound = function(loc){
 					type == "start"?foundentry=1:foundentry=0;
 					type == "end"?foundexit=1:foundexit=0;
 					var sametoll = "NO";if ( closesttollbydist0 == tolllastupd && timediff < 30000 ) { var sametoll = "YES";}; // makesure they are not detecting the same toll.
-					var mmsg = (new Date())+": "+foundentry+"/"+foundexit+" DF:"+Titanium.Geolocation.getDistanceFilter()+" sametoll:"+sametoll+": "+closesttollbydist0+" / "+tolllastupd;
+					var mmsg = (new Date())+": F:"+foundentry+"/"+foundexit+" DF:"+Titanium.Geolocation.getDistanceFilter()+" sametoll:"+sametoll+": "+closesttollbydist0+"(t:"+type+")"+" / "+tolllastupd;
 					maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);console.log(mmsg);
 					if ( (foundentry == "1" || foundexit == "1") && sametoll== "NO" ) {
 						Titanium.Geolocation.distanceFilter = 5; // increase the detection more frequent approaching POI
@@ -308,7 +336,7 @@ var bgLocFound = function(loc){
 							var mmsg =(new Date())+": add ENTRY with "+tollplaza+": foundentry="+foundentry+":foundexit="+foundexit;
 							tollentry.push({tollplaza:tollplaza,cancel:altitude,other:heading,type:type,longitude:longitude,latitude:latitude,cost:cost,timestamp:timestamp});
 							var multipleToll = heading.split('|'); // check for multiple toll with same coord
-							mmsg += "ENTRY multipleToll.length : "+multipleToll.length+" multipleToll : "+multipleToll;
+							mmsg += "ENTRY multipleToll.length : "+multipleToll.length+" multipleToll : "+multipleToll+"\n";
 							maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
 				 			maildebug==1 || mindebug ==1 && console.log(mmsg);
 							if (heading != "0") {
@@ -349,7 +377,8 @@ var bgLocFound = function(loc){
 								}
 							};
 							var multipleToll = " "; // reset value					
-							var mmsg = "tollentry : length "+tollentry.length+" : "+JSON.stringify(tollentry);
+							var mmsg = "@FoundEntry tollentry : length "+tollentry.length+" : "+JSON.stringify(tollentry);
+							var mmsg = "@FoundEntry tollexit : length "+tollexit.length+" : "+JSON.stringify(tollexit);
 							maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
 							maildebug==1 || mindebug ==1 && console.log(mmsg);
 							if (altitude != "0") {
@@ -372,16 +401,29 @@ var bgLocFound = function(loc){
 									var mmsg = "cancancel: "+cancancel+" cancelled entry: "+altitude+" not added";
 								}
 							};
-							var mmsg = "tollcancel : length "+tollcancel.length+" : "+JSON.stringify(tollcancel);
+							var mmsg = "@FoundEntry tollcancel : length "+tollcancel.length+" : "+JSON.stringify(tollcancel);
 							maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
 							maildebug==1 || mindebug ==1 && console.log(mmsg);	
 							var multipleCancel = " "; /// reset multiple cancel value			
 						};
 						if (foundexit == "1") {
-							var mmsg = (new Date())+": add exit with "+tollplaza+": foundentry="+foundentry+":foundexit="+foundexit;
-							tollexit.push({tollplaza:tollplaza,cancel:altitude,other:heading,type:type,longitude:longitude,latitude:latitude,cost:cost,timestamp:timestamp});
+							if ( tollentry.length > "0") {
+								for ( var z=0;z<tollentry.length;z++ ) {
+									console.log("@FoundExit check exit with entry:"+tollplaza+"|vs.|"+tollentry[z].tollplaza.trim());
+									if ( tollplaza == tollentry[z].tollplaza.trim() ){									
+										var mmsg = (new Date())+"@FoundExit: match with entry! add exit with "+tollplaza+"\n";
+										tollexit.push({tollplaza:tollplaza,cancel:altitude,other:heading,type:type,longitude:longitude,latitude:latitude,cost:cost,timestamp:timestamp});
+									}	
+								}
+							} else {
+								var mmsg = (new Date())+"@FoundExit: NOT add exit with "+tollplaza+": tollentry.length="+tollentry.length+"\n";
+							}
+							///pushTollExit(tollplaza,altitude,heading,type,longitude,latitude,cost,timestamp); // add to tollexit if entry exists.
+							///var mmsg = (new Date())+": add exit with "+tollplaza+": foundentry="+foundentry+":foundexit="+foundexit;
+							///tollexit.push({tollplaza:tollplaza,cancel:altitude,other:heading,type:type,longitude:longitude,latitude:latitude,cost:cost,timestamp:timestamp});
 							var multipleToll = heading.split('|'); // check for multiple toll with same coord
-							mmsg += "EXIT multipleToll.length : "+multipleToll.length+" multipleToll : "+multipleToll;
+							mmsg += "\n";
+							mmsg += "EXIT multipleToll.length : "+multipleToll.length+" multipleToll : "+multipleToll+"\n";
 							maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
 							maildebug==1 || mindebug ==1 && console.log(mmsg);
 							if (heading != "0") {
@@ -390,20 +432,35 @@ var bgLocFound = function(loc){
 								maildebug==1 || mindebug ==1 && console.log(mmsg);
 								for (var i=0;i < multipleToll.length;i++) {
 									if ( multipleToll[i].split('@')[1].trim() == "end") {
-										tollexit.push({"tollplaza":multipleToll[i].split('@')[0].trim(),"cancel":"0","other":"0","checkpoint":"0","type":"end",longitude:longitude,latitude:latitude,cost:cost,timestamp:timestamp});
-										var mmsg = "tollplaza: "+multipleToll[i].split('@')[0].trim()+" has end entry: "+JSON.stringify(tollexit);
+										console.log("running pushTollExit at MULTIPLEENTRY with tollentry.length: "+tollentry.length);
+										var tollplaza = multipleToll[i].split('@')[0];
+										if ( tollentry.length > "0") {
+											for ( var z=0;z<tollentry.length;z++ ) {
+												if ( tollplaza == tollentry[z].tollplaza.trim() ){									
+													var mmsg = (new Date())+": add exit with "+tollplaza+": foundentry="+foundentry+":foundexit="+foundexit;
+													tollexit.push({tollplaza:tollplaza,cancel:altitude,other:heading,type:type,longitude:longitude,latitude:latitude,cost:cost,timestamp:timestamp});
+												}	
+											}
+										} else {
+												var mmsg = (new Date())+": NOT add exit with "+tollplaza+": foundentry="+foundentry+":foundexit="+foundexit;
+										}
+										///pushTollExit(multipleToll[i].split('@')[0].trim(),0,0,"end",longitude,latitude,cost,timestamp); // add to tollexit if entry exists.
+										///tollexit.push({"tollplaza":multipleToll[i].split('@')[0].trim(),"cancel":"0","other":"0","checkpoint":"0","type":"end",longitude:longitude,latitude:latitude,cost:cost,timestamp:timestamp});
+										mmsg += "@FoundExit Other entry: tollplaza: "+multipleToll[i].split('@')[0].trim()+" has end entry: "+JSON.stringify(tollexit)+"\n";
 										maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
 										maildebug==1 || mindebug ==1 && console.log(mmsg);
 									} else {
 										tollentry.push({"tollplaza": multipleToll[i].split('@')[0].trim(),"cancel":"0","other":"0","checkpoint":"0","type":"start",longitude:longitude,latitude:latitude,cost:cost,timestamp:timestamp});
-										var mmsg = "tollplaza: "+multipleToll[i].split('@')[0].trim()+" has start entry from foundexit=1: "+JSON.stringify(tollentry);
+										var mmsg = "Other entry: tollplaza: "+multipleToll[i].split('@')[0].trim()+" has start entry from foundexit=1: "+JSON.stringify(tollentry);
 										maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
 										maildebug==1 || mindebug ==1 && console.log(mmsg);
 									}
 								};
 							};
 							var multipleToll = " "; // reset value	
-							var mmsg = "tollexit : length "+tollexit.length+" : "+JSON.stringify(tollexit);
+							var mmsg = "@FoundExit tollexit : length "+tollexit.length+" : "+JSON.stringify(tollexit)+"\n";
+							mmsg += "@FoundExit tollentry : length "+tollentry.length+" : "+JSON.stringify(tollentry)+"\n";
+							mmsg += "@FoundExit tollcancel : length "+tollcancel.length+" : "+JSON.stringify(tollcancel)+"\n";
 							maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
 							maildebug==1 || mindebug ==1 && console.log(mmsg);
 							if (altitude != "0") {
@@ -424,7 +481,9 @@ var bgLocFound = function(loc){
 									};
 								} else {
 									var mmsg = "cancancel: "+cancancel+" cancelled entry: "+altitude+" not added";
-								}			
+								}
+								maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
+								maildebug==1 || mindebug ==1 && console.log(mmsg);	
 							};
 							var mmsg="tollcancel : length "+tollcancel.length+" : "+JSON.stringify(tollcancel);
 							maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
@@ -480,9 +539,8 @@ var bgLocFound = function(loc){
 					//if (maildebug==1){
 						var now = new Date();
 						var mmsg = now+":"+closesttollbydist0+":x:"+tolllastupd;
-						mmsg += "|range<"+range+"?:"+closestdist[0].dist;
+						mmsg += "|range<"+range+"?:"+closestdist[0].dist+"/apr:"+approachtoll;
 						mmsg += "|timediff>"+timerange+"?:"+timediff;
-						mmsg += ", approach:"+approachtoll;
 						maildebug == 1 || mindebug == 1 && console.log(mmsg);
 						appendFile(mmsg,debugfile);
 					//}
@@ -514,9 +572,9 @@ var bgLocFound = function(loc){
 				 			tollentrytime = tollentrytime.concat(tollentry); /// concatenate data to diff obj for timestamp.
 				 			tollexittime = tollexittime.concat(tollexit);
 				 			tollcanceltime = tollcanceltime.concat(tollcancel);
-				 			var mmsg = (new Date())+": toll ENTRY being xferred to diff obj: "+JSON.stringify(tollentrytime);
-				 			mmsg +=(new Date())+": toll EXIT being xferred to diff obj: "+JSON.stringify(tollexittime);
-				 			mmsg +=(new Date())+": toll CANCEL being xferred to diff obj: "+JSON.stringify(tollcanceltime);
+				 			var mmsg = (new Date())+": toll ENTRY being xferred to diff obj: "+JSON.stringify(tollentrytime)+"\n";
+				 			mmsg +=(new Date())+": toll EXIT being xferred to diff obj: "+JSON.stringify(tollexittime)+"\n";
+				 			mmsg +=(new Date())+": toll CANCEL being xferred to diff obj: "+JSON.stringify(tollcanceltime)+"\n";
 				 			maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
 					 		maildebug==1 || mindebug ==1 && console.log(mmsg);
 				 			tollentry = [];
@@ -637,7 +695,8 @@ var bgLocFound = function(loc){
 						closestdist[0].dist > calcrange?Titanium.Geolocation.distanceFilter = 300:Titanium.Geolocation.distanceFilter = 75;				
 					}				
 				}
-				//*console.log(" timestamp after set prop "+Titanium.App.Properties.getString('timelastupd'));
+				//*console.log(" timestamp after set prop "+Titanium.App.Properties.getString('timelastupd'));	
+				}	
 		};
 		
 		var headingCallback = function(e){

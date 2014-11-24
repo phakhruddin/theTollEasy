@@ -68,8 +68,7 @@ adhocContDateUpd=1;
 $.switch_contupd.addEventListener("change", function(e){
 	var switchValue = $.switch_contupd.value;
 	Ti.API.info("switch value :" +switchValue);
-	if ( switchValue == true ) {
-		alert("Detect TollPlaza is ON");
+	if ( switchValue == true ) {		
 		Ti.API.info('Registering background services');
 		if (Titanium.App.Properties.getInt('distanceFilter') == 0) {
 			var service = Ti.App.iOS.registerBackgroundService({url:'bg-service1-2.js'});

@@ -32,6 +32,16 @@ var foundentry = foundexit = "0";
 
 var needtocancel = 1;
 
+var tollentrytime = [];
+
+var tollexittime = [];
+
+var tollcanceltime = [];
+
+var approachtoll = 1;
+
+var lastapproachtoll = "none";
+
 var initialNotif = Ti.App.iOS.scheduleLocalNotification({
     alertBody: "is detecting the tollplaza in the background starting ," + new Date() + ".",
     date: new Date(new Date().getTime() + 1e3)
@@ -51,7 +61,10 @@ var debugfile = "maildebug.txt";
 
 var locfile = "location.txt";
 
-"1" == maildebug && writeFile(new Date() + ": debugging start", debugfile);
+if ("1" == mindebug) {
+    writeFile(new Date() + ": MIN DEBUG start", debugfile);
+    "1" == maildebug && writeFile(new Date() + ": debugging start", debugfile);
+}
 
 var thefile = loc + ".txt";
 
@@ -84,7 +97,7 @@ var downloadTollplaza = function(loc) {
                 try {
                     json = JSON.parse(this.responseText);
                     var out = '{ "poi" : [\n';
-                    for (var i = 0; json.feed.entry.length > i; i++) {
+                    for (var i = 0; i < json.feed.entry.length; i++) {
                         var tollplaza = json.feed.entry[i].title.$t.trim();
                         var latitude = json.feed.entry[i].content.$t.split(",")[0].split(":")[1].trim();
                         var longitude = json.feed.entry[i].content.$t.split(",")[1].split(":")[1].trim();
@@ -94,9 +107,13 @@ var downloadTollplaza = function(loc) {
                         var hwy = json.feed.entry[i].content.$t.split(",")[5].split(":")[1].trim() || "interstate";
                         var cost = json.feed.entry[i].content.$t.split(",")[6].split(":")[1].trim() || "0";
                         var type = json.feed.entry[i].content.$t.split(",")[7].split(":")[1].trim() || "none";
-                        json.feed.entry[i].content.$t.split(",")[8].split(":")[1].trim() || "unknown";
-                        json.feed.entry[i].content.$t.split(",")[9].split(":")[1].trim() || "unknown";
-                        out += i == json.feed.entry.length - 1 ? '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" , "type" : "' + type + '" }]}' + "\n" : '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" , "type" : "' + type + '" },' + "\n";
+                        {
+                            json.feed.entry[i].content.$t.split(",")[8].split(":")[1].trim() || "unknown";
+                        }
+                        {
+                            json.feed.entry[i].content.$t.split(",")[9].split(":")[1].trim() || "unknown";
+                        }
+                        out += i == json.feed.entry.length - 1 ? '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" , "type" : "' + type + '" }]}\n' : '{ "plaza" : "' + tollplaza + '" , "latitude" : "' + latitude + '" , "longitude" : "' + longitude + '"  , "altitude" : "' + altitude + '" , "heading" : "' + heading + '" , "speed" : "' + speed + '" , "hwy" : "' + hwy + '" , "cost" : "' + cost + '" , "type" : "' + type + '" },\n';
                     }
                     file5.write(out);
                     file4.write(out);
@@ -133,12 +150,12 @@ var calcDistance = function(tollplaza, lat1, lon1, lat2, lon2, unit) {
     var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
     dist = Math.acos(dist);
     dist = 180 * dist / Math.PI;
-    dist = 1.1515 * 60 * dist;
+    dist = 60 * dist * 1.1515;
     "K" == unit && (dist = 1.609344 * dist);
     "N" == unit && (dist = .8684 * dist);
     "F" == unit && (dist = 5280 * dist);
     var calcresult = tollplaza + ":" + new Date() + ": dist:" + dist + "lat1:" + lat1 + ",lat2:" + lat2 + ",radlat1:" + radlat1 + ",radlat2:" + radlat2 + ",lon1:" + lon1 + ",lon2:" + lon2 + ",radlon1:" + radlon1 + ",radlon2:" + radlon2 + ",radtheta:" + radtheta + "\n";
-    1 == maildebug && console.log(calcresult);
+    2 == maildebug && console.log(calcresult);
     return Math.round(dist);
 };
 
@@ -155,6 +172,26 @@ var updateFound = function(tollplaza, longitude, latitude, timestamp, cost, type
     db.close();
 };
 
+var pushTollExit = function(tollplaza, altitude, heading, type, longitude, latitude, cost, timestamp) {
+    if (tollentry.length > "0") {
+        for (var i = 0; i < tollentry.length; i++) if (tollplaza == tollentry[i].tollplaza.trim()) {
+            var mmsg = new Date() + ": add exit with " + tollplaza + ": foundentry=" + foundentry + ":foundexit=" + foundexit;
+            tollexit.push({
+                tollplaza: tollplaza,
+                cancel: altitude,
+                other: heading,
+                type: type,
+                longitude: longitude,
+                latitude: latitude,
+                cost: cost,
+                timestamp: timestamp
+            });
+        }
+    } else var mmsg = new Date() + ": NOT add exit with " + tollplaza + ": foundentry=" + foundentry + ":foundexit=" + foundexit;
+    1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+    1 == maildebug || 1 == mindebug && console.log(mmsg);
+};
+
 var bgLocFound = function() {
     var contents = "";
     var contents = file4.read() || file5.read();
@@ -162,267 +199,430 @@ var bgLocFound = function() {
         var preParseData = contents.text;
         var json = json || JSON.parse(preParseData);
     }
-    var mmsg = "json data : " + JSON.stringify(json);
+    var mmsg = "json data : " + JSON.stringify(json.poi[0]);
     1 == maildebug && appendFile(mmsg, debugfile);
     var locationCallback = function(e) {
-        var distmatch = [];
-        var count = Titanium.App.Properties.getInt("count");
-        count++;
-        1 == maildebug && console.log("count:" + count);
-        var lon1 = +e.coords.longitude;
-        var lat1 = +e.coords.latitude;
-        var time1 = +e.coords.timestamp;
-        var speed1 = +e.coords.speed;
-        mmsg = new Date(e.coords.timestamp) + "," + e.coords.timestamp + "," + e.coords.latitude + "," + e.coords.longitude + "," + speed1;
-        if (1 == Titanium.App.Properties.getInt("mindebug") && count >= 30) {
-            1 == mindebug && console.log(mmsg + " should be appended to location.txt");
-            appendFile(mmsg, locfile);
-            var count = 0;
-        }
-        var thedistanceNearbyFilter = Titanium.App.Properties.getInt("thedistanceNearbyFilter", 1e4);
-        var closestdistobj = Ti.App.Properties.getString("distmatchobj", "NO");
-        if ("NO" != closestdistobj) {
-            var closestdistarray = JSON.parse(Ti.App.Properties.getString("distmatchobj"));
-            1 == maildebug && console.log("checking : " + closestdistarray);
-        }
-        var thearray = 5280 > thedistanceNearbyFilter ? closestdistarray : json.poi;
-        1 == maildebug && console.log("The First Toll distance is at  " + thedistanceNearbyFilter);
-        Titanium.App.Properties.setInt("count", count);
-        for (i = 0; thearray.length > i; i++) {
-            var tolltollplaza = thearray[i].plaza || thearray[i].tolltollplaza;
-            var lat2 = thearray[i].latitude;
-            var lon2 = thearray[i].longitude;
-            var alt2 = thearray[i].altitude;
-            var head2 = thearray[i].heading;
-            var hwy = thearray[i].hwy;
-            var cost = thearray[i].cost;
-            var type = thearray[i].type;
-            var note = thearray[i].note;
-            var dist = calcDistance(tolltollplaza, lat1, lon1, lat2, lon2, "F");
-            528e3 > dist && distmatch.push({
-                tolltollplaza: tolltollplaza,
-                dist: dist,
-                latitude: lat2,
-                longitude: lon2,
-                altitude: alt2,
-                heading: head2,
-                hwy: hwy,
-                cost: cost,
-                type: type,
-                note: note
-            });
-        }
-        1 == maildebug && console.log("JSON distance unsort :" + JSON.stringify(distmatch));
-        var closestdist = distmatch.sort(function(a, b) {
-            return a.dist - b.dist;
-        });
-        1 == maildebug && console.log("JSON closestdist : " + JSON.stringify(closestdist));
-        Ti.App.Properties.setString("distmatchobj", JSON.stringify(distmatch));
-        1 == maildebug && console.log("set distmatchobj");
-        closestdist[0].tolltollplaza;
-        var closesttollbydist0 = closestdist[0].tolltollplaza;
-        var closestdist0 = closestdist[0].dist;
-        var outputclosesttollbydist0 = closestdist[0].tolltollplaza + " distance : " + closestdist[0].dist;
-        Titanium.App.Properties.setInt("thedistanceNearbyFilter", closestdist0);
-        1 == maildebug && console.log("Distance Close Filter is set to: " + thedistanceNearbyFilter);
-        Titanium.App.Properties.setString("outputclosesttollbydist0", outputclosesttollbydist0);
-        var range = detectionRange;
-        var timelastupd = Titanium.App.Properties.getString("timelastupd") || 0;
-        var tolllastupd = Titanium.App.Properties.getString("tolllastupd") || "None";
-        var timelastupd = parseFloat(timelastupd);
-        var timediff = time1 - timelastupd;
-        var timerange = 1e4;
-        if (range > closestdist[0].dist && timediff > timerange && closesttollbydist0 != tolllastupd) {
-            var tollplaza = closestdist[0].tolltollplaza;
-            var longitude = closestdist[0].longitude;
-            var latitude = closestdist[0].latitude;
-            var altitude = closestdist[0].altitude;
-            var heading = closestdist[0].heading;
-            var timestamp = time1;
-            var cost = closestdist[0].cost;
-            var type = closestdist[0].type;
-            var hwy = closestdist[0].hwy;
-            foundentry = "start" == type ? 1 : 0;
-            foundexit = "end" == type ? 1 : 0;
-            console.log(new Date() + ": foundentry = " + foundentry + " foundexit = " + foundexit + " DistanceFilter: " + Titanium.Geolocation.getDistanceFilter());
-            if ("1" == foundentry || "1" == foundexit) {
-                Titanium.Geolocation.distanceFilter = 5;
-                console.log(new Date() + ": entry or exit IS DETECTED for " + tollplaza + ": foundentry=" + foundentry + ":foundexit=" + foundexit);
-                1 == mindebug && console.log("executing a function, updateFound(" + tollplaza + "," + longitude + "," + latitude + "," + timestamp + "," + cost + "," + type + "," + hwy + ")");
-                if ("1" == foundentry) {
-                    console.log(new Date() + ": add ENTRY with " + tollplaza + ": foundentry=" + foundentry + ":foundexit=" + foundexit);
-                    tollentry.push({
-                        tollplaza: tollplaza,
-                        cancel: altitude,
-                        other: heading,
-                        type: type
-                    });
-                    var multipleToll = heading.split("|");
-                    console.log("ENTRY multipleToll.length : " + multipleToll.length + " multipleToll : " + multipleToll);
-                    if ("0" != heading) {
-                        console.log("adding more line in EXIT with: " + heading);
-                        for (var i = 0; multipleToll.length > i; i++) {
-                            var othertoll = multipleToll[i].split("@")[0].trim();
-                            var othertolltype = multipleToll[i].split("@")[1].trim();
-                            console.log("othertoll : " + othertoll + " othertolltype: " + othertolltype);
-                            console.log("multipleToll[i].split('@')[1].trim() multipleToll[i].split('@')[1].trim() " + multipleToll[i].split("@")[0].trim() + " " + multipleToll[i].split("@")[1].trim());
-                            if ("end" == othertolltype) {
-                                var hasstartentry = "0";
-                                if (tollentry.length > 0) for (var k = 0; tollentry.length > k; k++) if (othertoll == tollentry[k].tollplaza) var hasstartentry = 1;
-                                if ("1" == hasstartentry) {
-                                    console.log("tollplaza: " + othertoll + " has start entry");
-                                    tollexit.push({
-                                        tollplaza: othertoll,
-                                        cancel: "0",
-                                        other: "0",
-                                        checkpoint: "0",
-                                        type: "end"
-                                    });
-                                } else {
-                                    console.log("tollplaza: " + othertoll + " has NO start entry, need a cancellation");
-                                    tollcancel.push({
-                                        tollplaza: othertoll
-                                    });
-                                }
-                            } else tollentry.push({
-                                tollplaza: multipleToll[i].split("@")[0].trim(),
-                                cancel: "0",
-                                other: "0",
-                                checkpoint: "0",
-                                type: "start"
-                            });
-                        }
-                    }
-                    var multipleToll = " ";
-                    console.log("tollentry : length " + tollentry.length + " : " + JSON.stringify(tollentry));
-                    if ("0" != altitude) {
-                        console.log("adding CANCELled toll entry: " + altitude);
-                        var multipleCancel = altitude.split("|");
-                        for (var i = 0; multipleCancel.length > i; i++) tollcancel.push({
-                            tollplaza: multipleCancel[i]
-                        });
-                    }
-                    console.log("tollcancel : length " + tollcancel.length + " : " + JSON.stringify(tollcancel));
-                    var multipleCancel = " ";
-                }
-                if ("1" == foundexit) {
-                    console.log(new Date() + ": add exit with " + tollplaza + ": foundentry=" + foundentry + ":foundexit=" + foundexit);
-                    tollexit.push({
-                        tollplaza: tollplaza,
-                        cancel: altitude,
-                        other: heading,
-                        type: type
-                    });
-                    var multipleToll = heading.split("|");
-                    console.log("EXIT multipleToll.length : " + multipleToll.length + " multipleToll : " + multipleToll);
-                    if ("0" != heading) {
-                        console.log("adding more line in EXIT with: " + heading);
-                        for (var i = 0; multipleToll.length > i; i++) "end" == multipleToll[i].split("@")[1].trim() ? tollexit.push({
-                            tollplaza: multipleToll[i].split("@")[0].trim(),
-                            cancel: "0",
-                            other: "0",
-                            checkpoint: "0",
-                            type: "end"
-                        }) : tollentry.push({
-                            tollplaza: multipleToll[i].split("@")[0].trim(),
-                            cancel: "0",
-                            other: "0",
-                            checkpoint: "0",
-                            type: "start"
-                        });
-                    }
-                    var multipleToll = " ";
-                    console.log("tollexit : length " + tollexit.length + " : " + JSON.stringify(tollexit));
-                    if ("0" != altitude) {
-                        console.log("adding CANCELled toll entry: " + altitude);
-                        var multipleCancel = altitude.split("|");
-                        for (var i = 0; multipleCancel.length > i; i++) tollcancel.push({
-                            tollplaza: multipleCancel[i]
-                        });
-                    }
-                    console.log("tollcancel : length " + tollcancel.length + " : " + JSON.stringify(tollcancel));
-                    var multipleCancel = " ";
-                }
-                var foundentry = "0";
-                var foundexit = "0";
-                Titanium.App.Properties.setString("timelastupd", timestamp);
-                Titanium.App.Properties.setString("tolllastupd", tollplaza);
-                var distmatch = [];
-                Ti.App.iOS.scheduleLocalNotification({
-                    alertBody: new Date() + " : tollplaza " + tollplaza + " was detected less than " + closestdist[0].dist + " ft away",
-                    date: new Date(new Date().getTime() + 3e4)
+        if (e.error) Ti.API.info("Error is: " + e.error); else {
+            var distmatch = [];
+            var count = Titanium.App.Properties.getInt("count");
+            count++;
+            1 == maildebug && console.log("count:" + count);
+            var lon1 = +e.coords.longitude;
+            var lat1 = +e.coords.latitude;
+            var time1 = +e.coords.timestamp;
+            var speed1 = +e.coords.speed;
+            mmsg = new Date(e.coords.timestamp) + "," + e.coords.timestamp + "," + e.coords.latitude + "," + e.coords.longitude + "," + speed1;
+            if (1 == Titanium.App.Properties.getInt("mindebug") && count >= 30) {
+                1 == mindebug && console.log(mmsg + " should be appended to location.txt");
+                appendFile(mmsg, locfile);
+                var count = 0;
+            }
+            var thedistanceNearbyFilter = Titanium.App.Properties.getInt("thedistanceNearbyFilter", 1e4);
+            var closestdistobj = Ti.App.Properties.getString("distmatchobj", "NO");
+            if ("NO" != closestdistobj) {
+                var closestdistarray = JSON.parse(Ti.App.Properties.getString("distmatchobj"));
+                1 == maildebug && console.log("checking : " + closestdistarray);
+            }
+            var thearray = 5280 > thedistanceNearbyFilter ? closestdistarray : json.poi;
+            1 == maildebug && console.log("The First Toll distance is at  " + thedistanceNearbyFilter);
+            Titanium.App.Properties.setInt("count", count);
+            for (i = 0; i < thearray.length; i++) {
+                var tolltollplaza = thearray[i].plaza || thearray[i].tolltollplaza;
+                var lat2 = thearray[i].latitude;
+                var lon2 = thearray[i].longitude;
+                var alt2 = thearray[i].altitude;
+                var head2 = thearray[i].heading;
+                var hwy = thearray[i].hwy;
+                var cost = thearray[i].cost;
+                var type = thearray[i].type;
+                var note = thearray[i].note;
+                var dist = calcDistance(tolltollplaza, lat1, lon1, lat2, lon2, "F");
+                distmatch.push({
+                    tolltollplaza: tolltollplaza,
+                    dist: dist,
+                    latitude: lat2,
+                    longitude: lon2,
+                    altitude: alt2,
+                    heading: head2,
+                    hwy: hwy,
+                    cost: cost,
+                    type: type,
+                    note: note
                 });
-                var mmsg = new Date() + " : tollplaza " + tollplaza + " was detected less than " + closestdist[0].dist + " ft away";
-                1 == maildebug && appendFile(mmsg, debugfile);
-                1 == maildebug && console.log(mmsg);
-            } else {
-                console.log(new Date() + ": entry and exit not detected for " + tollplaza + " Time to Calculate/UpdateFound & set distanceFilter to 75");
-                Titanium.Geolocation.distanceFilter = 75;
-                if (tollentry.length > "0" && tollexit.length > "0") for (var i = 0; tollentry.length > i; i++) for (var j = 0; tollexit.length > j; j++) {
-                    console.log(" tollentry[i].tollplaza vs. tollexit[j].tollplaza " + tollentry[i].tollplaza + " vs. " + tollexit[j].tollplaza);
-                    if (tollentry[i].tollplaza == tollexit[j].tollplaza) {
-                        hastollentryexit.push({
-                            tollplaza: tollentry[i].tollplaza
-                        });
-                        console.log("hastollentryexit : " + JSON.stringify(hastollentryexit));
-                    }
-                }
-                console.log("check again hastollentryexit : " + JSON.stringify(hastollentryexit));
-                if (hastollentryexit.length > 0 && tollcancel.length > 0) {
-                    var hastollentryexitsort = hastollentryexit.sort(function(a, b) {
-                        return a.tollplaza - b.tollplaza;
-                    });
-                    var hastollentryexitsortuniq = [ {
-                        tollplaza: hastollentryexitsort[0].tollplaza
-                    } ];
-                    for (var i = 1; hastollentryexitsort.length > i; i++) hastollentryexitsort[i].tollplaza !== hastollentryexitsort[i - 1].tollplaza && hastollentryexitsortuniq.push({
-                        tollplaza: hastollentryexitsort[i].tollplaza
-                    });
-                    console.log("hastollentryexitsortuniq.length: " + hastollentryexitsortuniq.length + " hastollentryexitsortuniq : " + JSON.stringify(hastollentryexitsortuniq));
-                    var tollcancelsort = tollcancel.sort(function(a, b) {
-                        return a.tollplaza - b.tollplaza;
-                    });
-                    var tollcancelsortuniq = [ {
-                        tollplaza: tollcancelsort[0].tollplaza
-                    } ];
-                    for (var i = 1; tollcancelsort.length > i; i++) tollcancelsort[i].tollplaza !== tollcancelsort[i - 1].tollplaza && tollcancelsortuniq.push({
-                        tollplaza: tollcancelsort[i].tollplaza
-                    });
-                    console.log("tollcancelsortuniq.length: " + tollcancelsortuniq.length + " tollcancelsortuniq : " + JSON.stringify(tollcancelsortuniq));
-                    for (var i = 0; hastollentryexitsortuniq.length > i; i++) {
-                        var needtocancel = "0";
-                        for (var j = 0; tollcancelsortuniq.length > j; j++) {
-                            console.log("hastollentryexitsortuniq[i].tollplaza !=  tollcancelsortuniq[j].tollplaza :" + hastollentryexitsortuniq[i].tollplaza + " vs ." + tollcancelsortuniq[j].tollplaza);
-                            if (hastollentryexitsortuniq[i].tollplaza == tollcancelsortuniq[j].tollplaza) var needtocancel = 1;
+            }
+            1 == maildebug && console.log("JSON distance unsort :" + JSON.stringify(distmatch));
+            var closestdist = distmatch.sort(function(a, b) {
+                return a.dist - b.dist;
+            });
+            1 == maildebug && console.log("JSON closestdist : " + JSON.stringify(closestdist));
+            Ti.App.Properties.setString("distmatchobj", JSON.stringify(distmatch));
+            1 == maildebug && console.log("set distmatchobj");
+            var closesttollbydist0 = closestdist[0].tolltollplaza;
+            var closestdist0 = closestdist[0].dist;
+            var outputclosesttollbydist0 = closestdist[0].tolltollplaza + " distance : " + closestdist[0].dist;
+            Titanium.App.Properties.setInt("thedistanceNearbyFilter", closestdist0);
+            Titanium.App.Properties.setString("outputclosesttollbydist0", outputclosesttollbydist0);
+            var range = detectionRange;
+            var calcrange = 5e3;
+            var timelastupd = Titanium.App.Properties.getString("timelastupd") || 0;
+            var tolllastupd = Titanium.App.Properties.getString("tolllastupd") || "None";
+            var distlastupd = Titanium.App.Properties.getString("distlastupd", 1e12);
+            var timelastupd = parseFloat(timelastupd);
+            var timediff = time1 - timelastupd;
+            var timerange = 100;
+            approachtoll = closestdist0 > distlastupd ? 0 : 1;
+            var lastapproachtoll = Titanium.App.Properties.getString("lastapproachtoll");
+            console.log(closesttollbydist0 + " || " + tolllastupd + " || last: " + lastapproachtoll + "/" + approachtoll);
+            if (closesttollbydist0 == tolllastupd && 0 == lastapproachtoll && 1 == approachtoll) {
+                var tolllastupd = Titanium.App.Properties.getString("tolllastupd");
+                Titanium.App.Properties.setString("tolllastupd", tolllastupd + "(U-TURN)");
+            }
+            Titanium.App.Properties.setString("distlastupd", closestdist0);
+            Titanium.App.Properties.setString("lastapproachtoll", approachtoll);
+            if (closestdist[0].dist < range && timediff > timerange && 1 == approachtoll) {
+                var tollplaza = closestdist[0].tolltollplaza;
+                var longitude = closestdist[0].longitude;
+                var latitude = closestdist[0].latitude;
+                var altitude = closestdist[0].altitude;
+                var heading = closestdist[0].heading;
+                var timestamp = time1;
+                var cost = closestdist[0].cost;
+                var type = closestdist[0].type;
+                var hwy = closestdist[0].hwy;
+                foundentry = "start" == type ? 1 : 0;
+                foundexit = "end" == type ? 1 : 0;
+                var sametoll = "NO";
+                if (closesttollbydist0 == tolllastupd && 3e4 > timediff) var sametoll = "YES";
+                var mmsg = new Date() + ": F:" + foundentry + "/" + foundexit + " DF:" + Titanium.Geolocation.getDistanceFilter() + " sametoll:" + sametoll + ": " + closesttollbydist0 + "(t:" + type + ") / " + tolllastupd;
+                1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                console.log(mmsg);
+                if ("1" != foundentry && "1" != foundexit || "NO" != sametoll) {
+                    var mmsg = new Date() + ": NO entry and exit detected for: " + tollplaza + ", sametoll: " + sametoll + ", set distanceFilter to 75";
+                    1 == maildebug || 1 == mindebug && console.log(mmsg);
+                    Titanium.Geolocation.distanceFilter = 75;
+                    if (tollentry.length > "0" && tollexit.length > "0") for (var i = 0; i < tollentry.length; i++) for (var j = 0; j < tollexit.length; j++) {
+                        var mmsg = " tollentry[" + i + "].tollplaza vs. tollexit[" + j + "].tollplaza " + tollentry[i].tollplaza + " vs. " + tollexit[j].tollplaza;
+                        1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                        1 == maildebug || 1 == mindebug && console.log(mmsg);
+                        if (tollentry[i].tollplaza.trim() == tollexit[j].tollplaza.trim()) {
+                            hastollentryexit.push(tollentry[i].tollplaza.trim());
+                            var mmsg = "hastollentryexit : " + JSON.stringify(hastollentryexit);
+                            1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                            1 == maildebug || 1 == mindebug && console.log(mmsg);
                         }
-                        if ("0" == needtocancel) {
-                            tolltoupdate.push({
-                                tollplaza: hastollentryexitsortuniq[i].tollplaza
-                            });
-                            if (tolltoupdate.length > 2) {
-                                var tolltoupdatesort = tolltoupdate.sort(function(a, b) {
-                                    return a.tollplaza - b.tollplaza;
-                                });
-                                var tolltoupdatesortuniq = [ {
-                                    tollplaza: tolltoupdatesort[0].tollplaza
-                                } ];
-                                for (var i = 1; tolltoupdatesort.length > i; i++) tolltoupdatesort[i].tollplaza !== tolltoupdatesort[i - 1].tollplaza && tolltoupdatesortuniq.push({
-                                    tollplaza: tolltoupdatesort[i].tollplaza
+                    }
+                } else {
+                    Titanium.Geolocation.distanceFilter = 5;
+                    var mmsg = new Date() + ": entry or exit IS DETECTED for " + tollplaza + ": foundentry=" + foundentry + ":foundexit=" + foundexit;
+                    mmsg += "executing a function, updateFound(" + tollplaza + "," + longitude + "," + latitude + "," + timestamp + "," + cost + "," + type + "," + hwy + ")";
+                    1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                    1 == maildebug && console.log(mmsg);
+                    1 == mindebug && console.log(mmsg);
+                    if ("1" == foundentry) {
+                        var mmsg = new Date() + ": add ENTRY with " + tollplaza + ": foundentry=" + foundentry + ":foundexit=" + foundexit;
+                        tollentry.push({
+                            tollplaza: tollplaza,
+                            cancel: altitude,
+                            other: heading,
+                            type: type,
+                            longitude: longitude,
+                            latitude: latitude,
+                            cost: cost,
+                            timestamp: timestamp
+                        });
+                        var multipleToll = heading.split("|");
+                        mmsg += "ENTRY multipleToll.length : " + multipleToll.length + " multipleToll : " + multipleToll + "\n";
+                        1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                        1 == maildebug || 1 == mindebug && console.log(mmsg);
+                        if ("0" != heading) {
+                            var mmsg = "adding more line in ENTRY/EXIT(not ignored) with: " + heading;
+                            1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                            1 == maildebug || 1 == mindebug && console.log(mmsg);
+                            for (var i = 0; i < multipleToll.length; i++) {
+                                var othertoll = multipleToll[i].split("@")[0].trim();
+                                var othertolltype = multipleToll[i].split("@")[1].trim();
+                                var mmsg = "othertoll : " + othertoll + " othertolltype: " + othertolltype;
+                                1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                                1 == maildebug || 1 == mindebug && console.log(mmsg);
+                                if ("end" == othertolltype) {
+                                    var hasstartentry = "0";
+                                    if (tollentry.length > 0) for (var k = 0; k < tollentry.length; k++) if (othertoll == tollentry[k].tollplaza) var hasstartentry = 1;
+                                    if ("1" == hasstartentry) {
+                                        tollexit.push({
+                                            tollplaza: othertoll,
+                                            cancel: "0",
+                                            other: "0",
+                                            checkpoint: "0",
+                                            type: "end",
+                                            longitude: longitude,
+                                            latitude: latitude,
+                                            cost: cost,
+                                            timestamp: timestamp
+                                        });
+                                        var mmsg = "tollplaza: " + othertoll + " has start entry: " + JSON.stringify(tollexit);
+                                        1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                                        1 == maildebug || 1 == mindebug && console.log(mmsg);
+                                    } else {
+                                        tollcancel.push(othertoll.trim());
+                                        var mmsg = "tollplaza: " + othertoll + " has NO start entry, need a cancellation: " + JSON.stringify(tollcancel);
+                                        1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                                        1 == maildebug || 1 == mindebug && console.log(mmsg);
+                                    }
+                                } else tollentry.push({
+                                    tollplaza: multipleToll[i].split("@")[0].trim(),
+                                    cancel: "0",
+                                    other: "0",
+                                    checkpoint: "0",
+                                    type: "start",
+                                    longitude: longitude,
+                                    latitude: latitude,
+                                    cost: cost,
+                                    timestamp: timestamp
                                 });
                             }
-                            tolltoupdatesortuniq && console.log("tolltoupdatesortuniq.length :" + tolltoupdatesortuniq.length + " tolltoupdatesortuniq : " + JSON.stringify(tolltoupdatesortuniq));
-                            console.log("tolltoupdate.length: " + tolltoupdate.length + " tolltoupdate : " + JSON.stringify(tolltoupdate));
+                        }
+                        var multipleToll = " ";
+                        var mmsg = "@FoundEntry tollentry : length " + tollentry.length + " : " + JSON.stringify(tollentry);
+                        var mmsg = "@FoundEntry tollexit : length " + tollexit.length + " : " + JSON.stringify(tollexit);
+                        1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                        1 == maildebug || 1 == mindebug && console.log(mmsg);
+                        if ("0" != altitude) {
+                            var cancancel = 0;
+                            for (var j = 0; j < tollexit.length; j++) if (tollplaza == tollexit[j].tollplaza) var cancancel = 1;
+                            if (1 == cancancel) {
+                                var mmsg = "cancancel: " + cancancel + " adding CANCELLed toll entry: " + altitude;
+                                1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                                1 == maildebug || 1 == mindebug && console.log(mmsg);
+                                var multipleCancel = altitude.split("|");
+                                for (var i = 0; i < multipleCancel.length; i++) tollcancel.push(multipleCancel[i].trim());
+                            } else var mmsg = "cancancel: " + cancancel + " cancelled entry: " + altitude + " not added";
+                        }
+                        var mmsg = "@FoundEntry tollcancel : length " + tollcancel.length + " : " + JSON.stringify(tollcancel);
+                        1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                        1 == maildebug || 1 == mindebug && console.log(mmsg);
+                        var multipleCancel = " ";
+                    }
+                    if ("1" == foundexit) {
+                        if (tollentry.length > "0") for (var z = 0; z < tollentry.length; z++) {
+                            console.log("@FoundExit check exit with entry:" + tollplaza + "|vs.|" + tollentry[z].tollplaza.trim());
+                            if (tollplaza == tollentry[z].tollplaza.trim()) {
+                                var mmsg = new Date() + "@FoundExit: match with entry! add exit with " + tollplaza + "\n";
+                                tollexit.push({
+                                    tollplaza: tollplaza,
+                                    cancel: altitude,
+                                    other: heading,
+                                    type: type,
+                                    longitude: longitude,
+                                    latitude: latitude,
+                                    cost: cost,
+                                    timestamp: timestamp
+                                });
+                            }
+                        } else var mmsg = new Date() + "@FoundExit: NOT add exit with " + tollplaza + ": tollentry.length=" + tollentry.length + "\n";
+                        var multipleToll = heading.split("|");
+                        mmsg += "\n";
+                        mmsg += "EXIT multipleToll.length : " + multipleToll.length + " multipleToll : " + multipleToll + "\n";
+                        1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                        1 == maildebug || 1 == mindebug && console.log(mmsg);
+                        if ("0" != heading) {
+                            var mmsg = "adding more line in EXIT with: " + heading;
+                            1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                            1 == maildebug || 1 == mindebug && console.log(mmsg);
+                            for (var i = 0; i < multipleToll.length; i++) if ("end" == multipleToll[i].split("@")[1].trim()) {
+                                console.log("running pushTollExit at MULTIPLEENTRY with tollentry.length: " + tollentry.length);
+                                var tollplaza = multipleToll[i].split("@")[0];
+                                if (tollentry.length > "0") {
+                                    for (var z = 0; z < tollentry.length; z++) if (tollplaza == tollentry[z].tollplaza.trim()) {
+                                        var mmsg = new Date() + ": add exit with " + tollplaza + ": foundentry=" + foundentry + ":foundexit=" + foundexit;
+                                        tollexit.push({
+                                            tollplaza: tollplaza,
+                                            cancel: altitude,
+                                            other: heading,
+                                            type: type,
+                                            longitude: longitude,
+                                            latitude: latitude,
+                                            cost: cost,
+                                            timestamp: timestamp
+                                        });
+                                    }
+                                } else var mmsg = new Date() + ": NOT add exit with " + tollplaza + ": foundentry=" + foundentry + ":foundexit=" + foundexit;
+                                mmsg += "@FoundExit Other entry: tollplaza: " + multipleToll[i].split("@")[0].trim() + " has end entry: " + JSON.stringify(tollexit) + "\n";
+                                1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                                1 == maildebug || 1 == mindebug && console.log(mmsg);
+                            } else {
+                                tollentry.push({
+                                    tollplaza: multipleToll[i].split("@")[0].trim(),
+                                    cancel: "0",
+                                    other: "0",
+                                    checkpoint: "0",
+                                    type: "start",
+                                    longitude: longitude,
+                                    latitude: latitude,
+                                    cost: cost,
+                                    timestamp: timestamp
+                                });
+                                var mmsg = "Other entry: tollplaza: " + multipleToll[i].split("@")[0].trim() + " has start entry from foundexit=1: " + JSON.stringify(tollentry);
+                                1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                                1 == maildebug || 1 == mindebug && console.log(mmsg);
+                            }
+                        }
+                        var multipleToll = " ";
+                        var mmsg = "@FoundExit tollexit : length " + tollexit.length + " : " + JSON.stringify(tollexit) + "\n";
+                        mmsg += "@FoundExit tollentry : length " + tollentry.length + " : " + JSON.stringify(tollentry) + "\n";
+                        mmsg += "@FoundExit tollcancel : length " + tollcancel.length + " : " + JSON.stringify(tollcancel) + "\n";
+                        1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                        1 == maildebug || 1 == mindebug && console.log(mmsg);
+                        if ("0" != altitude) {
+                            var cancancel = 0;
+                            for (var j = 0; j < tollentry.length; j++) if (tollplaza == tollentry[j].tollplaza) var cancancel = 1;
+                            if (1 == cancancel) {
+                                var mmsg = "cancancel: " + cancancel + " adding CANCELLed toll entry: " + altitude;
+                                1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                                1 == maildebug || 1 == mindebug && console.log(mmsg);
+                                var multipleCancel = altitude.split("|");
+                                for (var i = 0; i < multipleCancel.length; i++) tollcancel.push(multipleCancel[i].trim());
+                            } else var mmsg = "cancancel: " + cancancel + " cancelled entry: " + altitude + " not added";
+                            1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                            1 == maildebug || 1 == mindebug && console.log(mmsg);
+                        }
+                        var mmsg = "tollcancel : length " + tollcancel.length + " : " + JSON.stringify(tollcancel);
+                        1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                        1 == maildebug || 1 == mindebug && console.log(mmsg);
+                        var multipleCancel = " ";
+                    }
+                    Titanium.App.Properties.setString("timelastupd", timestamp);
+                    Titanium.App.Properties.setString("tolllastupd", tollplaza);
+                    var foundentry = "0";
+                    var foundexit = "0";
+                    var distmatch = [];
+                    {
+                        Ti.App.iOS.scheduleLocalNotification({
+                            alertBody: new Date() + " : tollplaza " + tollplaza + " was detected less than " + closestdist[0].dist + " ft away",
+                            date: new Date(new Date().getTime() + 3e4)
+                        });
+                    }
+                    var mmsg = new Date() + " : tollplaza " + tollplaza + " was detected less than " + closestdist[0].dist + " ft away";
+                    1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                    1 == maildebug || 1 == mindebug && console.log(mmsg);
+                }
+            } else {
+                var now = new Date();
+                var mmsg = now + ":" + closesttollbydist0 + ":x:" + tolllastupd;
+                mmsg += "|range<" + range + "?:" + closestdist[0].dist + "/apr:" + approachtoll;
+                mmsg += "|timediff>" + timerange + "?:" + timediff;
+                1 == maildebug || 1 == mindebug && console.log(mmsg);
+                appendFile(mmsg, debugfile);
+                if (tollentry.length > "0" && tollexit.length > "0") {
+                    Titanium.Geolocation.distanceFilter = closestdist[0].dist > 1e4 ? 600 : 300;
+                    var mmsg = new Date() + "DO CALC: entry:" + tollentry.length + ":exit:" + tollexit.length + "/" + tollcancel.length + " : " + closestdist[0].tolltollplaza + " : " + closestdist[0].dist + "/" + calcrange + " , " + Titanium.Geolocation.getDistanceFilter();
+                    1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                    1 == maildebug || 1 == mindebug && console.log(mmsg);
+                    if (tollentry.length > "0" && tollexit.length > "0") for (var i = 0; i < tollentry.length; i++) for (var j = 0; j < tollexit.length; j++) {
+                        var mmsg = " tollentry[" + i + "].tollplaza vs. tollexit[" + j + "].tollplaza " + tollentry[i].tollplaza + " vs. " + tollexit[j].tollplaza;
+                        1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                        1 == maildebug || 1 == mindebug && console.log(mmsg);
+                        if (tollentry[i].tollplaza.trim() == tollexit[j].tollplaza.trim()) {
+                            hastollentryexit.push(tollentry[i].tollplaza.trim());
+                            var mmsg = "hastollentryexit : " + JSON.stringify(hastollentryexit);
+                            1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                            1 == maildebug || 1 == mindebug && console.log(mmsg);
                         }
                     }
+                    if (hastollentryexit.length > 0) {
+                        tollentrytime = tollentrytime.concat(tollentry);
+                        tollexittime = tollexittime.concat(tollexit);
+                        tollcanceltime = tollcanceltime.concat(tollcancel);
+                        var mmsg = new Date() + ": toll ENTRY being xferred to diff obj: " + JSON.stringify(tollentrytime) + "\n";
+                        mmsg += new Date() + ": toll EXIT being xferred to diff obj: " + JSON.stringify(tollexittime) + "\n";
+                        mmsg += new Date() + ": toll CANCEL being xferred to diff obj: " + JSON.stringify(tollcanceltime) + "\n";
+                        1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                        1 == maildebug || 1 == mindebug && console.log(mmsg);
+                        tollentry = [];
+                        tollexit = [];
+                    }
+                    var mmsg = new Date() + ": check again hastollentryexit : " + JSON.stringify(hastollentryexit);
+                    1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                    1 == maildebug || 1 == mindebug && console.log(mmsg);
+                    if (hastollentryexit.length > 0) {
+                        var hastollentryexitsort = hastollentryexit.sort();
+                        var hastollentryexitsortuniq = [ hastollentryexitsort[0].trim() ];
+                        for (var i = 1; i < hastollentryexitsort.length; i++) hastollentryexitsort[i].trim() !== hastollentryexitsort[i - 1].trim() && hastollentryexitsortuniq.push(hastollentryexitsort[i].trim());
+                        hastollentryexit = [];
+                        var mmsg = "hastollentryexitsortuniq.length: " + hastollentryexitsortuniq.length + " hastollentryexitsortuniq : " + JSON.stringify(hastollentryexitsortuniq);
+                        1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                        1 == maildebug || 1 == mindebug && console.log(mmsg);
+                        if (tollcancel.length > 0) {
+                            var tollcancelsort = tollcanceltime.sort();
+                            var tollcancelsortuniq = [ tollcancelsort[0].trim() ];
+                            for (var i = 1; i < tollcancelsort.length; i++) tollcancelsort[i].trim() !== tollcancelsort[i - 1].trim() && tollcancelsortuniq.push(tollcancelsort[i].trim());
+                            tollcancel = [];
+                            var mmsg = "tollcancelsortuniq.length: " + tollcancelsortuniq.length + " tollcancelsortuniq : " + JSON.stringify(tollcancelsortuniq);
+                            1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                            1 == maildebug || 1 == mindebug && console.log(mmsg);
+                        }
+                        for (var i = 0; i < hastollentryexitsortuniq.length; i++) {
+                            var needtocancel = "0";
+                            if (tollcancelsortuniq && tollcancelsortuniq.length > 0) for (var j = 0; j < tollcancelsortuniq.length; j++) {
+                                var mmsg = "hastollentryexitsortuniq[i] !=  tollcancelsortuniq[j] :" + hastollentryexitsortuniq[i] + " vs ." + tollcancelsortuniq[j];
+                                1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                                1 == maildebug || 1 == mindebug && console.log(mmsg);
+                                if (hastollentryexitsortuniq[i] == tollcancelsortuniq[j]) var needtocancel = 1;
+                            }
+                            if ("0" == needtocancel) {
+                                tolltoupdate.push(hastollentryexitsortuniq[i]);
+                                var mmsg = "1st tolltoupdate.push: " + JSON.stringify(tolltoupdate);
+                                1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                                1 == maildebug || 1 == mindebug && console.log(mmsg);
+                                if (tolltoupdate.length > 1) {
+                                    var tolltoupdatesort = tolltoupdate.sort();
+                                    var tolltoupdatesortuniq = [ tolltoupdatesort[0] ];
+                                    for (var i = 1; i < tolltoupdate.length; i++) tolltoupdatesort[i] !== tolltoupdatesort[i - 1] && tolltoupdatesortuniq.push(tolltoupdatesort[i]);
+                                }
+                                if (tolltoupdatesort) {
+                                    var mmsg = "tolltoupdatesort.length :" + tolltoupdatesort.length + " tolltoupdatesort : " + JSON.stringify(tolltoupdatesort);
+                                    1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                                    1 == maildebug || 1 == mindebug && console.log(mmsg);
+                                }
+                                var mmsg = "tolltoupdate.length: " + tolltoupdate.length + " tolltoupdate : " + JSON.stringify(tolltoupdate);
+                                1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                                1 == maildebug || 1 == mindebug && console.log(mmsg);
+                                if (tolltoupdate.length > 1) {
+                                    var mmsg = "tolltoupdatesortuniq.length :" + tolltoupdatesortuniq.length + " tolltoupdatesortuniq : " + JSON.stringify(tolltoupdatesortuniq);
+                                    1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                                    1 == maildebug || 1 == mindebug && console.log(mmsg);
+                                }
+                            }
+                        }
+                        var tollcancelsortuniq = [];
+                        var tollcancelsort = [];
+                    }
+                    tolltoupdatedb = tolltoupdate.length > 1 ? tolltoupdatesortuniq : tolltoupdate;
+                    var mmsg = "RIGH b4 tolltoupdateDB: tolltoupdatedb.length: " + tolltoupdatedb.length + " tolltoupdatedb : " + JSON.stringify(tolltoupdatedb);
+                    1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                    1 == maildebug || 1 == mindebug && console.log(mmsg);
+                    if (tolltoupdatedb.length > 0) {
+                        for (var i = 0; i < tolltoupdatedb.length; i++) {
+                            for (var j = 0; j < tollentrytime.length; j++) if (tolltoupdatedb[i].trim() == tollentrytime[j].tollplaza) {
+                                var mmsg = "UPDATE DB: updateFound(" + tollentrytime[j].tollplaza + "," + tollentrytime[j].longitude + "," + tollentrytime[j].latitude + "," + tollentrytime[j].timestamp + "," + tollentrytime[j].cost + "," + tollentrytime[j].type + "," + tollentrytime[j].hwy + ")";
+                                1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                                1 == maildebug || 1 == mindebug && console.log(mmsg);
+                                updateFound(tollentrytime[j].tollplaza, tollentrytime[j].longitude, tollentrytime[j].latitude, tollentrytime[j].timestamp, tollentrytime[j].cost, tollentrytime[j].type, tollentrytime[j].hwy);
+                            }
+                            tollentrytime = [];
+                            tollexittime = [];
+                            tollcanceltime = [];
+                        }
+                        tolltoupdate = [];
+                    }
+                } else {
+                    if (timediff > 6e4) {
+                        var mmsg = new Date() + ": entry:" + tollentry.length + ":exit:" + tollexit.length + "/" + tollcancel.length + " :" + closestdist[0].tolltollplaza + " : " + closestdist[0].dist + " / " + calcrange + " skip calculation, " + Titanium.Geolocation.getDistanceFilter() + "ft";
+                        1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
+                        1 == maildebug || 1 == mindebug && console.log(mmsg);
+                    }
+                    Titanium.Geolocation.distanceFilter = closestdist[0].dist > calcrange ? 300 : 75;
                 }
             }
-        } else {
-            var now = new Date();
-            var mmsg = now + ":" + closesttollbydist0 + ":x:" + tolllastupd;
-            mmsg += "|range<" + range + "?:" + closestdist[0].dist;
-            mmsg += "|timediff>" + timerange + "?:" + timediff;
-            1 == maildebug && console.log(mmsg);
-            appendFile(mmsg, debugfile);
         }
     };
     var headingCallback = function(e) {
@@ -437,7 +637,9 @@ var bgLocFound = function() {
         Titanium.App.Properties.setString("currentHeading", trueHeading);
     };
     if (Ti.Geolocation.locationServicesEnabled) {
-        closestdist = [];
+        {
+            closestdist = [];
+        }
         Titanium.Geolocation.accuracy = Titanium.Geolocation.ACCURACY_BEST;
         Titanium.Geolocation.purpose = "Get Current Location";
         var thedistanceNearbyFilter = Titanium.App.Properties.getInt("thedistanceNearbyFilter", 1e4);
@@ -450,8 +652,8 @@ var bgLocFound = function() {
             Titanium.Geolocation.addEventListener("location", locationCallback);
             locationAdded = true;
         }
-        console.log("Titanium.Geolocation.distanceFilter :" + Titanium.Geolocation.distanceFilter);
         var mmsg = new Date() + ": Titanium.Geolocation.distanceFilter to was set to  :" + Titanium.App.Properties.getInt("distanceFilter") + ".";
+        mmsg += "Titanium.Geolocation.distanceFilter :" + Titanium.Geolocation.distanceFilter;
         console.log(mmsg);
         appendFile(mmsg, debugfile);
         if (Titanium.Geolocation.hasCompass) {
@@ -465,10 +667,12 @@ var bgLocFound = function() {
             var trueHeading = "No compass available";
             Titanium.App.Properties.setString("currentHeading", trueHeading);
         }
-    } else Ti.App.iOS.scheduleLocalNotification({
-        alertBody: "Please enable location services :" + new Date() + ".",
-        date: new Date(new Date().getTime() + 3e3)
-    });
+    } else {
+        Ti.App.iOS.scheduleLocalNotification({
+            alertBody: "Please enable location services :" + new Date() + ".",
+            date: new Date(new Date().getTime() + 3e3)
+        });
+    }
 };
 
 bgLocFound(loc);

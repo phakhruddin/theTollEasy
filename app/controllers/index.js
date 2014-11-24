@@ -85,12 +85,20 @@ var locationCallback = function(e)
 		   		var tolltollplaza = json.poi[i].plaza;
 		   		var lat2 = json.poi[i].latitude;
 		   		var lon2 = json.poi[i].longitude;
+		   		var alt2 = thearray[i].altitude;
+		   		var head2 = thearray[i].heading;
+		   		var hwy = thearray[i].hwy;
+		   		var cost = thearray[i].cost;
+		   		var type = thearray[i].type;
+		   		var note = thearray[i].note;
 		   		var dist = Alloy.Globals.calcDistance(lat1,lon1,lat2,lon2,"F");
 		        	distmatch.push({
 		        		tolltollplaza:tolltollplaza, 
 		        		dist:dist,
 		        		latitude:lat2,
 		        		longitude:lon2,
+		        		altitude:alt2,
+		        		heading:head2,
 		        		hwy:hwy,
 		        		cost:cost,
 		        		type:type,
@@ -237,6 +245,10 @@ Ti.App.addEventListener("pause", function() {	// App is paused or HOME SCREEN bu
 	}
 	});
 */
+
+//Start BG Detection Service once the App start
+var service = Ti.App.iOS.registerBackgroundService({url:'bg-service1-3.js'});
+service.start;
 
 Ti.App.addEventListener("pause", function() {
 	Alloy.Globals.eventDetectTollPlaza(loc,"remove");

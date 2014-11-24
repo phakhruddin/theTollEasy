@@ -1,9 +1,26 @@
+function __processArg(obj, key) {
+    var arg = null;
+    if (obj) {
+        arg = obj[key] || null;
+        delete obj[key];
+    }
+    return arg;
+}
+
 function Controller() {
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "TV1TPFTDetail";
-    arguments[0] ? arguments[0]["__parentSymbol"] : null;
-    arguments[0] ? arguments[0]["$model"] : null;
-    arguments[0] ? arguments[0]["__itemTemplate"] : null;
+    if (arguments[0]) {
+        {
+            __processArg(arguments[0], "__parentSymbol");
+        }
+        {
+            __processArg(arguments[0], "$model");
+        }
+        {
+            __processArg(arguments[0], "__itemTemplate");
+        }
+    }
     var $ = this;
     var exports = {};
     Alloy.Models.instance("dummy");
@@ -242,16 +259,21 @@ function Controller() {
     });
     $.__views.tab_tpfounddetail && $.addTopLevelView($.__views.tab_tpfounddetail);
     var __alloyId8 = function() {
-        $.title.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["title"] : Alloy.Models.dummy.get("title");
-        $.title.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["title"] : Alloy.Models.dummy.get("title");
-        $.cost.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["cost"] : Alloy.Models.dummy.get("cost");
-        $.cost.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["cost"] : Alloy.Models.dummy.get("cost");
-        $.datetime.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["datetime"] : Alloy.Models.dummy.get("datetime");
-        $.datetime.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["datetime"] : Alloy.Models.dummy.get("datetime");
-        $.lat.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["lattext"] : Alloy.Models.dummy.get("lattext");
-        $.lat.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["lattext"] : Alloy.Models.dummy.get("lattext");
-        $.lon.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["lontext"] : Alloy.Models.dummy.get("lontext");
-        $.lon.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["lontext"] : Alloy.Models.dummy.get("lontext");
+        $.title.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["title"] : _.template("<%=dummy.title%>", {
+            dummy: Alloy.Models.dummy.toJSON()
+        });
+        $.cost.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["cost"] : _.template("<%=dummy.cost%>", {
+            dummy: Alloy.Models.dummy.toJSON()
+        });
+        $.datetime.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["datetime"] : _.template("<%=dummy.datetime%>", {
+            dummy: Alloy.Models.dummy.toJSON()
+        });
+        $.lat.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["lattext"] : _.template("<%=dummy.lattext%>", {
+            dummy: Alloy.Models.dummy.toJSON()
+        });
+        $.lon.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["lontext"] : _.template("<%=dummy.lontext%>", {
+            dummy: Alloy.Models.dummy.toJSON()
+        });
     };
     Alloy.Models.dummy.on("fetch change destroy", __alloyId8);
     exports.destroy = function() {

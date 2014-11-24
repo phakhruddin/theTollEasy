@@ -10,7 +10,7 @@
 				 <Label id="label_contupd" color="white" top="5" left="20" text="TURN ON location capture">Detect TollPlaza ON/OFF
 				 </Label>
 				 <Label id="label_contupd1" color="gray" top="30" left="20" text="bg loc cap">Turn ON/OFF BACKGROUND continous capture</Label>
-			 	<Switch id="switch_contupd" right="20" titleOff="OFF" titleOn="ON" value="false"/>
+			 	<Switch id="switch_contupd" right="20" titleOff="OFF" titleOn="ON" value="true"/>
 			</TableViewRow>
       	</TableViewSection>
       	<TableViewSection headerTitle="Time and GEO Coding Display">

@@ -1,21 +1,30 @@
+function __processArg(obj, key) {
+    var arg = null;
+    if (obj) {
+        arg = obj[key] || null;
+        delete obj[key];
+    }
+    return arg;
+}
+
 function Controller() {
-    function __alloyId38(e) {
+    function __alloyId41(e) {
         if (e && e.fromAdapter) return;
-        __alloyId38.opts || {};
-        var models = __alloyId37.models;
+        __alloyId41.opts || {};
+        var models = __alloyId40.models;
         var len = models.length;
         var rows = [];
         for (var i = 0; len > i; i++) {
-            var __alloyId33 = models[i];
-            __alloyId33.__transform = transformFunction(__alloyId33);
-            var __alloyId34 = Ti.UI.createTableViewRow({
+            var __alloyId36 = models[i];
+            __alloyId36.__transform = transformFunction(__alloyId36);
+            var __alloyId37 = Ti.UI.createTableViewRow({
                 apiName: "Ti.UI.TableViewRow",
                 height: Ti.UI.SIZE,
-                title: "undefined" != typeof __alloyId33.__transform["title"] ? __alloyId33.__transform["title"] : __alloyId33.get("title"),
+                title: "undefined" != typeof __alloyId36.__transform["title"] ? __alloyId36.__transform["title"] : __alloyId36.get("title"),
                 classes: []
             });
-            rows.push(__alloyId34);
-            var __alloyId35 = Ti.UI.createLabel({
+            rows.push(__alloyId37);
+            var __alloyId38 = Ti.UI.createLabel({
                 textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
                 backgroundColor: "transparent",
                 font: {
@@ -29,11 +38,11 @@ function Controller() {
                 color: "#D8D8BF",
                 width: "300",
                 height: Ti.UI.SIZE,
-                text: "undefined" != typeof __alloyId33.__transform["tollplaza"] ? __alloyId33.__transform["tollplaza"] : __alloyId33.get("tollplaza"),
+                text: "undefined" != typeof __alloyId36.__transform["tollplaza"] ? __alloyId36.__transform["tollplaza"] : __alloyId36.get("tollplaza"),
                 classes: []
             });
-            __alloyId34.add(__alloyId35);
-            var __alloyId36 = Ti.UI.createLabel({
+            __alloyId37.add(__alloyId38);
+            var __alloyId39 = Ti.UI.createLabel({
                 color: "gray",
                 textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
                 backgroundColor: "transparent",
@@ -45,10 +54,10 @@ function Controller() {
                 },
                 apiName: "Ti.UI.Label",
                 top: "47",
-                text: "undefined" != typeof __alloyId33.__transform["custom"] ? __alloyId33.__transform["custom"] : __alloyId33.get("custom"),
+                text: "undefined" != typeof __alloyId36.__transform["custom"] ? __alloyId36.__transform["custom"] : __alloyId36.get("custom"),
                 classes: []
             });
-            __alloyId34.add(__alloyId36);
+            __alloyId37.add(__alloyId39);
         }
         $.__views.table_caplocdata.setData(rows);
     }
@@ -62,9 +71,17 @@ function Controller() {
     }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "caplocdata";
-    arguments[0] ? arguments[0]["__parentSymbol"] : null;
-    arguments[0] ? arguments[0]["$model"] : null;
-    arguments[0] ? arguments[0]["__itemTemplate"] : null;
+    if (arguments[0]) {
+        {
+            __processArg(arguments[0], "__parentSymbol");
+        }
+        {
+            __processArg(arguments[0], "$model");
+        }
+        {
+            __processArg(arguments[0], "__itemTemplate");
+        }
+    }
     var $ = this;
     var exports = {};
     Alloy.Collections.instance("plazano");
@@ -85,8 +102,8 @@ function Controller() {
         classes: []
     });
     $.__views.win_caplocdata.add($.__views.table_caplocdata);
-    var __alloyId37 = Alloy.Collections["plazano"] || plazano;
-    __alloyId37.on("fetch destroy change add remove reset", __alloyId38);
+    var __alloyId40 = Alloy.Collections["plazano"] || plazano;
+    __alloyId40.on("fetch destroy change add remove reset", __alloyId41);
     $.__views.tab_caplocdata = Ti.UI.createTab({
         window: $.__views.win_caplocdata,
         apiName: "Ti.UI.Tab",
@@ -95,7 +112,7 @@ function Controller() {
     });
     $.__views.tab_caplocdata && $.addTopLevelView($.__views.tab_caplocdata);
     exports.destroy = function() {
-        __alloyId37.off("fetch destroy change add remove reset", __alloyId38);
+        __alloyId40.off("fetch destroy change add remove reset", __alloyId41);
     };
     _.extend($, $.__views);
     arguments[0] || {};

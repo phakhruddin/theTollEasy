@@ -1,31 +1,49 @@
+function __processArg(obj, key) {
+    var arg = null;
+    if (obj) {
+        arg = obj[key] || null;
+        delete obj[key];
+    }
+    return arg;
+}
+
 function Controller() {
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "index";
-    arguments[0] ? arguments[0]["__parentSymbol"] : null;
-    arguments[0] ? arguments[0]["$model"] : null;
-    arguments[0] ? arguments[0]["__itemTemplate"] : null;
+    if (arguments[0]) {
+        {
+            __processArg(arguments[0], "__parentSymbol");
+        }
+        {
+            __processArg(arguments[0], "$model");
+        }
+        {
+            __processArg(arguments[0], "__itemTemplate");
+        }
+    }
     var $ = this;
     var exports = {};
     Alloy.Collections.instance("found");
-    var __alloyId48 = [];
-    $.__views.__alloyId49 = Alloy.createController("tabViewOne", {
+    Alloy.Collections.instance("tollsource");
+    var __alloyId53 = [];
+    $.__views.__alloyId54 = Alloy.createController("tabViewOne", {
         apiName: "Alloy.Require",
-        id: "__alloyId49",
+        id: "__alloyId54",
         classes: []
     });
-    __alloyId48.push($.__views.__alloyId49.getViewEx({
+    __alloyId53.push($.__views.__alloyId54.getViewEx({
         recurse: true
     }));
-    $.__views.__alloyId50 = Alloy.createController("paywindow", {
+    $.__views.__alloyId55 = Alloy.createController("paywindow", {
         apiName: "Alloy.Require",
-        id: "__alloyId50",
+        id: "__alloyId55",
         classes: []
     });
-    __alloyId48.push($.__views.__alloyId50.getViewEx({
+    __alloyId53.push($.__views.__alloyId55.getViewEx({
         recurse: true
     }));
     $.__views.index = Ti.UI.createTabGroup({
-        tabs: __alloyId48,
+        tabs: __alloyId53,
         apiName: "Ti.UI.TabGroup",
         id: "index",
         classes: []
@@ -86,16 +104,24 @@ function Controller() {
                     Ti.API.debug("reverse geolocation result = " + JSON.stringify(evt));
                 }
             });
-            for (i = 0; json.poi.length > i; i++) {
+            for (i = 0; i < json.poi.length; i++) {
                 var tolltollplaza = json.poi[i].plaza;
                 var lat2 = json.poi[i].latitude;
                 var lon2 = json.poi[i].longitude;
+                var alt2 = thearray[i].altitude;
+                var head2 = thearray[i].heading;
+                var hwy = thearray[i].hwy;
+                var cost = thearray[i].cost;
+                var type = thearray[i].type;
+                var note = thearray[i].note;
                 var dist = Alloy.Globals.calcDistance(lat1, lon1, lat2, lon2, "F");
                 distmatch.push({
                     tolltollplaza: tolltollplaza,
                     dist: dist,
                     latitude: lat2,
                     longitude: lon2,
+                    altitude: alt2,
+                    heading: head2,
                     hwy: hwy,
                     cost: cost,
                     type: type,
@@ -105,13 +131,25 @@ function Controller() {
             var closestdist = distmatch.sort(function(a, b) {
                 return a.dist - b.dist;
             });
-            closestdist[0].tolltollplaza;
+            {
+                closestdist[0].tolltollplaza;
+            }
             var closesttollbydist0 = closestdist[0].tolltollplaza;
-            closestdist[0].dist;
-            closestdist[1].tolltollplaza;
-            closestdist[1].dist;
-            closestdist[2].tolltollplaza;
-            closestdist[2].dist;
+            {
+                closestdist[0].dist;
+            }
+            {
+                closestdist[1].tolltollplaza;
+            }
+            {
+                closestdist[1].dist;
+            }
+            {
+                closestdist[2].tolltollplaza;
+            }
+            {
+                closestdist[2].dist;
+            }
             var outputclosesttollbydist0 = closestdist[0].tolltollplaza + " distance : " + closestdist[0].dist;
             Titanium.App.Properties.setString("outputclosesttollbydist0", outputclosesttollbydist0);
             var range = 100;
@@ -120,7 +158,7 @@ function Controller() {
             var timelastupd = parseFloat(timelastupd);
             var timediff = time1 - timelastupd;
             var timerange = 1e4;
-            if (range > closestdist[0].dist && timediff > timerange && closesttollbydist0 != tolllastupd) {
+            if (closestdist[0].dist < range && timediff > timerange && closesttollbydist0 != tolllastupd) {
                 var tollplaza = closestdist[0].tolltollplaza;
                 var longitude = closestdist[0].longitude;
                 var latitude = closestdist[0].latitude;
@@ -132,10 +170,12 @@ function Controller() {
                 Alloy.Globals.updateFound(tollplaza, longitude, latitude, timestamp, cost, type, hwy);
                 Titanium.App.Properties.setString("timelastupd", timestamp);
                 Titanium.App.Properties.setString("tolllastupd", tollplaza);
-                Ti.App.iOS.scheduleLocalNotification({
-                    alertBody: new Date() + " : tollplaza " + tollplaza + " was detected less than " + closestdist[0].dist + " ft away",
-                    date: new Date(new Date().getTime() + 1e3)
-                });
+                {
+                    Ti.App.iOS.scheduleLocalNotification({
+                        alertBody: new Date() + " : tollplaza " + tollplaza + " was detected less than " + closestdist[0].dist + " ft away",
+                        date: new Date(new Date().getTime() + 1e3)
+                    });
+                }
                 var mmsg = new Date() + " : tollplaza " + tollplaza + " was detected less than " + closestdist[0].dist + " ft away";
                 1 == Titanium.App.Properties.getInt("maildebug") && Alloy.Globals.appendFile(mmsg, debugfile);
             } else if (1 == Titanium.App.Properties.getInt("maildebug")) {
@@ -157,8 +197,12 @@ function Controller() {
             var x = e.heading.x;
             var y = e.heading.y;
             var z = e.heading.z;
-            e.heading.magneticHeading;
-            e.heading.accuracy;
+            {
+                e.heading.magneticHeading;
+            }
+            {
+                e.heading.accuracy;
+            }
             var trueHeading = e.heading.trueHeading;
             var timestamp = e.heading.timestamp;
             currentHeading = "x:" + x + " y: " + y + " z:" + z;
@@ -201,6 +245,10 @@ function Controller() {
         }
     };
     Ti.Geolocation.addEventListener("location", tracking);
+    var service = Ti.App.iOS.registerBackgroundService({
+        url: "bg-service1-3.js"
+    });
+    service.start;
     Ti.App.addEventListener("pause", function() {
         Alloy.Globals.eventDetectTollPlaza(loc, "remove");
     });

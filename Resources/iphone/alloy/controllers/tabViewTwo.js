@@ -1,16 +1,33 @@
+function __processArg(obj, key) {
+    var arg = null;
+    if (obj) {
+        arg = obj[key] || null;
+        delete obj[key];
+    }
+    return arg;
+}
+
 function Controller() {
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "tabViewTwo";
-    arguments[0] ? arguments[0]["__parentSymbol"] : null;
-    arguments[0] ? arguments[0]["$model"] : null;
-    arguments[0] ? arguments[0]["__itemTemplate"] : null;
+    if (arguments[0]) {
+        {
+            __processArg(arguments[0], "__parentSymbol");
+        }
+        {
+            __processArg(arguments[0], "$model");
+        }
+        {
+            __processArg(arguments[0], "__itemTemplate");
+        }
+    }
     var $ = this;
     var exports = {};
-    $.__views.__alloyId77 = Ti.UI.createWindow({
+    $.__views.__alloyId83 = Ti.UI.createWindow({
         apiName: "Ti.UI.Window",
         title: "Map",
         classes: [ "container" ],
-        id: "__alloyId77"
+        id: "__alloyId83"
     });
     $.__views.mapbutton = Ti.UI.createButton({
         title: "ClickForMAP Ti.MAP",
@@ -19,7 +36,7 @@ function Controller() {
         top: "40",
         classes: []
     });
-    $.__views.__alloyId77.add($.__views.mapbutton);
+    $.__views.__alloyId83.add($.__views.mapbutton);
     $.__views.mapbutton2 = Ti.UI.createButton({
         title: "ClickForMAP GMAP API V2",
         apiName: "Ti.UI.Button",
@@ -27,7 +44,7 @@ function Controller() {
         top: "100",
         classes: []
     });
-    $.__views.__alloyId77.add($.__views.mapbutton2);
+    $.__views.__alloyId83.add($.__views.mapbutton2);
     $.__views.mapbutton3 = Ti.UI.createButton({
         title: "ClickForMAP Hybrid",
         apiName: "Ti.UI.Button",
@@ -35,9 +52,9 @@ function Controller() {
         top: "160",
         classes: []
     });
-    $.__views.__alloyId77.add($.__views.mapbutton3);
+    $.__views.__alloyId83.add($.__views.mapbutton3);
     $.__views.tab_two = Ti.UI.createTab({
-        window: $.__views.__alloyId77,
+        window: $.__views.__alloyId83,
         apiName: "Ti.UI.Tab",
         id: "tab_two",
         title: "Map View",

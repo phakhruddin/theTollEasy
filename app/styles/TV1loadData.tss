@@ -2,6 +2,7 @@
 	backgroundColor:"black"
 },
 "Label": {
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 	width: Ti.UI.SIZE,
 	height: Ti.UI.SIZE,
 	color: "white"
