@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>application-identifier</key>
+	<string>RQZ26EYL43.com.idevice.theTollEasy</string>
+	<key>com.apple.developer.team-identifier</key>
+	<array>
+		<string>RQZ26EYL43</string>
+	</array>
+	<key>get-task-allow</key>
+	<true/>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>RQZ26EYL43.com.idevice.theTollEasy</string>
+	</array>
+</dict>
+</plist>

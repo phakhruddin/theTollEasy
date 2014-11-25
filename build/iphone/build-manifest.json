@@ -1,0 +1,23 @@
+{
+	"target": "simulator",
+	"deployType": "development",
+	"deviceFamily": "universal",
+	"iosSdkPath": "/Library/Application Support/Titanium/mobilesdk/osx/3.2.2.GA/iphone",
+	"tiCoreHash": "77157e1ffaec640cf559356a147b6a4c",
+	"modulesHash": "4ee6d342b99ebd89f7f9a6825af1966d",
+	"modulesNativeHash": "d0ef6b87a34b8194c5dae5bbf4e7f580",
+	"gitHash": "96e9a07",
+	"name": "theTollEasy",
+	"id": "com.idevice.theTollEasy",
+	"analytics": true,
+	"publisher": "wannoorbayawchik",
+	"url": "http://idevice.net",
+	"version": "1.0",
+	"description": "not specified",
+	"copyright": "2014 by wannoorbayawchik",
+	"guid": "f522586e-6140-4a60-8a9f-94674238f747",
+	"skipJSMinification": true,
+	"forceCopy": false,
+	"forceCopyAll": false,
+	"encryptJS": false
+}
