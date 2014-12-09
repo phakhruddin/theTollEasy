@@ -11,20 +11,59 @@ if (Ti.Geolocation.locationServicesEnabled) {
 
 
 
-// initialize variable
+// initialize variable START
 var action = "add";
-var trackingEnabled = false ; Titanium.App.Properties.setInt('complextracking',0);
-var simpletrackingEnabled = false ; Titanium.App.Properties.setInt('simpletracking',0);
-Titanium.App.Properties.setInt('maildebug',0);
-Titanium.App.Properties.setInt('count', 0); // reset counter
-//maildebug is disabled initially.
-var maildebug = 0; Titanium.App.Properties.setInt('maildebug',0);
+!Titanium.App.Properties.getInt('maildebug') ? maildebug = 0 : maildebug = Titanium.App.Properties.getInt('maildebug');
+var mindebug = Titanium.App.Properties.getInt('mindebug',1);
 !Titanium.App.Properties.getString('loc') ? loc = "newberlin" : loc = Titanium.App.Properties.getString('loc');
-var firstplazadist = 10000;Titanium.App.Properties.setInt('firstplazadist',firstplazadist);
+Titanium.App.Properties.setInt('closercount',500); // reset closer count to 500 then go down
+!Titanium.App.Properties.getInt('radius')? radius = 3000: radius = Titanium.App.Properties.getInt('radius');
+Ti.App.Properties.removeProperty('distmatchobj');
+Ti.App.Properties.removeProperty('thedistanceNearbyFilter');
+var newdistanceFilter = Titanium.App.Properties.getInt('distanceFilter',75);
+var detectionRange = Titanium.App.Properties.getInt('detectionRange',200);
+var distmatch = [];
+var tollentry = [];
+var tollexit = [];
+var tollcancel = [];
+var tolltoupdate = [];
+var hastollentryexit = [];
+var foundentry = foundexit = "0";
+var needtocancel = 1;
+var tollentrytime = [];
+var tollexittime = [];
+var tollcanceltime = [];
+var approachtoll = 1;
+var lastapproachtoll = "none";
+// initialize variable END
 
-// BG
+// BG START
+var writeFile = function (content, filename){
+			var file = Ti.Filesystem.getFile(
+				Ti.Filesystem.tempDirectory, filename
+			);
+			file.write(content+"\n");
+};
+
+var appendFile = function (content, filename){
+			var file = Ti.Filesystem.getFile(
+				Ti.Filesystem.tempDirectory, filename
+			);
+			file.append(content+"\n");
+};
+
+//* Mail debugging on
 var debugfile = "maildebug.txt";
 var locfile = "location.txt";
+
+if (mindebug == "1") {
+	writeFile((new Date())+": MIN DEBUG start", debugfile);
+	if (maildebug == "1") {
+		writeFile((new Date())+": debugging start", debugfile);
+	};
+};
+
+// JSON file for downloaded tolldata
 var thefile = loc+".txt";
 var file4 = Ti.Filesystem.getFile(
 				Ti.Filesystem.tempDirectory, thefile
@@ -32,12 +71,14 @@ var file4 = Ti.Filesystem.getFile(
 var thefile5 = loc+"1.txt";
 var file5 = Ti.Filesystem.getFile(
 				Ti.Filesystem.tempDirectory, thefile5
-			);
+			);		
 var contents = file4.read() || file5.read();
 if(!contents){
 	console.log("contents is empty, download tollplaza information");
 	Alloy.Globals.updateTollPlaza("newberlin");
 }
+// BG END
+
 //*console.log("contents text :" +contents.text);
 if(contents && contents.text){
 		var preParseData = (contents.text); 
@@ -162,7 +203,6 @@ var locationCallback = function(e)
 	}
 };
 	
-
 var headingCallback = function(e){
 	if(trackingEnabled) {
 	if (e.error)
@@ -184,68 +224,6 @@ var headingCallback = function(e){
 	}
 };
 	
-
-
-	if (Ti.Geolocation.locationServicesEnabled) {
-		var distmatch = closestdist = [];
-		Titanium.Geolocation.accuracy = Titanium.Geolocation.ACCURACY_BEST;
-		Titanium.Geolocation.distanceFilter = 0;
-		Titanium.Geolocation.purpose = 'Get Current Location';
-		
-		Titanium.Geolocation.addEventListener('location', locationCallback);
-		locationAdded = true && Titanium.App.Properties.setString('locationAdded', "true");
-		
-	   if (Titanium.Geolocation.hasCompass)
-		{
-			Titanium.Geolocation.showCalibration = false;
-			Titanium.Geolocation.headingFilter = 45;
-			Titanium.Geolocation.addEventListener('heading', headingCallback);
-			headingAdded = true;
-		}
-		else {
-			Titanium.API.info("No Compass on device");
-			currentHeading = 'No compass available';
-			var trueHeading = 'No compass available';
-			Titanium.App.Properties.setString('currentHeading', trueHeading);
-		}
-	} else {
-	    alert('Please enable location services');
-	}
-
-	
-	var tracking = function(e) {  //Simple Tracking
-     // Only update location is app is paused
-    var count = Titanium.App.Properties.getInt('count');
-    if(simpletrackingEnabled)
-	    {
-	        var count = Titanium.App.Properties.getInt('count', count);count++;
-	        mmsg = new Date(e.coords.timestamp)+','+e.coords.timestamp+','+e.coords.latitude+','+e.coords.longitude;
-	        //console.log(" maildebug is: "+Titanium.App.Properties.getInt('maildebug')+" , count is : "+count);
-	      	if((Titanium.App.Properties.getInt('mindebug'))==1 && count >= 30){	//log loc to debug file every 30 secs
-		      	console.log(mmsg+" should be appended to maildebug.txt");	
-				Alloy.Globals.appendFile(mmsg,locfile);
-				var count = 0;
-			}
-	        Ti.API.info("Location: "+e.coords.latitude+" , "+e.coords.longitude+" , " + new Date(e.coords.timestamp));
-	        Titanium.App.Properties.setInt('count', count);
-	    }
-	}; 
-	// Add eventlistener on location
-	Ti.Geolocation.addEventListener("location", tracking);
-	
-/* temp disable
-Ti.App.addEventListener("pause", function() {	// App is paused or HOME SCREEN button pressed
-	if (Titanium.App.Properties.getInt('complextracking') == 1 ) {
-		trackingEnabled = true;
-		console.log("transition to background with complextracking and debug set to :"+Titanium.App.Properties.getInt('maildebug'));
-	} 
-	if (Titanium.App.Properties.getInt('simpletracking') == 1 ){
-		simpletrackingEnabled = true;
-		console.log("transition to background with simpletracking and debug set to :"+Titanium.App.Properties.getInt('maildebug'));
-	}
-	});
-*/
-
 //Start BG Detection Service once the App start
 var service = Ti.App.iOS.registerBackgroundService({url:'bg-service1-3.js'});
 service.start;
@@ -256,38 +234,4 @@ Ti.App.addEventListener("pause", function() {
 
 Ti.App.addEventListener("resume", function(){ 
 	Alloy.Globals.eventDetectTollPlaza("newberlin","add");
-	//    trackingEnabled = false ; Titanium.App.Properties.setInt('complextracking',0);
-	 //   simpletrackingEnabled = false ; Titanium.App.Properties.setInt('simpletracking',0);
 	});
-	
-/*
-var SimpleBGTest = function () {
-	var simpletrackingEnabled             = false;
-	Ti.Geolocation.purpose      = "Determine device location";
-	Ti.Geolocation.accuracy         = Ti.Geolocation.ACCURACY_BEST;
-	Ti.Geolocation.distanceFilter   = 0;     
-	 
-	var tracking = function(e) {
-	 
-	     // Only update location is app is paused
-	    if(simpletrackingEnabled)
-	    {
-	        // Do some server stuff...
-	        Ti.API.info("Location: " + new Date(e.coords.timestamp));
-	    }
-	};
-	 
-	// Add eventlistener on location
-	Ti.Geolocation.addEventListener("location", tracking);
-	 
-	// App is paused
-	Ti.App.addEventListener("pause", function(){ 
-	    trackingEnabled = true; 
-	});
-	 
-	// App is resumed
-	Ti.App.addEventListener("resume", function(){ 
-	    trackingEnabled = false; 
-	});
-};
-*/
