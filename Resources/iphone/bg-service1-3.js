@@ -648,7 +648,7 @@ var bgLocFound = function() {
             Titanium.Geolocation.addEventListener("location", locationCallback);
             locationAdded = true;
         } else {
-            Titanium.Geolocation.distanceFilter = Titanium.App.Properties.getInt("distanceFilter");
+            Titanium.Geolocation.distanceFilter = Titanium.App.Properties.getInt("distanceFilter", 75);
             Titanium.Geolocation.addEventListener("location", locationCallback);
             locationAdded = true;
         }

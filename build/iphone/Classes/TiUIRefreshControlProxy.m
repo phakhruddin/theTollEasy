@@ -24,7 +24,7 @@
 {
     RELEASE_TO_NIL(_refreshControl);
     RELEASE_TO_NIL(_attributedString);
-    RELEASE_TO_NIL(_tintColor);
+    RELEASE_TO_NIL(refreshTintColor);
     [super dealloc];
 }
 
@@ -45,7 +45,7 @@
 {
     if (_refreshControl != nil) {
         [_refreshControl setAttributedTitle:_attributedString];
-        [_refreshControl setTintColor:_tintColor];
+        [_refreshControl setTintColor:refreshTintColor];
     }
 }
 
@@ -78,8 +78,8 @@
 {
     ENSURE_SINGLE_ARG_OR_NIL(args, NSObject);
     [self replaceValue:args forKey:@"tintColor" notification:NO];
-    RELEASE_TO_NIL(_tintColor);
-    _tintColor = [[[TiUtils colorValue:args] color] retain];
+    RELEASE_TO_NIL(refreshTintColor);
+    refreshTintColor = [[[TiUtils colorValue:args] color] retain];
     //Changing tintColor works on iOS6 but not on iOS7. iOS Bug?
     TiThreadPerformOnMainThread(^{
         [self refreshControl];

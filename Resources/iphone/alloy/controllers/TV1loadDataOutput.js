@@ -42,7 +42,7 @@ function Controller() {
     }
     function transformFunction(model) {
         var transform = model.toJSON();
-        console.log("transform data : " + JSON.stringify(transform));
+        console.log("transform data : " + JSON.stringify(transform.tollplaza));
         transform.title = transform.tollplaza + "," + transform.latitude + "," + transform.longitude + "," + transform.cost + "," + transform.hwy + "," + transform.note + "," + transform.timestamp;
         transform.timestamp = new Date(transform.timestamp);
         transform.latitude = "LAT : " + transform.latitude;

@@ -29,4 +29,5 @@
  */
 +(void)layoutProxy:(TiViewProxy*)thisProxy;
 
++(void)resetQueue;
 @end

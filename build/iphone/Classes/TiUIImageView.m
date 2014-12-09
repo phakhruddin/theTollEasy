@@ -53,6 +53,10 @@ DEFINE_EXCEPTIONS
 {
 	if (autoWidth > 0)
 	{
+		//If height is DIP returned a scaled autowidth to maintain aspect ratio
+		if (TiDimensionIsDip(height) && autoHeight > 0) {
+			return roundf(autoWidth*height.value/autoHeight);
+		}
 		return autoWidth;
 	}
 	

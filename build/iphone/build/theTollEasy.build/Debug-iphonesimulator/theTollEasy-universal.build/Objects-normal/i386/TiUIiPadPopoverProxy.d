@@ -39,4 +39,5 @@ dependencies: \
   /Users/wannoorbayawchik/Documents/Titanium_Studio_Workspace/theTollEasy/build/iphone/Classes/TiWindowProxy.h \
   /Users/wannoorbayawchik/Documents/Titanium_Studio_Workspace/theTollEasy/build/iphone/Classes/TiTab.h \
   /Users/wannoorbayawchik/Documents/Titanium_Studio_Workspace/theTollEasy/build/iphone/Classes/TiTabGroup.h \
-  /Users/wannoorbayawchik/Documents/Titanium_Studio_Workspace/theTollEasy/build/iphone/Classes/TiUIiOSTransitionAnimationProxy.h
+  /Users/wannoorbayawchik/Documents/Titanium_Studio_Workspace/theTollEasy/build/iphone/Classes/TiUIiOSTransitionAnimationProxy.h \
+  /Users/wannoorbayawchik/Documents/Titanium_Studio_Workspace/theTollEasy/build/iphone/Classes/TiUITableViewRowProxy.h

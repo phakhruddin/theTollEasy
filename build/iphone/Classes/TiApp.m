@@ -66,6 +66,7 @@ TI_INLINE void waitForMemoryPanicCleared();   //WARNING: This must never be run 
 @synthesize pendingCompletionHandlers;
 @synthesize backgroundTransferCompletionHandlers;
 @synthesize localNotification;
+@synthesize appBooted;
 
 +(void)initialize
 {
@@ -179,7 +180,7 @@ TI_INLINE void waitForMemoryPanicCleared();   //WARNING: This must never be run 
 
 - (void)boot
 {
-	DebugLog(@"[INFO] %@/%@ (%s.96e9a07)",TI_APPLICATION_NAME,TI_APPLICATION_VERSION,TI_VERSION_STR);
+	DebugLog(@"[INFO] %@/%@ (%s.b958a70)",TI_APPLICATION_NAME,TI_APPLICATION_VERSION,TI_VERSION_STR);
 	
 	sessionId = [[TiUtils createUUID] retain];
 	TITANIUM_VERSION = [[NSString stringWithCString:TI_VERSION_STR encoding:NSUTF8StringEncoding] retain];
@@ -631,6 +632,12 @@ TI_INLINE void waitForMemoryPanicCleared();   //WARNING: This must never be run 
         [dict addEntriesFromDictionary:success];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:kTiURLSessionCompleted object:self userInfo:dict];
+
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask
+ didResumeAtOffset:(int64_t)fileOffset
+expectedTotalBytes:(int64_t)expectedTotalBytes {
 
 }
 

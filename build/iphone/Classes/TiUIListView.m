@@ -1150,6 +1150,11 @@ static TiViewProxy * FindViewProxyWithBindIdContainingPoint(UIView *view, CGPoin
 {
     NSUInteger sectionCount = 0;
     
+    //TIMOB-15526
+    if (tableView != _tableView && tableView.backgroundColor == [UIColor clearColor]) {
+        tableView.backgroundColor = [UIColor whiteColor];
+    }
+
     if (_searchResults != nil) {
         sectionCount = [_searchResults count];
     } else {
@@ -1276,14 +1281,25 @@ static TiViewProxy * FindViewProxyWithBindIdContainingPoint(UIView *view, CGPoin
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (searchActive || (tableView != _tableView)) {
-        return;
-    }
     //Let the cell configure its background
     [(TiUIListItem*)cell configureCellBackground];
     
-    //Tell the proxy about the cell to be displayed
-    [self.listViewProxy willDisplayCell:indexPath];
+    if ([TiUtils isIOS7OrGreater]) {
+        NSIndexPath* realPath = [self pathForSearchPath:indexPath];
+        id tintValue = [self valueWithKey:@"tintColor" atIndexPath:realPath];
+        UIColor* theTint = [[TiUtils colorValue:tintValue] color];
+        if (theTint == nil) {
+            theTint = [tableView tintColor];
+        }
+        [cell performSelector:@selector(setTintColor:) withObject:theTint];
+    }
+    
+    if (searchActive || (tableView != _tableView)) {
+        return;
+    } else {
+        //Tell the proxy about the cell to be displayed for marker event
+        [self.listViewProxy willDisplayCell:indexPath];
+    }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section

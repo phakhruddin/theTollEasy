@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0CD46CC5A1D542DF8D98DF04 /* libti.map.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ECA87ED3B5064FD08ED6E538 /* libti.map.a */; };
 		1D0061C1160283820016BBEE /* TiBindingRunLoop.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0061C0160283820016BBEE /* TiBindingRunLoop.m */; };
 		1D0061C2160283820016BBEE /* TiBindingRunLoop.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0061C0160283820016BBEE /* TiBindingRunLoop.m */; };
 		1D0061C3160283820016BBEE /* TiBindingRunLoop.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0061C0160283820016BBEE /* TiBindingRunLoop.m */; };
@@ -31,7 +30,9 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		2412F467115C296300454E5B /* TiMediaVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2412F465115C296300454E5B /* TiMediaVideoPlayer.m */; };
 		242E8E3111BA39FD0046A0D0 /* libTiCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 242E8E3011BA39FD0046A0D0 /* libTiCore.a */; };
+		ED93D016E93F44498B1E213B /* libti.map.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADF5C3C71EFF4E4F92E47A9D /* libti.map.a */; };
 		242E8E3211BA39FE0046A0D0 /* libTiCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 242E8E3011BA39FD0046A0D0 /* libTiCore.a */; };
+		DF2E108B724840ACA36E1F7B /* libti.map.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADF5C3C71EFF4E4F92E47A9D /* libti.map.a */; };
 		242E967711BAD2F20046A0D0 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 242E967411BAD2F20046A0D0 /* AsyncSocket.m */; };
 		242E967811BAD2F20046A0D0 /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 242E967611BAD2F20046A0D0 /* AsyncUdpSocket.m */; };
 		242E967911BAD2F20046A0D0 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 242E967411BAD2F20046A0D0 /* AsyncSocket.m */; };
@@ -483,7 +484,6 @@
 		4688700715E39A9D008FA326 /* TiUIiPhoneAlertDialogStyleProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4688700615E39A9D008FA326 /* TiUIiPhoneAlertDialogStyleProxy.m */; };
 		4688700815E39A9D008FA326 /* TiUIiPhoneAlertDialogStyleProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4688700615E39A9D008FA326 /* TiUIiPhoneAlertDialogStyleProxy.m */; };
 		4688700915E39A9D008FA326 /* TiUIiPhoneAlertDialogStyleProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4688700615E39A9D008FA326 /* TiUIiPhoneAlertDialogStyleProxy.m */; };
-		4BB779678AE04200B60F4D53 /* libti.map.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ECA87ED3B5064FD08ED6E538 /* libti.map.a */; };
 		4D3033A3136239B30034640F /* TiFilesystemFileStreamProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D3033A2136239B30034640F /* TiFilesystemFileStreamProxy.m */; };
 		502A68DA16EEAA7500661EF6 /* TiUIListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 502A68D116EEAA7500661EF6 /* TiUIListItem.m */; };
 		502A68DB16EEAA7500661EF6 /* TiUIListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 502A68D116EEAA7500661EF6 /* TiUIListItem.m */; };
@@ -509,12 +509,6 @@
 		5081CEFA15F8100E00C881D8 /* TiExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5081CEF715F8100E00C881D8 /* TiExceptionHandler.m */; };
 		508DB8FC16D431F000F9910E /* libti_ios_profiler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 502E9D2316CAFB9D00C1BD26 /* libti_ios_profiler.a */; };
 		508DB8FD16D431F100F9910E /* libti_ios_profiler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 502E9D2316CAFB9D00C1BD26 /* libti_ios_profiler.a */; };
-		60BFE3981A1EAEF600428731 /* XCodeI90-IL25entryexit.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 60BFE3971A1EAEF600428731 /* XCodeI90-IL25entryexit.gpx */; };
-		60BFE39A1A1ED26400428731 /* XCodeI90-il47entryexit.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 60BFE3991A1ED26400428731 /* XCodeI90-il47entryexit.gpx */; };
-		60BFE39C1A1ED28800428731 /* XCodei294-golfexitentry.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 60BFE39B1A1ED28800428731 /* XCodei294-golfexitentry.gpx */; };
-		60BFE39E1A1ED2CF00428731 /* XCoderanchobernardo.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 60BFE39D1A1ED2CF00428731 /* XCoderanchobernardo.gpx */; };
-		60BFE3A01A1EDB0B00428731 /* XCodeI90-IL25entry.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 60BFE39F1A1EDB0B00428731 /* XCodeI90-IL25entry.gpx */; };
-		60BFE3A21A1EF12300428731 /* XCodeI88-Ogdenexitentry.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 60BFE3A11A1EF12300428731 /* XCodeI88-Ogdenexitentry.gpx */; };
 		841CCAD11807395C00C8DB76 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 841CCAD01807395C00C8DB76 /* CoreText.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		841CCAD21807396E00C8DB76 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 841CCAD01807395C00C8DB76 /* CoreText.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		841CCAD31807397800C8DB76 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 841CCAD01807395C00C8DB76 /* CoreText.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -622,7 +616,6 @@
 		B6C5206118035AF3002471C6 /* TiUIiOSAttributedStringProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C5206018035AF3002471C6 /* TiUIiOSAttributedStringProxy.m */; };
 		B6C5206218035AF3002471C6 /* TiUIiOSAttributedStringProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C5206018035AF3002471C6 /* TiUIiOSAttributedStringProxy.m */; };
 		B6C5206318035AF3002471C6 /* TiUIiOSAttributedStringProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C5206018035AF3002471C6 /* TiUIiOSAttributedStringProxy.m */; };
-		C0A3C9395DED4BF49DE28D99 /* libti.map.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ECA87ED3B5064FD08ED6E538 /* libti.map.a */; };
 		D4AB36F5123DE20200DED4A0 /* TiUIClipboardProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = D4AB36F4123DE20200DED4A0 /* TiUIClipboardProxy.m */; };
 		D4AB36F6123DE20200DED4A0 /* TiUIClipboardProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = D4AB36F4123DE20200DED4A0 /* TiUIClipboardProxy.m */; };
 		D930111E16DA9D63002E25C2 /* TiCalendarRecurrenceRule.m in Sources */ = {isa = PBXBuildFile; fileRef = D930111D16DA9D62002E25C2 /* TiCalendarRecurrenceRule.m */; };
@@ -906,6 +899,7 @@
 		DABB37B412E8CB280026A6EA /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 24EB0A57111E1BAE001DC2D1 /* libxml2.dylib */; };
 		DABB37B512E8CB280026A6EA /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24597034118FF66300519F79 /* StoreKit.framework */; };
 		DABB37B612E8CB280026A6EA /* libTiCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 242E8E3011BA39FD0046A0D0 /* libTiCore.a */; };
+		D0E609DB1D434D15999AE2D1 /* libti.map.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADF5C3C71EFF4E4F92E47A9D /* libti.map.a */; };
 		DABB37B712E8CB280026A6EA /* libtiverify.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24D5C75811E6364F00F097E2 /* libtiverify.a */; };
 		DABDEB08128B5A8F00C85FEA /* AudioStreamerCUR.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9FF582128A1F3600457759 /* AudioStreamerCUR.m */; };
 		DABF3ECF134D210400836137 /* TiBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF3ECE134D210400836137 /* TiBuffer.m */; };
@@ -956,7 +950,7 @@
 		1D19459913FF3BE500E2B4D0 /* TIDOMDocumentTypeProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TIDOMDocumentTypeProxy.h; sourceTree = "<group>"; };
 		1D19459A13FF3BE500E2B4D0 /* TIDOMDocumentTypeProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TIDOMDocumentTypeProxy.m; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D6058910D05DD3D006BFB54 /* theTollEasy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = theTollEasy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* theTollEasy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "theTollEasy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DCC542D13FF0B0700DF3EE5 /* TIDOMCharacterDataProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TIDOMCharacterDataProxy.h; sourceTree = "<group>"; };
 		1DCC542E13FF0B0800DF3EE5 /* TIDOMCharacterDataProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TIDOMCharacterDataProxy.m; sourceTree = "<group>"; };
 		1DD9388A1609230900091777 /* TiBindingTiValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiBindingTiValue.h; sourceTree = "<group>"; };
@@ -967,6 +961,7 @@
 		241EAA21118AB3BB0081A5BE /* defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = defines.h; path = Classes/defines.h; sourceTree = SOURCE_ROOT; };
 		241EAEC5118E2BA90081A5BE /* project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = project.xcconfig; sourceTree = "<group>"; };
 		242E8E3011BA39FD0046A0D0 /* libTiCore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTiCore.a; path = lib/libTiCore.a; sourceTree = SOURCE_ROOT; };
+		ADF5C3C71EFF4E4F92E47A9D /* libti.map.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libti.map.a; path = "/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1/libti.map.a"; sourceTree = "<absolute>"; };
 		242E95C811BAC8B40046A0D0 /* TiDebugger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TiDebugger.h; path = Classes/TiDebugger.h; sourceTree = SOURCE_ROOT; };
 		242E967311BAD2F20046A0D0 /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AsyncSocket.h; path = Classes/AsyncSocket.h; sourceTree = SOURCE_ROOT; };
 		242E967411BAD2F20046A0D0 /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AsyncSocket.m; path = Classes/AsyncSocket.m; sourceTree = SOURCE_ROOT; };
@@ -1316,7 +1311,7 @@
 		24D0700411D0253D00F615D8 /* TiUIiOSProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TiUIiOSProxy.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		24D0700511D0253D00F615D8 /* TiUIiOSProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TiUIiOSProxy.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		24D5C75811E6364F00F097E2 /* libtiverify.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtiverify.a; path = lib/libtiverify.a; sourceTree = SOURCE_ROOT; };
-		24D8E4B1119B9D8A00F8CAA6 /* theTollEasy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = theTollEasy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		24D8E4B1119B9D8A00F8CAA6 /* theTollEasy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "theTollEasy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		24DD042A116A6C58006FD6E1 /* TiToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiToolbar.h; sourceTree = "<group>"; };
 		24DD0455116A6F02006FD6E1 /* TiTabGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiTabGroup.h; sourceTree = "<group>"; };
 		24DD0977116D8E07006FD6E1 /* TiToolbarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiToolbarButton.h; sourceTree = "<group>"; };
@@ -1410,7 +1405,7 @@
 		2BCD59C41429561D00DEC2E8 /* TiUIiOSToolbarProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TiUIiOSToolbarProxy.m; sourceTree = "<group>"; };
 		2BDEA4F11448FFB7004EC750 /* TiUIiOSTabbedBarProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiUIiOSTabbedBarProxy.h; sourceTree = "<group>"; };
 		2BDEA4F21448FFB7004EC750 /* TiUIiOSTabbedBarProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TiUIiOSTabbedBarProxy.m; sourceTree = "<group>"; };
-		32CA4F630368D1EE00C91783 /* theTollEasy_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = theTollEasy_Prefix.pch; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* theTollEasy_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "theTollEasy_Prefix.pch"; sourceTree = "<group>"; };
 		4688700515E39A9D008FA326 /* TiUIiPhoneAlertDialogStyleProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiUIiPhoneAlertDialogStyleProxy.h; sourceTree = "<group>"; };
 		4688700615E39A9D008FA326 /* TiUIiPhoneAlertDialogStyleProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TiUIiPhoneAlertDialogStyleProxy.m; sourceTree = "<group>"; };
 		4D3033A1136239B30034640F /* TiFilesystemFileStreamProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TiFilesystemFileStreamProxy.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -1432,12 +1427,6 @@
 		502E9D2316CAFB9D00C1BD26 /* libti_ios_profiler.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libti_ios_profiler.a; path = lib/libti_ios_profiler.a; sourceTree = "<group>"; };
 		5081CEF615F8100E00C881D8 /* TiExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiExceptionHandler.h; sourceTree = "<group>"; };
 		5081CEF715F8100E00C881D8 /* TiExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TiExceptionHandler.m; sourceTree = "<group>"; };
-		60BFE3971A1EAEF600428731 /* XCodeI90-IL25entryexit.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "XCodeI90-IL25entryexit.gpx"; path = "../../../../../Dropbox/Apps/GPXCreator/XCodeI90-IL25entryexit.gpx"; sourceTree = "<group>"; };
-		60BFE3991A1ED26400428731 /* XCodeI90-il47entryexit.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "XCodeI90-il47entryexit.gpx"; path = "../../../../../Dropbox/Apps/GPXCreator/XCodeI90-il47entryexit.gpx"; sourceTree = "<group>"; };
-		60BFE39B1A1ED28800428731 /* XCodei294-golfexitentry.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "XCodei294-golfexitentry.gpx"; path = "../../../../../Dropbox/Apps/GPXCreator/XCodei294-golfexitentry.gpx"; sourceTree = "<group>"; };
-		60BFE39D1A1ED2CF00428731 /* XCoderanchobernardo.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = XCoderanchobernardo.gpx; path = ../../../../../Dropbox/Apps/GPXCreator/XCoderanchobernardo.gpx; sourceTree = "<group>"; };
-		60BFE39F1A1EDB0B00428731 /* XCodeI90-IL25entry.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "XCodeI90-IL25entry.gpx"; path = "../../../../../Dropbox/Apps/GPXCreator/XCodeI90-IL25entry.gpx"; sourceTree = "<group>"; };
-		60BFE3A11A1EF12300428731 /* XCodeI88-Ogdenexitentry.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "XCodeI88-Ogdenexitentry.gpx"; path = "../../../../../Dropbox/Apps/GPXCreator/XCodeI88-Ogdenexitentry.gpx"; sourceTree = "<group>"; };
 		841CCAD01807395C00C8DB76 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		843FA58217BD4DFF0064E061 /* TiUIiOSNavWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiUIiOSNavWindow.h; sourceTree = "<group>"; };
 		843FA58317BD4DFF0064E061 /* TiUIiOSNavWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TiUIiOSNavWindow.m; sourceTree = "<group>"; };
@@ -1556,7 +1545,7 @@
 		DAA72342156D642400757987 /* TiConsole.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TiConsole.m; sourceTree = "<group>"; };
 		DAA905CC11A359F10030B119 /* TiMediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiMediaItem.h; sourceTree = "<group>"; };
 		DAA905CD11A359F10030B119 /* TiMediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TiMediaItem.m; sourceTree = "<group>"; };
-		DABB37BC12E8CB280026A6EA /* theTollEasy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = theTollEasy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DABB37BC12E8CB280026A6EA /* theTollEasy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "theTollEasy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DABF3ECD134D210400836137 /* TiBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiBuffer.h; sourceTree = "<group>"; };
 		DABF3ECE134D210400836137 /* TiBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TiBuffer.m; sourceTree = "<group>"; };
 		DABF3ED5134D2CA100836137 /* StreamModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamModule.h; sourceTree = "<group>"; };
@@ -1568,7 +1557,6 @@
 		DADE76D313D65C590079FC75 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		DAE541E113577BEC00A65123 /* TiDataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiDataStream.h; sourceTree = "<group>"; };
 		DAE541E213577BEC00A65123 /* TiDataStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TiDataStream.m; sourceTree = "<group>"; };
-		ECA87ED3B5064FD08ED6E538 /* libti.map.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libti.map.a; path = "/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1/libti.map.a"; sourceTree = "<absolute>"; };
 		EF03EFEF13E3665100BD4FF7 /* ASIDataCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDataCompressor.h; sourceTree = "<group>"; };
 		EF03EFF013E3665100BD4FF7 /* ASIDataCompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDataCompressor.m; sourceTree = "<group>"; };
 		EF03EFF113E3665100BD4FF7 /* ASIDataDecompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDataDecompressor.h; sourceTree = "<group>"; };
@@ -1612,7 +1600,7 @@
 				24EB0A58111E1BAE001DC2D1 /* libxml2.dylib in Frameworks */,
 				24597035118FF66300519F79 /* StoreKit.framework in Frameworks */,
 				242E8E3111BA39FD0046A0D0 /* libTiCore.a in Frameworks */,
-				0CD46CC5A1D542DF8D98DF04 /* libti.map.a in Frameworks */,
+				ED93D016E93F44498B1E213B /* libti.map.a in Frameworks */,
 				242EA11611BD956F0046A0D0 /* ExternalAccessory.framework in Frameworks */,
 				24D5C75911E6364F00F097E2 /* libtiverify.a in Frameworks */,
 				DAA4B2AE134E3DBD00AB6011 /* libti_ios_debugger.a in Frameworks */,
@@ -1649,7 +1637,7 @@
 				24D8E4AB119B9D8A00F8CAA6 /* libxml2.dylib in Frameworks */,
 				24D8E4AC119B9D8A00F8CAA6 /* StoreKit.framework in Frameworks */,
 				242E8E3211BA39FE0046A0D0 /* libTiCore.a in Frameworks */,
-				4BB779678AE04200B60F4D53 /* libti.map.a in Frameworks */,
+				DF2E108B724840ACA36E1F7B /* libti.map.a in Frameworks */,
 				24D5C75A11E6364F00F097E2 /* libtiverify.a in Frameworks */,
 				DAA4B2AF134E3DBD00AB6011 /* libti_ios_debugger.a in Frameworks */,
 				DADE76D613D65C6F0079FC75 /* libicucore.dylib in Frameworks */,
@@ -1687,7 +1675,7 @@
 				DABB37B412E8CB280026A6EA /* libxml2.dylib in Frameworks */,
 				DABB37B512E8CB280026A6EA /* StoreKit.framework in Frameworks */,
 				DABB37B612E8CB280026A6EA /* libTiCore.a in Frameworks */,
-				C0A3C9395DED4BF49DE28D99 /* libti.map.a in Frameworks */,
+				D0E609DB1D434D15999AE2D1 /* libti.map.a in Frameworks */,
 				DABB37B712E8CB280026A6EA /* libtiverify.a in Frameworks */,
 				DAA4B2B0134E3DBD00AB6011 /* libti_ios_debugger.a in Frameworks */,
 				DADE76D713D65C7D0079FC75 /* libicucore.dylib in Frameworks */,
@@ -1780,6 +1768,7 @@
 				24CA8A0A111161DC0084E2DE /* Utils */,
 				24CA8A0B111161E10084E2DE /* API */,
 			);
+			name = Classes;
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -2754,12 +2743,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				60BFE3A11A1EF12300428731 /* XCodeI88-Ogdenexitentry.gpx */,
-				60BFE39F1A1EDB0B00428731 /* XCodeI90-IL25entry.gpx */,
-				60BFE39D1A1ED2CF00428731 /* XCoderanchobernardo.gpx */,
-				60BFE39B1A1ED28800428731 /* XCodei294-golfexitentry.gpx */,
-				60BFE3991A1ED26400428731 /* XCodeI90-il47entryexit.gpx */,
-				60BFE3971A1EAEF600428731 /* XCodeI90-IL25entryexit.gpx */,
 				24CA8902111160BE0084E2DE /* Classes */,
 				24CA8903111160C30084E2DE /* Thirdparty */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -2806,7 +2789,7 @@
 				DAA4B2AD134E3DBD00AB6011 /* libti_ios_debugger.a */,
 				24D5C75811E6364F00F097E2 /* libtiverify.a */,
 				242E8E3011BA39FD0046A0D0 /* libTiCore.a */,
-				ECA87ED3B5064FD08ED6E538 /* libti.map.a */,
+				ADF5C3C71EFF4E4F92E47A9D /* libti.map.a */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
@@ -3063,7 +3046,7 @@
 			);
 			dependencies = (
 			);
-			name = theTollEasy;
+			name = "theTollEasy";
 			productName = theTollEasy;
 			productReference = 1D6058910D05DD3D006BFB54 /* theTollEasy.app */;
 			productType = "com.apple.product-type.application";
@@ -3140,12 +3123,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60BFE3981A1EAEF600428731 /* XCodeI90-IL25entryexit.gpx in Resources */,
-				60BFE39A1A1ED26400428731 /* XCodeI90-il47entryexit.gpx in Resources */,
-				60BFE3A21A1EF12300428731 /* XCodeI88-Ogdenexitentry.gpx in Resources */,
-				60BFE39C1A1ED28800428731 /* XCodei294-golfexitentry.gpx in Resources */,
-				60BFE3A01A1EDB0B00428731 /* XCodeI90-IL25entry.gpx in Resources */,
-				60BFE39E1A1ED2CF00428731 /* XCoderanchobernardo.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3178,7 +3155,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"x$TITANIUM_CLI_XCODEBUILD\" == \"x\" ]; then\n    /usr/local/bin/node \"/usr/local/bin/titanium\" build --platform iphone --sdk 3.2.2.GA --no-prompt --no-progress-bars --no-banner --no-colors --build-only --xcode\n    exit $?\nelse\n    echo \"skipping pre-compile phase\"\nfi";
+			shellScript = "if [ \"x$TITANIUM_CLI_XCODEBUILD\" == \"x\" ]; then\n    /usr/local/bin/node \"/usr/local/bin/titanium\" build --platform iphone --sdk 3.2.3.GA --no-prompt --no-progress-bars --no-banner --no-colors --build-only --xcode\n    exit $?\nelse\n    echo \"skipping pre-compile phase\"\nfi";
 		};
 		24CA8D03111169070084E2DE /* Post-Compile */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3206,7 +3183,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"x$TITANIUM_CLI_XCODEBUILD\" == \"x\" ]; then\n    /usr/local/bin/node \"/usr/local/bin/titanium\" build --platform iphone --sdk 3.2.2.GA --no-prompt --no-progress-bars --no-banner --no-colors --build-only --xcode\n    exit $?\nelse\n    echo \"skipping pre-compile phase\"\nfi";
+			shellScript = "if [ \"x$TITANIUM_CLI_XCODEBUILD\" == \"x\" ]; then\n    /usr/local/bin/node \"/usr/local/bin/titanium\" build --platform iphone --sdk 3.2.3.GA --no-prompt --no-progress-bars --no-banner --no-colors --build-only --xcode\n    exit $?\nelse\n    echo \"skipping pre-compile phase\"\nfi";
 		};
 		24D8E4AD119B9D8A00F8CAA6 /* Post-Compile */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3234,7 +3211,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"x$TITANIUM_CLI_XCODEBUILD\" == \"x\" ]; then\n    /usr/local/bin/node \"/usr/local/bin/titanium\" build --platform iphone --sdk 3.2.2.GA --no-prompt --no-progress-bars --no-banner --no-colors --build-only --xcode\n    exit $?\nelse\n    echo \"skipping pre-compile phase\"\nfi";
+			shellScript = "if [ \"x$TITANIUM_CLI_XCODEBUILD\" == \"x\" ]; then\n    /usr/local/bin/node \"/usr/local/bin/titanium\" build --platform iphone --sdk 3.2.3.GA --no-prompt --no-progress-bars --no-banner --no-colors --build-only --xcode\n    exit $?\nelse\n    echo \"skipping pre-compile phase\"\nfi";
 		};
 		DABB37B812E8CB280026A6EA /* Post-Compile */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4127,14 +4104,14 @@
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = theTollEasy_Prefix.pch;
+				GCC_PREFIX_HEADER = "theTollEasy_Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/lib\"",
-					"\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
+                                        "\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
 				);
 				OTHER_CFLAGS = (
 					"-DDEBUG",
@@ -4154,7 +4131,7 @@
 					"-weak_framework",
 					iAd,
 				);
-				PRODUCT_NAME = theTollEasy;
+				PRODUCT_NAME = "theTollEasy";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -4167,14 +4144,14 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = theTollEasy_Prefix.pch;
+				GCC_PREFIX_HEADER = "theTollEasy_Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/lib\"",
-					"\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
+                                        "\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
 				);
 				"OTHER_LDFLAGS[sdk=iphoneos*]" = (
 					"$(inherited)",
@@ -4185,7 +4162,7 @@
 					"-weak_framework",
 					CoreVideo,
 				);
-				PRODUCT_NAME = theTollEasy;
+				PRODUCT_NAME = "theTollEasy";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -4200,13 +4177,13 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = theTollEasy_Prefix.pch;
+				GCC_PREFIX_HEADER = "theTollEasy_Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/lib\"",
-					"\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
+                                        "\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
 				);
 				OTHER_CFLAGS = (
 					"-DIPAD",
@@ -4222,7 +4199,7 @@
 					"-weak_framework",
 					CoreVideo,
 				);
-				PRODUCT_NAME = theTollEasy;
+				PRODUCT_NAME = "theTollEasy";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -4234,13 +4211,13 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = theTollEasy_Prefix.pch;
+				GCC_PREFIX_HEADER = "theTollEasy_Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/lib\"",
-					"\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
+                                        "\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
 				);
 				OTHER_CFLAGS = (
 					"-DIPAD",
@@ -4255,7 +4232,7 @@
 					"-weak_framework",
 					CoreVideo,
 				);
-				PRODUCT_NAME = theTollEasy;
+				PRODUCT_NAME = "theTollEasy";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -4392,14 +4369,14 @@
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = theTollEasy_Prefix.pch;
+				GCC_PREFIX_HEADER = "theTollEasy_Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/lib\"",
-					"\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
+                                        "\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
 				);
 				OTHER_CFLAGS = (
 					"-DDEBUG",
@@ -4419,7 +4396,7 @@
 					"-weak_framework",
 					iAd,
 				);
-				PRODUCT_NAME = theTollEasy;
+				PRODUCT_NAME = "theTollEasy";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -4434,13 +4411,13 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = theTollEasy_Prefix.pch;
+				GCC_PREFIX_HEADER = "theTollEasy_Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/lib\"",
-					"\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
+                                        "\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
 				);
 				OTHER_CFLAGS = (
 					"-DIPAD",
@@ -4456,7 +4433,7 @@
 					"-weak_framework",
 					CoreVideo,
 				);
-				PRODUCT_NAME = theTollEasy;
+				PRODUCT_NAME = "theTollEasy";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Developer;
@@ -4470,13 +4447,13 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = theTollEasy_Prefix.pch;
+				GCC_PREFIX_HEADER = "theTollEasy_Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/lib\"",
-					"\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
+                                        "\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
 				);
 				OTHER_CFLAGS = (
 					"-DIPAD",
@@ -4497,7 +4474,7 @@
 					"-weak_framework",
 					CoreMedia,
 				);
-				PRODUCT_NAME = theTollEasy;
+				PRODUCT_NAME = "theTollEasy";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4512,13 +4489,13 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = theTollEasy_Prefix.pch;
+				GCC_PREFIX_HEADER = "theTollEasy_Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/lib\"",
-					"\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
+                                        "\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
 				);
 				OTHER_CFLAGS = (
 					"-DIPAD",
@@ -4539,7 +4516,7 @@
 					"-weak_framework",
 					CoreMedia,
 				);
-				PRODUCT_NAME = theTollEasy;
+				PRODUCT_NAME = "theTollEasy";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4552,13 +4529,13 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = theTollEasy_Prefix.pch;
+				GCC_PREFIX_HEADER = "theTollEasy_Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/lib\"",
-					"\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
+                                        "\"/Users/wannoorbayawchik/Library/Application Support/Titanium/modules/iphone/ti.map/2.0.1\"",
 				);
 				OTHER_CFLAGS = (
 					"-DIPAD",
@@ -4573,7 +4550,7 @@
 					"-weak_framework",
 					CoreMedia,
 				);
-				PRODUCT_NAME = theTollEasy;
+				PRODUCT_NAME = "theTollEasy";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
