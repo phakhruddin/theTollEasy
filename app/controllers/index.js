@@ -229,9 +229,9 @@ var service = Ti.App.iOS.registerBackgroundService({url:'bg-service1-3.js'});
 service.start;
 
 Ti.App.addEventListener("pause", function() {
-	Alloy.Globals.eventDetectTollPlaza(loc,"remove");
+	//Alloy.Globals.eventDetectTollPlaza(loc,"remove");
 });
 
 Ti.App.addEventListener("resume", function(){ 
-	Alloy.Globals.eventDetectTollPlaza("newberlin","add");
+	//Alloy.Globals.eventDetectTollPlaza("newberlin","add");
 	});
