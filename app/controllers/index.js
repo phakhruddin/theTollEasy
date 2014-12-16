@@ -225,13 +225,15 @@ var headingCallback = function(e){
 };
 	
 //Start BG Detection Service once the App start
-var service = Ti.App.iOS.registerBackgroundService({url:'bg-service1-3.js'});
-service.start;
+///var service = Ti.App.iOS.registerBackgroundService({url:'bg-service1-3.js'});
+///service.start;
 
 Ti.App.addEventListener("pause", function() {
 	//Alloy.Globals.eventDetectTollPlaza(loc,"remove");
+	var service = Ti.App.iOS.registerBackgroundService({url:'bg-service1-3.js'});
+	service.start;
 });
 
 Ti.App.addEventListener("resume", function(){ 
 	//Alloy.Globals.eventDetectTollPlaza("newberlin","add");
-	});
+});

@@ -21,6 +21,7 @@ Titanium.App.Properties.setInt('closercount',500); // reset closer count to 500 
 var mindebug = Titanium.App.Properties.getInt('mindebug',1);
 !Titanium.App.Properties.getString('loc') ? loc = "newberlin" : loc = Titanium.App.Properties.getString('loc');
 Titanium.App.Properties.setInt('closercount',500); // reset closer count to 500 then go down
+Titanium.App.Properties.setInt('geolistenerloccount',0); // reset geo event listener counter
 !Titanium.App.Properties.getInt('radius')? radius = 3000: radius = Titanium.App.Properties.getInt('radius');
 Ti.App.Properties.removeProperty('distmatchobj');
 Ti.App.Properties.removeProperty('thedistanceNearbyFilter');
@@ -627,7 +628,7 @@ Alloy.Globals.eventDetectTollPlaza = function(loc,action){
 	var mmsg = "json data : "+JSON.stringify(json.poi[0]);
 	maildebug==1 && Alloy.Globals.appendFile(mmsg,debugfile);
 		
-		var FGlocationCallback = function(e)
+		var locationCallback = function(e)
 		{
 			if(e.error){
 				Ti.API.info("Error is: "+e.error);
@@ -1142,13 +1143,43 @@ Alloy.Globals.eventDetectTollPlaza = function(loc,action){
 				
 				var thedistanceNearbyFilter = Titanium.App.Properties.getInt('thedistanceNearbyFilter',10000);
 				if ( thedistanceNearbyFilter < 5280 ) {
-					Titanium.Geolocation.distanceFilter = 26;	
-					Titanium.Geolocation.addEventListener('location', FGlocationCallback);
+					Titanium.Geolocation.distanceFilter = 26;
+					/// RESET GEO EVENT LISTENER START
+					var geolistenerloccount = Titanium.App.Properties.getInt('geolistenerloccount');
+					console.log("count of Geo event listener before: "+action +": "+geolistenerloccount);
+					if (geolistenerloccount > 0){
+						for (i=1;i <= geolistenerloccount;i++){
+							Titanium.Geolocation.removeEventListener('location', locationCallback);
+							var geolistenerloccount = geolistenerloccount - 1;
+							Titanium.App.Properties.setInt('geolistenerloccount',geolistenerloccount);
+							console.log("remove 1 geoevent listener at: "+action +": "+geolistenerloccount);
+							};
+					}	
+					/// RESET GEO EVENT LISTENER END
+					Titanium.Geolocation.addEventListener('location', locationCallback);
+					var geolistenerloccount = geolistenerloccount + 1; Titanium.App.Properties.setInt('geolistenerloccount',geolistenerloccount);
+					Titanium.App.Properties.setInt('geolistenerloccount',1); 
 					locationAdded = true;
+					console.log("count of Geo event listener after: "+action +": "+geolistenerloccount);
 				} else {
 					Titanium.Geolocation.distanceFilter = Titanium.App.Properties.getInt('distanceFilter',75);
-					Titanium.Geolocation.addEventListener('location', FGlocationCallback);
+					/// RESET GEO EVENT LISTENER START
+					var geolistenerloccount = Titanium.App.Properties.getInt('geolistenerloccount');
+					console.log("count of Geo event listener before: "+action +": "+geolistenerloccount);
+					if (geolistenerloccount > 0){
+						for (i=1;i <= geolistenerloccount;i++){
+							Titanium.Geolocation.removeEventListener('location', locationCallback);
+							var geolistenerloccount = geolistenerloccount - 1;
+							Titanium.App.Properties.setInt('geolistenerloccount',geolistenerloccount);
+							console.log("remove 1 geoevent listener at: "+action +": "+geolistenerloccount);
+						};
+					}	
+					/// RESET GEO EVENT LISTENER END
+					Titanium.Geolocation.addEventListener('location', locationCallback);
+					var geolistenerloccount = geolistenerloccount + 1; Titanium.App.Properties.setInt('geolistenerloccount',geolistenerloccount);
+					Titanium.App.Properties.setInt('geolistenerloccount',1);
 					locationAdded = true;
+					console.log("count of Geo event listener after: "+action +": "+geolistenerloccount);
 				}
 	
 				var mmsg = new Date()+": Titanium.Geolocation.distanceFilter to was set to  :"+Titanium.App.Properties.getInt('distanceFilter')+".";
@@ -1179,7 +1210,18 @@ Alloy.Globals.eventDetectTollPlaza = function(loc,action){
 			console.log((new Date())+" : STOP tollplaza detection while online");
 			Ti.API.info("removing location callback on " + action);
 			Titanium.Geolocation.distanceFilter = 1000000;
-			Titanium.Geolocation.removeEventListener('location', FGlocationCallback);
+			/// RESET GEO EVENT LISTENER START
+			var geolistenerloccount = Titanium.App.Properties.getInt('geolistenerloccount');
+			console.log("count of Geo event listener before: "+action +": "+geolistenerloccount);
+			if (geolistenerloccount > 0){
+				for (i=1;i <= geolistenerloccount;i++){
+					Titanium.Geolocation.removeEventListener('location', locationCallback);
+					var geolistenerloccount = geolistenerloccount - 1;
+					Titanium.App.Properties.setInt('geolistenerloccount',geolistenerloccount);
+					console.log("remove 1 geoevent listener at: "+action +": "+geolistenerloccount);
+				};
+			}	
+			/// RESET GEO EVENT LISTENER END
 			locationAdded = false;
 			Titanium.Geolocation.headingFilter = 359;
 			Titanium.Geolocation.removeEventListener('heading', headingCallback);

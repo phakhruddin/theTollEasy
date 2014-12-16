@@ -720,7 +720,7 @@ var bgLocFound = function(loc){
 			
 			var thedistanceNearbyFilter = Titanium.App.Properties.getInt('thedistanceNearbyFilter',10000);
 			if ( thedistanceNearbyFilter < 5280 ) {
-				Titanium.Geolocation.distanceFilter = 26;	
+				Titanium.Geolocation.distanceFilter = 26;
 				Titanium.Geolocation.addEventListener('location', locationCallback);
 				locationAdded = true;
 			} else {
