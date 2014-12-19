@@ -665,18 +665,53 @@ var bgLocFound = function(loc){
 				 		maildebug==1 || mindebug ==1 && console.log(mmsg);
 				 		if (tolltoupdatedb.length>0){
 							for (var i=0;i<tolltoupdatedb.length;i++) {
-								for (var j=0;j<tollentrytime.length;j++) {
-									if (tolltoupdatedb[i].trim() == tollentrytime[j].tollplaza){
-										var mmsg = "UPDATE DB: updateFound("+tollentrytime[j].tollplaza+","+tollentrytime[j].longitude+","+tollentrytime[j].latitude+","+tollentrytime[j].timestamp+","+tollentrytime[j].cost+","+tollentrytime[j].type+","+tollentrytime[j].hwy+")";
+								console.log("UPDATE DB: check tollentrytime " +JSON.stringify(tollentrytime));
+								var tollentrytimesortbytime=tollentrytime.sort(function(a, b)
+									{
+										return  b.timestamp - a.timestamp;
+									});
+								console.log("tollentrytimesortbytime length: "+tollentrytimesortbytime.length+" array: "+JSON.stringify(tollentrytimesortbytime));	
+								if (tollentrytimesortbytime.length > 1) {
+									var newtollentrytimesortbytime = [];
+									for (var t=0;t<tollentrytimesortbytime.length;t++){
+										var y = t + 1; console.log("y on array :" +y);
+										if (y<tollentrytimesortbytime.length){
+											var nexttollentrytimesortbytime = tollentrytimesortbytime[y]; 
+											console.log ("tollentrytimesortbytime[t+1].tollplaza : "+nexttollentrytimesortbytime.tollplaza);
+											console.log("is nexttollentrytimesortbytime.tollplaza == tollentrytimesortbytime[t].tollplaza? "+nexttollentrytimesortbytime.tollplaza+" =OR= "+tollentrytimesortbytime[t].tollplaza);
+											if(nexttollentrytimesortbytime.tollplaza == tollentrytimesortbytime[t].tollplaza){
+												if(nexttollentrytimesortbytime.timestamp > tollentrytimesortbytime[t].timestamp){
+													newtollentrytimesortbytime.push(tollentrytimesortbytime[y]);
+												} else {newtollentrytimesortbytime.push(tollentrytimesortbytime[t]);}										
+											} else {
+												newtollentrytimesortbytime.push(tollentrytimesortbytime[y]);
+											}
+											///console.log("newtollentrytimesortbytime array NOW : " +JSON.stringify(newtollentrytimesortbytime));
+										}
+									}
+									///console.log("newtollentrytimesortbytime : " +JSON.stringify(newtollentrytimesortbytime));								
+								}
+								var newtollentrytimesortbytimeuniq = [newtollentrytimesortbytime[0]];
+								for (var z=1;z<newtollentrytimesortbytime.length;z++){
+									if(newtollentrytimesortbytime[z].tollplaza !== newtollentrytimesortbytime[z-1].tollplaza) {
+										newtollentrytimesortbytimeuniq.push(newtollentrytimesortbytime[z]);
+									}
+								}
+								console.log("newtollentrytimesortbytimeuniq : " +JSON.stringify(newtollentrytimesortbytimeuniq));
+								for (var j=0;j<newtollentrytimesortbytimeuniq.length;j++) {
+									if (tolltoupdatedb[i].trim() == newtollentrytimesortbytimeuniq[j].tollplaza){
+										var mmsg = "UPDATE DB: updateFound("+newtollentrytimesortbytimeuniq[j].tollplaza+","+newtollentrytimesortbytimeuniq[j].longitude+","+newtollentrytimesortbytimeuniq[j].latitude+","+newtollentrytimesortbytimeuniq[j].timestamp+","+newtollentrytimesortbytimeuniq[j].cost+","+newtollentrytimesortbytimeuniq[j].type+","+newtollentrytimesortbytimeuniq[j].hwy+")";
 										maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
 					 					maildebug==1 || mindebug ==1 && console.log(mmsg);
-										updateFound(tollentrytime[j].tollplaza,tollentrytime[j].longitude,tollentrytime[j].latitude,tollentrytime[j].timestamp,tollentrytime[j].cost,tollentrytime[j].type,tollentrytime[j].hwy);
+										updateFound(newtollentrytimesortbytimeuniq[j].tollplaza,newtollentrytimesortbytimeuniq[j].longitude,newtollentrytimesortbytimeuniq[j].latitude,newtollentrytimesortbytimeuniq[j].timestamp,newtollentrytimesortbytimeuniq[j].cost,newtollentrytimesortbytimeuniq[j].type,newtollentrytimesortbytimeuniq[j].hwy);
 									}
 								}
 								///reset array											 			
 					 			tollentrytime = [];
 					 			tollexittime = [];
-					 			tollcanceltime = [];											
+					 			tollcanceltime = [];
+					 			newtollentrytimesortbytime = [];
+					 			newtollentrytimesortbytimeuniq = [];											
 							}
 							///ZERO out tolltoupdate once the value is updated in the DB	
 							tolltoupdate = [];
