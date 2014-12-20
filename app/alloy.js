@@ -330,7 +330,7 @@ Alloy.Globals.updateTollPlaza = function(loc) {
 		xhr1.open("GET", url1);
 		xhr1.send();
 	};
-
+    console.log("xhr.open getting url : "+url);
 	xhr.open("GET", url);
 	xhr.send();
 };
