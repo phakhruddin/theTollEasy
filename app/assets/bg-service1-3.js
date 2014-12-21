@@ -690,7 +690,7 @@ var bgLocFound = function(loc){
 										}
 									}
 									///console.log("newtollentrytimesortbytime : " +JSON.stringify(newtollentrytimesortbytime));								
-								}
+								} else { var newtollentrytimesortbytime = tollentrytimesortbytime; };
 								var newtollentrytimesortbytimeuniq = [newtollentrytimesortbytime[0]];
 								for (var z=1;z<newtollentrytimesortbytime.length;z++){
 									if(newtollentrytimesortbytime[z].tollplaza !== newtollentrytimesortbytime[z-1].tollplaza) {
@@ -706,13 +706,15 @@ var bgLocFound = function(loc){
 										updateFound(newtollentrytimesortbytimeuniq[j].tollplaza,newtollentrytimesortbytimeuniq[j].longitude,newtollentrytimesortbytimeuniq[j].latitude,newtollentrytimesortbytimeuniq[j].timestamp,newtollentrytimesortbytimeuniq[j].cost,newtollentrytimesortbytimeuniq[j].type,newtollentrytimesortbytimeuniq[j].hwy);
 									}
 								}
+												
+							}
 								///reset array											 			
 					 			tollentrytime = [];
 					 			tollexittime = [];
 					 			tollcanceltime = [];
+					 			tolltoupdatedb = [];
 					 			newtollentrytimesortbytime = [];
-					 			newtollentrytimesortbytimeuniq = [];											
-							}
+					 			newtollentrytimesortbytimeuniq = [];
 							///ZERO out tolltoupdate once the value is updated in the DB	
 							tolltoupdate = [];
 						}
