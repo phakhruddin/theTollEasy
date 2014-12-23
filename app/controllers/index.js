@@ -3,6 +3,17 @@ $.index.open();
 // make sure GPS is running.
 if (Ti.Geolocation.locationServicesEnabled) {
     // perform other operations with Ti.Geolocation
+	Titanium.Geolocation.purpose = 'Get Current Location';
+    Titanium.Geolocation.getCurrentPosition(function(e) {
+        if (e.error) {
+            Ti.API.error('Error: ' + e.error);
+        } else {
+            Ti.API.info(e.coords);
+            var latX =  e.coords.latitude;Titanium.App.Properties.setInt('latX',latX);
+            var lonX =  e.coords.longitude;Titanium.App.Properties.setInt('lonX',lonX);
+            console.log( "latitude :"+latX+" longitude : "+lonX);
+        }
+    });
 } else {
     alert('In order for theTollEasy to capture tollplazas. Please enable location services. Thanks.');
 }

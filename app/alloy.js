@@ -1377,4 +1377,49 @@ Alloy.Globals.updatetollsource = function() {
 	xhr.send();
 };
 
+Alloy.Globals.checkAddr = function() {
+	if (Ti.Geolocation.locationServicesEnabled) {
+	    // perform other operations with Ti.Geolocation
+		Titanium.Geolocation.purpose = 'Get Current Location';
+	    Titanium.Geolocation.getCurrentPosition(function(e) {
+	        if (e.error) {
+	            Ti.API.error('Error: ' + e.error);
+	        } else {
+	            Ti.API.info(+e.coords);
+	            var latX =  +e.coords.latitude;Titanium.App.Properties.setInt('latX',latX);
+	            var lonX =  +e.coords.longitude;Titanium.App.Properties.setInt('lonX',lonX);
+	            console.log( "latitude :"+latX+" longitude : "+lonX);
+	        }
+	    });
+	} else {
+    	alert('In order for theTollEasy to capture tollplazas. Please enable location services. Thanks.');
+	}
+	var latX = Titanium.App.Properties.getInt('latX');
+	var lonX = Titanium.App.Properties.getInt('lonX');
+	var latY = Titanium.App.Properties.getInt('lat1',latX);
+	var lonY = Titanium.App.Properties.getInt('lon1',lonX);
+	console.log("latY:lonY: "+latY+" : "+lonY);
+	Titanium.Geolocation.reverseGeocoder(latY,lonY,function(evt)
+	{
+		if (evt.success) {
+			var places = evt.places;
+			if (places && places.length) {
+				currentaddr = places[0].address;
+				var arr = currentaddr.split(',');
+				var currentstate = arr[arr.length - 3];
+			} else {
+				currentaddr = "No address found";
+			}
+			Titanium.App.Properties.setString('currentaddr', currentaddr);
+			console.log("currentaddr :" +currentaddr);
+			console.log("currentstate :" +currentstate);
+			Ti.API.debug("reverse geolocation result = "+JSON.stringify(evt));
+		}
+		else {
+			Ti.API.info("Code translation: "+JSON.stringify(evt.code));
+		}
+	});	
+};
+
+Alloy.Globals.checkAddr();
 Alloy.Globals.updatetollsource();
