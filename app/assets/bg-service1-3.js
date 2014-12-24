@@ -163,11 +163,11 @@ var checkAddr = function(latX,lonX) {
 			Titanium.App.Properties.setString('currentaddr', currentaddr);
 			Titanium.App.Properties.setString('state',state);
 			var mmsg = (new Date())+" currentaddr :" +currentaddr;
-			mmsg += "state :" +state;			
-			mmsg += "reverse geolocatiron result = "+JSON.stringify(evt);
+			mmsg += " state :" +state;			
+			mmsg += " reverse geolocation result = "+JSON.stringify(evt);
 			mindebug == 1 && console.log(mmsg);
 			maildebug==1 && appendFile(mmsg,debugfile);
-			console.log(" currentaddr :" +currentaddr+ "state :" +state);
+			console.log(" currentaddr :" +currentaddr+ " state :" +state);
 		}
 		else {
 			var mmsg = (new Date())+" Code translation: "+JSON.stringify(evt.code);
