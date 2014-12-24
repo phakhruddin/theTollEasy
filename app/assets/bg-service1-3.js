@@ -68,6 +68,9 @@ var file5 = Ti.Filesystem.getFile(
 			);		
 			
 var downloadTollplaza = function(loc) {	
+	var mmsg = (new Date())+" download tollplaza in the BG, function:downloadTollplaza";
+	mindebug == 1 && console.log(mmsg);
+	maildebug==1 && appendFile(mmsg,debugfile);
 	var url = "http://23.21.53.150:10000/"+loc+".json";	
 	var xhr = Ti.Network.createHTTPClient({
 	    onload: function(e) {
@@ -135,12 +138,15 @@ var downloadTollplaza = function(loc) {
 
 downloadTollplaza(loc);
 
-var checkAddr = function() {
-	var latX = Titanium.App.Properties.getInt('latX');
-	var lonX = Titanium.App.Properties.getInt('lonX');
-	var latY = Titanium.App.Properties.getInt('lat1',latX);
-	var lonY = Titanium.App.Properties.getInt('lon1',lonX);
-	console.log("latY:lonY: latX:lonX "+latY+" : "+lonY+" : "+latX+" : "+lonX);
+var checkAddr = function(latX,lonX) {
+	//note: 5 miles Lat diff = 0.08 & Lon diff = 0.09
+	var latX = Titanium.App.Properties.getString('lat1');
+	var lonX = Titanium.App.Properties.getString('lon1');
+	var latY = typeof latX !== typeof undefined?latX:43.009724;
+	var lonY = typeof lonX !== typeof undefined?lonX:-88.238146;
+	var mmsg = (new Date())+" latY:lonY: latX:lonX "+latY+" : "+lonY+" : "+latX+" : "+lonX;
+	mindebug == 1 && console.log(mmsg);
+	maildebug==1 && appendFile(mmsg,debugfile);
 	Titanium.Geolocation.reverseGeocoder(latY,lonY,function(evt)
 	{
 		if (evt.success) {
@@ -148,20 +154,29 @@ var checkAddr = function() {
 			if (places && places.length) {
 				currentaddr = places[0].address;
 				var arr = currentaddr.split(',');
-				var currentstate = arr[arr.length - 3];
+				var state = arr[arr.length - 3];
 			} else {
 				currentaddr = "No address found";
 			}
 			Titanium.App.Properties.setString('currentaddr', currentaddr);
-			console.log("currentaddr :" +currentaddr);
-			console.log("currentstate :" +currentstate);
-			Ti.API.debug("reverse geolocation result = "+JSON.stringify(evt));
+			Titanium.App.Properties.setString('state',state);
+			var mmsg = (new Date())+" currentaddr :" +currentaddr;
+			var mmsg =+ "state :" +state;			
+			var mmsg =+ "reverse geolocation result = "+JSON.stringify(evt);
+			mindebug == 1 && console.log(mmsg);
+			maildebug==1 && appendFile(mmsg,debugfile);
 		}
 		else {
-			Ti.API.info("Code translation: "+JSON.stringify(evt.code));
+			var mmsg = (new Date())+" Code translation: "+JSON.stringify(evt.code);
+			mindebug == 1 && console.log(mmsg);
+			maildebug==1 && appendFile(mmsg,debugfile);
 		}
 	});	
 };
+
+var checknextLoc = function(latY,lonY) {
+	// checking next state for Loc
+}
 
 var checkAlive = setInterval(function () {
 	checkAddr();
@@ -244,8 +259,8 @@ var bgLocFound = function(loc){
 			var count = Titanium.App.Properties.getInt('count');count++; // todebug count
 			maildebug == 1 && console.log("count:"+count);
 			//*Ti.API.info(JSON.stringify(e.coords));
-			var lon1 = +e.coords.longitude;Titanium.App.Properties.setInt('lon1',lon1);
-			var lat1 = +e.coords.latitude;Titanium.App.Properties.setInt('lat1',lat1);
+			var lon1 = +e.coords.longitude;Titanium.App.Properties.setString('lon1',lon1);
+			var lat1 = +e.coords.latitude;Titanium.App.Properties.setString('lat1',lat1);
 			var time1 = +e.coords.timestamp;
 			var speed1 = +e.coords.speed;
 	        mmsg = new Date(e.coords.timestamp)+','+e.coords.timestamp+','+e.coords.latitude+','+e.coords.longitude+','+speed1;

@@ -1390,14 +1390,13 @@ Alloy.Globals.checkAddr = function() {
 	            var lonX =  +e.coords.longitude;Titanium.App.Properties.setInt('lonX',lonX);
 	            console.log( "latitude :"+latX+" longitude : "+lonX);
 	        }
-	    });
+	    });    
 	} else {
     	alert('In order for theTollEasy to capture tollplazas. Please enable location services. Thanks.');
 	}
-	var latX = Titanium.App.Properties.getInt('latX');
-	var lonX = Titanium.App.Properties.getInt('lonX');
-	var latY = Titanium.App.Properties.getInt('lat1',latX);
-	var lonY = Titanium.App.Properties.getInt('lon1',lonX);
+	//note: 5 miles Lat diff = 0.08 & Lon diff = 0.09
+	var latY = typeof latX !== typeof undefined?latX:43.009724;
+	var lonY = typeof lonX !== typeof undefined?lonX:-88.238146;
 	console.log("latY:lonY: "+latY+" : "+lonY);
 	Titanium.Geolocation.reverseGeocoder(latY,lonY,function(evt)
 	{
@@ -1406,17 +1405,22 @@ Alloy.Globals.checkAddr = function() {
 			if (places && places.length) {
 				currentaddr = places[0].address;
 				var arr = currentaddr.split(',');
-				var currentstate = arr[arr.length - 3];
+				var state = arr[arr.length - 3];
 			} else {
 				currentaddr = "No address found";
 			}
 			Titanium.App.Properties.setString('currentaddr', currentaddr);
-			console.log("currentaddr :" +currentaddr);
-			console.log("currentstate :" +currentstate);
-			Ti.API.debug("reverse geolocation result = "+JSON.stringify(evt));
+			Titanium.App.Properties.setString('state',state);
+			var mmsg = (new Date())+"currentaddr :" +currentaddr;
+			var mmsg =+ "state :" +state;			
+			var mmsg =+ "reverse geolocation result = "+JSON.stringify(evt);
+			mindebug == 1 && console.log(mmsg);
+			maildebug==1 && appendFile(mmsg,debugfile);
 		}
 		else {
-			Ti.API.info("Code translation: "+JSON.stringify(evt.code));
+			var mmsg = (new Date())+"Code translation: "+JSON.stringify(evt.code);
+			mindebug == 1 && console.log(mmsg);
+			maildebug==1 && appendFile(mmsg,debugfile);
 		}
 	});	
 };
