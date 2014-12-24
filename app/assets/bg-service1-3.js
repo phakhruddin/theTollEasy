@@ -20,6 +20,7 @@ var needtocancel = 1;
 var tollentrytime = [];
 var tollexittime = [];
 var tollcanceltime = [];
+var locarray = [];
 var approachtoll = 1;
 var lastapproachtoll = "none";
 
@@ -140,8 +141,8 @@ downloadTollplaza(loc);
 
 var checkAddr = function(latX,lonX) {
 	//note: 5 miles Lat diff = 0.08 & Lon diff = 0.09
-	var latX = Titanium.App.Properties.getString('lat1');
-	var lonX = Titanium.App.Properties.getString('lon1');
+	var latX = typeof latX !== typeof undefined?latX:Titanium.App.Properties.getString('lat1');
+	var lonX = typeof lonX !== typeof undefined?lonX:Titanium.App.Properties.getString('lon1');
 	var latY = typeof latX !== typeof undefined?latX:43.009724;
 	var lonY = typeof lonX !== typeof undefined?lonX:-88.238146;
 	var mmsg = (new Date())+" latY:lonY: latX:lonX "+latY+" : "+lonY+" : "+latX+" : "+lonX;
@@ -149,7 +150,6 @@ var checkAddr = function(latX,lonX) {
 	maildebug==1 && appendFile(mmsg,debugfile);
 	Titanium.Geolocation.reverseGeocoder(latY,lonY,function(evt)
 	{
-		console.log("evt.success ?: "+evt.success);
 		if (evt.success) {
 			console.log("checking current address");
 			var places = evt.places;
@@ -174,15 +174,32 @@ var checkAddr = function(latX,lonX) {
 			mindebug == 1 && console.log(mmsg);
 			maildebug==1 && appendFile(mmsg,debugfile);
 		}
+		var thestate = 	Titanium.App.Properties.getString('state');
+		return thestate;
 	});	
+	var thestate = 	Titanium.App.Properties.getString('state');
+	return thestate;
 };
 
-var checknextLoc = function(latY,lonY) {
+var checknextLoc = function() {
+	var locarray = [];
 	// checking next state for Loc
-}
+	var latX = typeof latX !== typeof undefined?latX:Titanium.App.Properties.getString('lat1');
+	var lonX = typeof lonX !== typeof undefined?lonX:Titanium.App.Properties.getString('lon1');
+	console.log("checking next location with : latX . lonX "+latX+" : "+lonX);
+	locarray.push(checkAddr(latX,lonX));
+	console.log("checking next location with : latX-0.08 . lonX "+(latX-0.08) +" : "+lonX);
+	locarray.push(checkAddr(latX-0.08,lonX));
+	locarray.push(checkAddr(latX+0.08,lonX));
+	locarray.push(checkAddr(latX,lonX-0.09));
+	locarray.push(checkAddr(latX,lonX+0.09));
+	console.log("locarray content is : "+JSON.stringify(locarray));
+	var locarray = [];
+};
 
 var checkAlive = setInterval(function () {
 	checkAddr();
+	checknextLoc();
 	var mmsg = (new Date())+" keep Alive check & CheckAddr";
 	mindebug == 1 && console.log(mmsg);
 	maildebug==1 && appendFile(mmsg,debugfile);
@@ -845,3 +862,4 @@ var bgLocFound = function(loc){
 bgLocFound(loc);
 checkAlive=1;
 checkAddr();
+checknextLoc();

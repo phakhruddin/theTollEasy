@@ -239,6 +239,17 @@ var headingCallback = function(e){
 ///var service = Ti.App.iOS.registerBackgroundService({url:'bg-service1-3.js'});
 ///service.start;
 
+/*
+	var latX = typeof latX !== typeof undefined?latX:43.009724;
+	var lonX = typeof lonX !== typeof undefined?lonX:-88.238146;
+	locarray.push(Alloy.Globals.checkAddr(latX-0.08,lonX));
+	locarray.push(Alloy.Globals.checkAddr(latX+0.08,lonX));
+	locarray.push(Alloy.Globals.checkAddr(latX,lonX-0.09));
+	locarray.push(Alloy.Globals.checkAddr(latX,lonX+0.09));
+	console.log("locarray content is : "+JSON.stringify(locarray));
+	var locarray = []; */
+	
+
 Ti.App.addEventListener("pause", function() {
 	//Alloy.Globals.eventDetectTollPlaza(loc,"remove");
 	var service = Ti.App.iOS.registerBackgroundService({url:'bg-service1-3.js'});

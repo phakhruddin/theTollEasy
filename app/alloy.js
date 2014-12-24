@@ -38,6 +38,7 @@ var needtocancel = 1;
 var tollentrytime = [];
 var tollexittime = [];
 var tollcanceltime = [];
+var locarray = [];
 var approachtoll = 1;
 var lastapproachtoll = "none";
 //VARIABLES ON TOLL DETECTION - END
@@ -1377,7 +1378,7 @@ Alloy.Globals.updatetollsource = function() {
 	xhr.send();
 };
 
-Alloy.Globals.checkAddr = function() {
+Alloy.Globals.checkAddr = function(latX,latY) {
 	if (Ti.Geolocation.locationServicesEnabled) {
 	    // perform other operations with Ti.Geolocation
 		Titanium.Geolocation.purpose = 'Get Current Location';
@@ -1395,6 +1396,8 @@ Alloy.Globals.checkAddr = function() {
     	alert('In order for theTollEasy to capture tollplazas. Please enable location services. Thanks.');
 	}
 	//note: 5 miles Lat diff = 0.08 & Lon diff = 0.09
+	var latX = typeof latX !== typeof undefined?latX:Titanium.App.Properties.getString('lat1');
+	var lonX = typeof lonX !== typeof undefined?lonX:Titanium.App.Properties.getString('lon1');
 	var latY = typeof latX !== typeof undefined?latX:43.009724;
 	var lonY = typeof lonX !== typeof undefined?lonX:-88.238146;
 	console.log("latY:lonY: "+latY+" : "+lonY);
@@ -1425,8 +1428,13 @@ Alloy.Globals.checkAddr = function() {
 			mindebug == 1 && console.log(mmsg);
 			maildebug==1 && appendFile(mmsg,debugfile);
 		}
-	});	
+	});
+	var thestate = 	Titanium.App.Properties.getString('state');
+	return thestate;
 };
 
-Alloy.Globals.checkAddr();
+//Alloy.Globals.checkAddr();
+var theloc = Alloy.Globals.checkAddr();
+console.log("theloc obtained from checkAddr function: "+theloc);
+
 Alloy.Globals.updatetollsource();
