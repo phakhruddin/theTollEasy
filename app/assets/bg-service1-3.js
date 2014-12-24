@@ -194,6 +194,16 @@ var checknextLoc = function() {
 	locarray.push(checkAddr(latX,lonX-0.09));
 	locarray.push(checkAddr(latX,lonX+0.09));
 	console.log("locarray content is : "+JSON.stringify(locarray));
+	var locarraysort = locarray.sort();
+	var locarraysortuniq = [locarraysort[0].trim()];
+	for (var i = 1; i < locarraysort.length; i++) {
+		if ( locarraysort[i].trim() !== locarraysort[i-1].trim()) {
+			locarraysortuniq.push(locarraysort[i].trim());
+		}
+	}
+	if (locarraysortuniq.length > 1){
+		console.log("NEED TO DOWNLOAD TOLLPLAZA FROM: "+JSON.stringify(locarraysortuniq));
+	}
 	var locarray = [];
 };
 
@@ -647,7 +657,7 @@ var bgLocFound = function(loc){
 			 			maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
 				 		maildebug==1 || mindebug ==1 && console.log(mmsg);				 		
 			 			if ( hastollentryexit.length > 0 ) {
-			 				var hastollentryexitsort = hastollentryexit.sort();
+			 				var locarraysort = hastollentryexit.sort();
 							var hastollentryexitsortuniq = [hastollentryexitsort[0].trim()];
 							for (var i = 1; i < hastollentryexitsort.length; i++) {
 								if ( hastollentryexitsort[i].trim() !== hastollentryexitsort[i-1].trim()) {
