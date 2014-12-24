@@ -167,7 +167,7 @@ var checkAddr = function(latX,lonX) {
 			mmsg += " reverse geolocation result = "+JSON.stringify(evt);
 			mindebug == 1 && console.log(mmsg);
 			maildebug==1 && appendFile(mmsg,debugfile);
-			console.log(" currentaddr :" +currentaddr+ " state :" +state);
+			console.log(":ADDR@:"+latY+"/"+lonY+": currentaddr :" +currentaddr+ " state :" +state);
 		}
 		else {
 			var mmsg = (new Date())+" Code translation: "+JSON.stringify(evt.code);
@@ -190,8 +190,11 @@ var checknextLoc = function() {
 	locarray.push(checkAddr(latX,lonX));
 	console.log("checking next location with : latX-0.08 . lonX "+(latX-0.08) +" : "+lonX);
 	locarray.push(checkAddr(latX-0.08,lonX));
+	console.log("checking next location with : latX+0.08 . lonX "+(latX+0.08) +" : "+lonX);
 	locarray.push(checkAddr(latX+0.08,lonX));
+	console.log("checking next location with : latX-0.08 . lonX "+latX+" : "+(lonX-.09));
 	locarray.push(checkAddr(latX,lonX-0.09));
+	console.log("checking next location with : latX-0.08 . lonX "+latX+" : "+(lonX+.09));
 	locarray.push(checkAddr(latX,lonX+0.09));
 	console.log("locarray content is : "+JSON.stringify(locarray));
 	var locarraysort = locarray.sort();
