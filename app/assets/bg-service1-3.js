@@ -149,7 +149,9 @@ var checkAddr = function(latX,lonX) {
 	maildebug==1 && appendFile(mmsg,debugfile);
 	Titanium.Geolocation.reverseGeocoder(latY,lonY,function(evt)
 	{
+		console.log("evt.success ?: "+evt.success);
 		if (evt.success) {
+			console.log("checking current address");
 			var places = evt.places;
 			if (places && places.length) {
 				currentaddr = places[0].address;
@@ -161,10 +163,11 @@ var checkAddr = function(latX,lonX) {
 			Titanium.App.Properties.setString('currentaddr', currentaddr);
 			Titanium.App.Properties.setString('state',state);
 			var mmsg = (new Date())+" currentaddr :" +currentaddr;
-			var mmsg =+ "state :" +state;			
-			var mmsg =+ "reverse geolocation result = "+JSON.stringify(evt);
+			mmsg += "state :" +state;			
+			mmsg += "reverse geolocatiron result = "+JSON.stringify(evt);
 			mindebug == 1 && console.log(mmsg);
 			maildebug==1 && appendFile(mmsg,debugfile);
+			console.log(" currentaddr :" +currentaddr+ "state :" +state);
 		}
 		else {
 			var mmsg = (new Date())+" Code translation: "+JSON.stringify(evt.code);
