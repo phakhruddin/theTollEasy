@@ -186,16 +186,17 @@ var checknextLoc = function() {
 	// checking next state for Loc
 	var latX = typeof latX !== typeof undefined?latX:Titanium.App.Properties.getString('lat1');
 	var lonX = typeof lonX !== typeof undefined?lonX:Titanium.App.Properties.getString('lon1');
-	console.log("checking next location with : latX . lonX "+latX+" : "+lonX);
-	locarray.push(checkAddr(latX,lonX));
-	console.log("checking next location with : latX-0.08 . lonX "+(latX-0.08) +" : "+lonX);
-	locarray.push(checkAddr(latX-0.08,lonX));
-	console.log("checking next location with : latX+0.08 . lonX "+(latX+0.08) +" : "+lonX);
-	locarray.push(checkAddr(latX+0.08,lonX));
-	console.log("checking next location with : latX-0.08 . lonX "+latX+" : "+(lonX-.09));
-	locarray.push(checkAddr(latX,lonX-0.09));
-	console.log("checking next location with : latX-0.08 . lonX "+latX+" : "+(lonX+.09));
-	locarray.push(checkAddr(latX,lonX+0.09));
+	
+	var thisstate = checkAddr(latX,lonX);locarray.push(thisstate);
+	console.log("checking next location with : latX . lonX "+latX+" : "+lonX+" : "+thisstate);
+	var thisstate = checkAddr(latX-0.08,lonX);locarray.push(thisstate);
+	console.log("checking next location with : latX-0.08 . lonX "+(latX-0.08) +" : "+lonX+" : "+thisstate);
+	var thisstate = checkAddr(latX+0.08,lonX); locarray.push(thisstate);
+	console.log("checking next location with : latX+0.08 . lonX "+(latX+0.08) +" : "+lonX+" : "+thisstate);
+	var thisstate = checkAddr(latX,lonX-0.09); locarray.push(thisstate);
+	console.log("checking next location with : latX-0.08 . lonX "+latX+" : "+(lonX-.09)+" : "+thisstate);
+	var thisstate = checkAddr(latX,lonX+0.09); locarray.push(thisstate);
+	console.log("checking next location with : latX-0.08 . lonX "+latX+" : "+(lonX+.09)+" : "+thisstate);
 	console.log("locarray content is : "+JSON.stringify(locarray));
 	var locarraysort = locarray.sort();
 	var locarraysortuniq = [locarraysort[0].trim()];
