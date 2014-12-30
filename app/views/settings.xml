@@ -31,7 +31,7 @@
 			<TableViewRow id="row_mindebug" Title="Debug">
 				 <Label id="label_mindebug" color="white" top="5" left="20" text="TURN ON debugging">Minimum Debugging ON/OFF
 				 </Label>
-				 <Switch id="switch_mindebug" right="20" titleOff="OFF" titleOn="ON" value="true"/>
+				 <Switch id="switch_mindebug" right="20" titleOff="OFF" titleOn="ON" value="{dummy.mindebugvalue}"/>
 			</TableViewRow>
 			<TableViewRow id="row_emaildebug" Title="Email Debug">
 				 <Label id="label_emaildebug" color="orange" left="20" >Email Debug Data</Label>

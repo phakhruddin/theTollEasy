@@ -151,7 +151,7 @@ var checkAddr = function(latX,lonX) {
 	Titanium.Geolocation.reverseGeocoder(latY,lonY,function(evt)
 	{
 		if (evt.success) {
-			console.log("checking current address");
+			mindebug == 1 && console.log("checking current address");
 			var places = evt.places;
 			if (places && places.length) {
 				currentaddr = places[0].address;
@@ -167,7 +167,7 @@ var checkAddr = function(latX,lonX) {
 			mmsg += " reverse geolocation result = "+JSON.stringify(evt);
 			mindebug == 1 && console.log(mmsg);
 			maildebug==1 && appendFile(mmsg,debugfile);
-			console.log(":ADDR@:"+latY+"/"+lonY+": currentaddr :" +currentaddr+ " state :" +state);
+			mindebug == 1 && console.log(":ADDR@:"+latY+"/"+lonY+": currentaddr :" +currentaddr+ " state :" +state);
 		}
 		else {
 			var mmsg = (new Date())+" Code translation: "+JSON.stringify(evt.code);
@@ -188,16 +188,16 @@ var checknextLoc = function() {
 	var lonX = typeof lonX !== typeof undefined?lonX:Titanium.App.Properties.getString('lon1');
 	
 	var thisstate = checkAddr(latX,lonX);locarray.push(thisstate);
-	console.log("checking next location with : latX . lonX "+latX+" : "+lonX+" : "+thisstate);
+	mindebug == 1 && console.log("checking next location with : latX . lonX "+latX+" : "+lonX+" : "+thisstate);
 	var thisstate = checkAddr(latX-0.08,lonX);locarray.push(thisstate);
-	console.log("checking next location with : latX-0.08 . lonX "+(latX-0.08) +" : "+lonX+" : "+thisstate);
+	mindebug == 1 && console.log("checking next location with : latX-0.08 . lonX "+(latX-0.08) +" : "+lonX+" : "+thisstate);
 	var thisstate = checkAddr(latX+0.08,lonX); locarray.push(thisstate);
-	console.log("checking next location with : latX+0.08 . lonX "+(latX+0.08) +" : "+lonX+" : "+thisstate);
+	mindebug == 1 && console.log("checking next location with : latX+0.08 . lonX "+(latX+0.08) +" : "+lonX+" : "+thisstate);
 	var thisstate = checkAddr(latX,lonX-0.09); locarray.push(thisstate);
-	console.log("checking next location with : latX-0.08 . lonX "+latX+" : "+(lonX-.09)+" : "+thisstate);
+	mindebug == 1 && console.log("checking next location with : latX-0.08 . lonX "+latX+" : "+(lonX-.09)+" : "+thisstate);
 	var thisstate = checkAddr(latX,lonX+0.09); locarray.push(thisstate);
-	console.log("checking next location with : latX-0.08 . lonX "+latX+" : "+(lonX+.09)+" : "+thisstate);
-	console.log("locarray content is : "+JSON.stringify(locarray));
+	mindebug == 1 && console.log("checking next location with : latX-0.08 . lonX "+latX+" : "+(lonX+.09)+" : "+thisstate);
+	mindebug == 1 && console.log("locarray content is : "+JSON.stringify(locarray));
 	var locarraysort = locarray.sort();
 	var locarraysortuniq = [locarraysort[0].trim()];
 	for (var i = 1; i < locarraysort.length; i++) {
@@ -206,7 +206,7 @@ var checknextLoc = function() {
 		}
 	}
 	if (locarraysortuniq.length > 1){
-		console.log("NEED TO DOWNLOAD TOLLPLAZA FROM: "+JSON.stringify(locarraysortuniq));
+		mindebug == 1 && console.log("NEED TO DOWNLOAD TOLLPLAZA FROM: "+JSON.stringify(locarraysortuniq));
 	}
 	var locarray = [];
 };
@@ -376,7 +376,7 @@ var bgLocFound = function(loc){
 				closestdist0 > distlastupd?approachtoll=0:approachtoll=1;
 				///Check if a U-TURN
 				var lastapproachtoll = Titanium.App.Properties.getString('lastapproachtoll');
-				console.log(closesttollbydist0+" || "+tolllastupd+" || last: " +lastapproachtoll +"/"+approachtoll);
+				mindebug == 1 && console.log(closesttollbydist0+" || "+tolllastupd+" || last: " +lastapproachtoll +"/"+approachtoll);
 				if ( closesttollbydist0 == tolllastupd && lastapproachtoll == 0 && approachtoll == 1 ) {
 					var tolllastupd = Titanium.App.Properties.getString('tolllastupd');
 					Titanium.App.Properties.setString('tolllastupd',tolllastupd+"(U-TURN)");
@@ -872,8 +872,21 @@ var bgLocFound = function(loc){
 
 //MAIN
 
+//43.009880, -88.238231
+
+if (Titanium.App.Properties.getString('lat1')) {
+	var latX = Titanium.App.Properties.getString('lat1');
+} else {
+	var latX = 43.009880;
+};
+
+if (Titanium.App.Properties.getString('lon1')) {
+	var lonX = Titanium.App.Properties.getString('lon1');
+} else {
+	var lonX = -88.238231;
+};
 
 bgLocFound(loc);
 checkAlive=1;
-checkAddr();
+checkAddr(latX,lonX);
 checknextLoc();

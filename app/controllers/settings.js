@@ -13,6 +13,7 @@ someDummy.set('detectionRange', "Detection Range : "+Titanium.App.Properties.get
 display();
 
 Titanium.App.Properties.getInt('maildebug') == 1 && someDummy.set('debugvalue',true);
+Titanium.App.Properties.getInt('mindebug') == 1 && someDummy.set('mindebugvalue',true);
 
 exports.openMainWindow = function(_tab) {
   _tab.open($.win_settings);
@@ -59,9 +60,9 @@ $.switch_mindebug.addEventListener("change", function(e){
 	var switchmindebugValue = $.switch_mindebug.value;
 	Ti.API.info("Minimum debugging is :" +switchmindebugValue);
 	if ( switchmindebugValue == true ) {
-		Titanium.App.Properties.setInt('mindebug', "1");
+		Titanium.App.Properties.setInt('mindebug', "1"); someDummy.set('mindebugvalue',true);
 	} else {
-		Titanium.App.Properties.setInt('mindebug', "0");
+		Titanium.App.Properties.setInt('mindebug', "0"); someDummy.set('mindebugvalue',false);
 	};
 });
 /*
