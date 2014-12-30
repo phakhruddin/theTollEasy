@@ -198,16 +198,19 @@ var checknextLoc = function() {
 	var thisstate = checkAddr(latX,lonX+0.09); locarray.push(thisstate);
 	mindebug == 1 && console.log("checking next location with : latX-0.08 . lonX "+latX+" : "+(lonX+.09)+" : "+thisstate);
 	mindebug == 1 && console.log("locarray content is : "+JSON.stringify(locarray));
-	var locarraysort = locarray.sort();
-	var locarraysortuniq = [locarraysort[0].trim()];
-	for (var i = 1; i < locarraysort.length; i++) {
-		if ( locarraysort[i].trim() !== locarraysort[i-1].trim()) {
-			locarraysortuniq.push(locarraysort[i].trim());
+	if (locarray.length > 1){
+		var locarraysort = locarray.sort();
+		var locarraysortuniq = [locarraysort[0].trim()];
+		for (var i = 1; i < locarraysort.length; i++) {
+			if ( locarraysort[i].trim() !== locarraysort[i-1].trim()) {
+				locarraysortuniq.push(locarraysort[i].trim());
+			}
 		}
+		if (locarraysortuniq.length > 1){
+			mindebug == 1 && console.log("NEED TO DOWNLOAD TOLLPLAZA FROM: "+JSON.stringify(locarraysortuniq));
+		}	
 	}
-	if (locarraysortuniq.length > 1){
-		mindebug == 1 && console.log("NEED TO DOWNLOAD TOLLPLAZA FROM: "+JSON.stringify(locarraysortuniq));
-	}
+
 	var locarray = [];
 };
 
