@@ -661,7 +661,7 @@ var bgLocFound = function(loc){
 			 			maildebug==1 || mindebug ==1 && appendFile(mmsg,debugfile);
 				 		maildebug==1 || mindebug ==1 && console.log(mmsg);				 		
 			 			if ( hastollentryexit.length > 0 ) {
-			 				var locarraysort = hastollentryexit.sort();
+			 				var hastollentryexitsort = hastollentryexit.sort();
 							var hastollentryexitsortuniq = [hastollentryexitsort[0].trim()];
 							for (var i = 1; i < hastollentryexitsort.length; i++) {
 								if ( hastollentryexitsort[i].trim() !== hastollentryexitsort[i-1].trim()) {

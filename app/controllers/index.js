@@ -23,6 +23,11 @@ if (Ti.Geolocation.locationServicesEnabled) {
 
 
 // initialize variable START
+var someDummy = Alloy.Models.dummy;
+console.log("stringify dummy :"+JSON.stringify(someDummy));
+someDummy.set('id', '1234');
+someDummy.fetch();
+
 var action = "add";
 !Titanium.App.Properties.getInt('maildebug') ? maildebug = 0 : maildebug = Titanium.App.Properties.getInt('maildebug');
 var mindebug = Titanium.App.Properties.getInt('mindebug',1);
@@ -46,6 +51,8 @@ var tollexittime = [];
 var tollcanceltime = [];
 var approachtoll = 1;
 var lastapproachtoll = "none";
+var mindebug = Titanium.App.Properties.getInt('mindebug',0);
+mindebug==1?someDummy.set('mindebugvalue',true):someDummy.set('mindebugvalue',false);
 // initialize variable END
 
 // BG START

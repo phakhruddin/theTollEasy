@@ -1,6 +1,7 @@
 <Alloy>
 <Collection src="found" />
 <Collection src="tollsource" />
+<Model src="dummy"/>
   <TabGroup>
     <!-- Tab included via <Require> tag -->
     <Require src="tabViewOne"/>
