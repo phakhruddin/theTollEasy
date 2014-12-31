@@ -28,7 +28,6 @@ if (OS_IOS && parseInt(Ti.Platform.version.split(".")[0]) >= 8) {
 	Ti.App.iOS.registerUserNotificationSettings({
 		types: [Ti.App.iOS.USER_NOTIFICATION_TYPE_ALERT , Ti.App.iOS.USER_NOTIFICATION_TYPE_BADGE , Ti.App.iOS.USER_NOTIFICATION_TYPE_SOUND],
 	});
-	console.log("I am iOS 8!");
 	
 	var initialNotif = Ti.App.iOS.scheduleLocalNotification({
     //alertBody:'is detecting the tollplaza in the background every '+newdistanceFilter+'m starting ,'+new Date()+'.',
