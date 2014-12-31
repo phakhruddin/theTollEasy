@@ -15,7 +15,6 @@ exports.openMainTwoWindow = function(_tab) {
 	    latitude:latitude,
 	    longitude:longitude,
 	    title:title,
-	    subtitle:subtitle,
 	    pincolor:Map.ANNOTATION_RED,
 	    myid:1 // Custom property to uniquely identify this annotation.
 		});
@@ -36,7 +35,6 @@ exports.openMainTwoWindow = function(_tab) {
 	    latitude:latitude,
 	    longitude:longitude,
 	    title:title,
-	    subtitle:subtitle,
 	    pincolor:Map.ANNOTATION_RED,
 	    myid:1 // Custom property to uniquely identify this annotation.
 		});

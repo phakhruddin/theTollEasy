@@ -745,20 +745,20 @@ var bgLocFound = function(loc){
 				 		maildebug==1 || mindebug ==1 && console.log(mmsg);
 				 		if (tolltoupdatedb.length>0){
 							for (var i=0;i<tolltoupdatedb.length;i++) {
-								console.log("UPDATE DB: check tollentrytime " +JSON.stringify(tollentrytime));
+								mindebug ==1 && console.log("UPDATE DB: check tollentrytime " +JSON.stringify(tollentrytime));
 								var tollentrytimesortbytime=tollentrytime.sort(function(a, b)
 									{
 										return  b.timestamp - a.timestamp;
 									});
-								console.log("tollentrytimesortbytime length: "+tollentrytimesortbytime.length+" array: "+JSON.stringify(tollentrytimesortbytime));	
+								mindebug ==1 && console.log("tollentrytimesortbytime length: "+tollentrytimesortbytime.length+" array: "+JSON.stringify(tollentrytimesortbytime));	
 								if (tollentrytimesortbytime.length > 1) {
 									var newtollentrytimesortbytime = [];
 									for (var t=0;t<tollentrytimesortbytime.length;t++){
-										var y = t + 1; console.log("y on array :" +y);
+										var y = t + 1; mindebug ==1 && console.log("y on array :" +y);
 										if (y<tollentrytimesortbytime.length){
 											var nexttollentrytimesortbytime = tollentrytimesortbytime[y]; 
-											console.log ("tollentrytimesortbytime[t+1].tollplaza : "+nexttollentrytimesortbytime.tollplaza);
-											console.log("is nexttollentrytimesortbytime.tollplaza == tollentrytimesortbytime[t].tollplaza? "+nexttollentrytimesortbytime.tollplaza+" =OR= "+tollentrytimesortbytime[t].tollplaza);
+											mindebug ==1 && console.log ("tollentrytimesortbytime[t+1].tollplaza : "+nexttollentrytimesortbytime.tollplaza);
+											mindebug ==1 && console.log("is nexttollentrytimesortbytime.tollplaza == tollentrytimesortbytime[t].tollplaza? "+nexttollentrytimesortbytime.tollplaza+" =OR= "+tollentrytimesortbytime[t].tollplaza);
 											if(nexttollentrytimesortbytime.tollplaza == tollentrytimesortbytime[t].tollplaza){
 												if(nexttollentrytimesortbytime.timestamp > tollentrytimesortbytime[t].timestamp){
 													newtollentrytimesortbytime.push(tollentrytimesortbytime[y]);
@@ -777,7 +777,7 @@ var bgLocFound = function(loc){
 										newtollentrytimesortbytimeuniq.push(newtollentrytimesortbytime[z]);
 									}
 								}
-								console.log("newtollentrytimesortbytimeuniq : " +JSON.stringify(newtollentrytimesortbytimeuniq));
+								mindebug ==1 && console.log("newtollentrytimesortbytimeuniq : " +JSON.stringify(newtollentrytimesortbytimeuniq));
 								for (var j=0;j<newtollentrytimesortbytimeuniq.length;j++) {
 									if (tolltoupdatedb[i].trim() == newtollentrytimesortbytimeuniq[j].tollplaza){
 										var mmsg = "UPDATE DB: updateFound("+newtollentrytimesortbytimeuniq[j].tollplaza+","+newtollentrytimesortbytimeuniq[j].longitude+","+newtollentrytimesortbytimeuniq[j].latitude+","+newtollentrytimesortbytimeuniq[j].timestamp+","+newtollentrytimesortbytimeuniq[j].cost+","+newtollentrytimesortbytimeuniq[j].type+","+newtollentrytimesortbytimeuniq[j].hwy+")";
@@ -848,7 +848,7 @@ var bgLocFound = function(loc){
 
 			var mmsg = new Date()+": Titanium.Geolocation.distanceFilter to was set to  :"+Titanium.App.Properties.getInt('distanceFilter')+".";
 			mmsg += "Titanium.Geolocation.distanceFilter :"+Titanium.Geolocation.distanceFilter;
-			console.log(mmsg);
+			mindebug ==1 && console.log(mmsg);
 			appendFile(mmsg,debugfile);
 			
 			
