@@ -24,6 +24,20 @@ var locarray = [];
 var approachtoll = 1;
 var lastapproachtoll = "none";
 
+if (OS_IOS && parseInt(Ti.Platform.version.split(".")[0]) >= 8) {
+	Ti.App.iOS.registerUserNotificationSettings({
+		types: [Ti.App.iOS.USER_NOTIFICATION_TYPE_ALERT , Ti.App.iOS.USER_NOTIFICATION_TYPE_BADGE , Ti.App.iOS.USER_NOTIFICATION_TYPE_SOUND],
+		categories: [downloadContent]
+	});
+	console.log("I am iOS 8!");
+	
+	var initialNotif = Ti.App.iOS.scheduleLocalNotification({
+    //alertBody:'is detecting the tollplaza in the background every '+newdistanceFilter+'m starting ,'+new Date()+'.',
+    alertBody:'is detecting the tollplaza in the background starting ,'+new Date()+'.',
+    date:new Date(new Date().getTime() + 1000) // 1 second after pause
+ });   	
+}
+
 
  var initialNotif = Ti.App.iOS.scheduleLocalNotification({
     //alertBody:'is detecting the tollplaza in the background every '+newdistanceFilter+'m starting ,'+new Date()+'.',
