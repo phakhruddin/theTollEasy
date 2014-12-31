@@ -27,7 +27,6 @@ var lastapproachtoll = "none";
 if (OS_IOS && parseInt(Ti.Platform.version.split(".")[0]) >= 8) {
 	Ti.App.iOS.registerUserNotificationSettings({
 		types: [Ti.App.iOS.USER_NOTIFICATION_TYPE_ALERT , Ti.App.iOS.USER_NOTIFICATION_TYPE_BADGE , Ti.App.iOS.USER_NOTIFICATION_TYPE_SOUND],
-		categories: [downloadContent]
 	});
 	console.log("I am iOS 8!");
 	
