@@ -25,25 +25,26 @@ function Controller() {
     var exports = {};
     Alloy.Collections.instance("found");
     Alloy.Collections.instance("tollsource");
-    var __alloyId53 = [];
-    $.__views.__alloyId54 = Alloy.createController("tabViewOne", {
+    Alloy.Models.instance("dummy");
+    var __alloyId55 = [];
+    $.__views.__alloyId56 = Alloy.createController("tabViewOne", {
         apiName: "Alloy.Require",
-        id: "__alloyId54",
+        id: "__alloyId56",
         classes: []
     });
-    __alloyId53.push($.__views.__alloyId54.getViewEx({
+    __alloyId55.push($.__views.__alloyId56.getViewEx({
         recurse: true
     }));
-    $.__views.__alloyId55 = Alloy.createController("paywindow", {
+    $.__views.__alloyId57 = Alloy.createController("paywindow", {
         apiName: "Alloy.Require",
-        id: "__alloyId55",
+        id: "__alloyId57",
         classes: []
     });
-    __alloyId53.push($.__views.__alloyId55.getViewEx({
+    __alloyId55.push($.__views.__alloyId57.getViewEx({
         recurse: true
     }));
     $.__views.index = Ti.UI.createTabGroup({
-        tabs: __alloyId53,
+        tabs: __alloyId55,
         apiName: "Ti.UI.TabGroup",
         id: "index",
         classes: []
@@ -52,7 +53,23 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     $.index.open();
-    Ti.Geolocation.locationServicesEnabled || alert("In order for theTollEasy to capture tollplazas. Please enable location services. Thanks.");
+    if (Ti.Geolocation.locationServicesEnabled) {
+        Titanium.Geolocation.purpose = "Get Current Location";
+        Titanium.Geolocation.getCurrentPosition(function(e) {
+            if (e.error) Ti.API.error("Error: " + e.error); else {
+                Ti.API.info(e.coords);
+                var latX = e.coords.latitude;
+                Titanium.App.Properties.setInt("latX", latX);
+                var lonX = e.coords.longitude;
+                Titanium.App.Properties.setInt("lonX", lonX);
+                console.log("latitude :" + latX + " longitude : " + lonX);
+            }
+        });
+    } else alert("In order for theTollEasy to capture tollplazas. Please enable location services. Thanks.");
+    var someDummy = Alloy.Models.dummy;
+    console.log("stringify dummy :" + JSON.stringify(someDummy));
+    someDummy.set("id", "1234");
+    someDummy.fetch();
     maildebug = Titanium.App.Properties.getInt("maildebug") ? Titanium.App.Properties.getInt("maildebug") : 0;
     var mindebug = Titanium.App.Properties.getInt("mindebug", 1);
     loc = Titanium.App.Properties.getString("loc") ? Titanium.App.Properties.getString("loc") : "newberlin";
@@ -63,6 +80,8 @@ function Controller() {
     Titanium.App.Properties.getInt("distanceFilter", 75);
     Titanium.App.Properties.getInt("detectionRange", 200);
     foundexit = "0";
+    var mindebug = Titanium.App.Properties.getInt("mindebug", 0);
+    1 == mindebug ? someDummy.set("mindebugvalue", true) : someDummy.set("mindebugvalue", false);
     var writeFile = function(content, filename) {
         var file = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, filename);
         file.write(content + "\n");
@@ -88,11 +107,12 @@ function Controller() {
     var mmsg = "json data : " + JSON.stringify(json);
     1 == Titanium.App.Properties.getInt("maildebug") && Alloy.Globals.appendFile(mmsg, debugfile);
     lat1 = time1 = timelastdebug = 0;
-    var service = Ti.App.iOS.registerBackgroundService({
-        url: "bg-service1-3.js"
+    Ti.App.addEventListener("pause", function() {
+        var service = Ti.App.iOS.registerBackgroundService({
+            url: "bg-service1-3.js"
+        });
+        service.start;
     });
-    service.start;
-    Ti.App.addEventListener("pause", function() {});
     Ti.App.addEventListener("resume", function() {});
     _.extend($, exports);
 }

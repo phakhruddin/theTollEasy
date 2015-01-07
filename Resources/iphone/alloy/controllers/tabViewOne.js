@@ -26,21 +26,21 @@ function Controller() {
     Alloy.Collections.instance("found");
     Alloy.Collections.instance("tollplaza");
     Alloy.Models.instance("dummy");
-    $.__views.__alloyId72 = Ti.UI.createWindow({
+    $.__views.__alloyId74 = Ti.UI.createWindow({
         backgroundColor: "black",
         apiName: "Ti.UI.Window",
         title: "TollEasy",
         classes: [ "container" ],
-        id: "__alloyId72"
+        id: "__alloyId74"
     });
-    var __alloyId73 = [];
-    $.__views.__alloyId74 = Ti.UI.createTableViewSection({
+    var __alloyId75 = [];
+    $.__views.__alloyId76 = Ti.UI.createTableViewSection({
         apiName: "Ti.UI.TableViewSection",
         headerTitle: "Location capture switch",
-        id: "__alloyId74",
+        id: "__alloyId76",
         classes: []
     });
-    __alloyId73.push($.__views.__alloyId74);
+    __alloyId75.push($.__views.__alloyId76);
     $.__views.row_contupd = Ti.UI.createTableViewRow({
         width: Ti.UI.SIZE,
         height: "40",
@@ -49,7 +49,7 @@ function Controller() {
         Title: "Continous Update",
         classes: []
     });
-    $.__views.__alloyId74.add($.__views.row_contupd);
+    $.__views.__alloyId76.add($.__views.row_contupd);
     $.__views.label_contupd = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -90,13 +90,13 @@ function Controller() {
         classes: []
     });
     $.__views.row_contupd.add($.__views.switch_contupd);
-    $.__views.__alloyId75 = Ti.UI.createTableViewSection({
+    $.__views.__alloyId77 = Ti.UI.createTableViewSection({
         apiName: "Ti.UI.TableViewSection",
         headerTitle: "Time and GEO Coding Display",
-        id: "__alloyId75",
+        id: "__alloyId77",
         classes: []
     });
-    __alloyId73.push($.__views.__alloyId75);
+    __alloyId75.push($.__views.__alloyId77);
     $.__views.time = Ti.UI.createTableViewRow({
         width: Ti.UI.SIZE,
         height: "218",
@@ -105,7 +105,7 @@ function Controller() {
         Title: "time",
         classes: []
     });
-    $.__views.__alloyId75.add($.__views.time);
+    $.__views.__alloyId77.add($.__views.time);
     $.__views.label_localtime = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -191,13 +191,13 @@ function Controller() {
         classes: []
     });
     $.__views.time.add($.__views.label_currentHeading);
-    $.__views.__alloyId76 = Ti.UI.createTableViewSection({
+    $.__views.__alloyId78 = Ti.UI.createTableViewSection({
         apiName: "Ti.UI.TableViewSection",
         headerTitle: "TollPlaza",
-        id: "__alloyId76",
+        id: "__alloyId78",
         classes: []
     });
-    __alloyId73.push($.__views.__alloyId76);
+    __alloyId75.push($.__views.__alloyId78);
     $.__views.location = Ti.UI.createTableViewRow({
         width: Ti.UI.SIZE,
         height: "36",
@@ -206,15 +206,15 @@ function Controller() {
         Title: "location",
         classes: []
     });
-    $.__views.__alloyId76.add($.__views.location);
-    $.__views.__alloyId77 = Ti.UI.createImageView({
+    $.__views.__alloyId78.add($.__views.location);
+    $.__views.__alloyId79 = Ti.UI.createImageView({
         apiName: "Ti.UI.ImageView",
         image: "dark_locate.png",
         left: "10",
-        id: "__alloyId77",
+        id: "__alloyId79",
         classes: []
     });
-    $.__views.location.add($.__views.__alloyId77);
+    $.__views.location.add($.__views.__alloyId79);
     $.__views.currloc = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -236,15 +236,15 @@ function Controller() {
         Title: "TP Found",
         classes: []
     });
-    $.__views.__alloyId76.add($.__views.row_tpfound);
-    $.__views.__alloyId78 = Ti.UI.createImageView({
+    $.__views.__alloyId78.add($.__views.row_tpfound);
+    $.__views.__alloyId80 = Ti.UI.createImageView({
         apiName: "Ti.UI.ImageView",
         image: "dark_target.png",
         left: "10",
-        id: "__alloyId78",
+        id: "__alloyId80",
         classes: []
     });
-    $.__views.row_tpfound.add($.__views.__alloyId78);
+    $.__views.row_tpfound.add($.__views.__alloyId80);
     $.__views.label_tpfound = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -257,13 +257,13 @@ function Controller() {
         classes: []
     });
     $.__views.row_tpfound.add($.__views.label_tpfound);
-    $.__views.__alloyId79 = Ti.UI.createTableViewSection({
+    $.__views.__alloyId81 = Ti.UI.createTableViewSection({
         apiName: "Ti.UI.TableViewSection",
         headerTitle: "Utilities",
-        id: "__alloyId79",
+        id: "__alloyId81",
         classes: []
     });
-    __alloyId73.push($.__views.__alloyId79);
+    __alloyId75.push($.__views.__alloyId81);
     $.__views.row_settings = Ti.UI.createTableViewRow({
         width: Ti.UI.SIZE,
         height: "36",
@@ -272,15 +272,15 @@ function Controller() {
         Title: "Settings",
         classes: []
     });
-    $.__views.__alloyId79.add($.__views.row_settings);
-    $.__views.__alloyId80 = Ti.UI.createImageView({
+    $.__views.__alloyId81.add($.__views.row_settings);
+    $.__views.__alloyId82 = Ti.UI.createImageView({
         apiName: "Ti.UI.ImageView",
         image: "dark_gears.png",
         left: "10",
-        id: "__alloyId80",
+        id: "__alloyId82",
         classes: []
     });
-    $.__views.row_settings.add($.__views.__alloyId80);
+    $.__views.row_settings.add($.__views.__alloyId82);
     $.__views.label_settings = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -294,13 +294,13 @@ function Controller() {
     });
     $.__views.row_settings.add($.__views.label_settings);
     $.__views.table = Ti.UI.createTableView({
-        data: __alloyId73,
+        data: __alloyId75,
         apiName: "Ti.UI.TableView",
         id: "table",
         backgroundColor: "black",
         classes: []
     });
-    $.__views.__alloyId72.add($.__views.table);
+    $.__views.__alloyId74.add($.__views.table);
     $.__views.tab_one = Ti.UI.createTab({
         font: {
             fontSize: "50dp",
@@ -310,7 +310,7 @@ function Controller() {
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
         color: "white",
-        window: $.__views.__alloyId72,
+        window: $.__views.__alloyId74,
         apiName: "Ti.UI.Tab",
         id: "tab_one",
         title: "Main",
@@ -318,7 +318,7 @@ function Controller() {
         classes: []
     });
     $.__views.tab_one && $.addTopLevelView($.__views.tab_one);
-    var __alloyId81 = function() {
+    var __alloyId83 = function() {
         $.label_localtime.text = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["localtime"] : _.template("<%=dummy.localtime%>", {
             dummy: Alloy.Models.dummy.toJSON()
         });
@@ -335,9 +335,9 @@ function Controller() {
             dummy: Alloy.Models.dummy.toJSON()
         });
     };
-    Alloy.Models.dummy.on("fetch change destroy", __alloyId81);
+    Alloy.Models.dummy.on("fetch change destroy", __alloyId83);
     exports.destroy = function() {
-        Alloy.Models.dummy.off("fetch change destroy", __alloyId81);
+        Alloy.Models.dummy.off("fetch change destroy", __alloyId83);
     };
     _.extend($, $.__views);
     Titanium.App.Properties.getInt("trigger1", 0);

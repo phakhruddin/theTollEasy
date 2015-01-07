@@ -30,15 +30,15 @@ function Controller() {
         classes: []
     });
     $.__views.child_window && $.addTopLevelView($.__views.child_window);
-    $.__views.__alloyId82 = Ti.UI.createLabel({
+    $.__views.__alloyId84 = Ti.UI.createLabel({
         text: "Current Location",
         apiName: "Ti.UI.Label",
         top: "20",
         fontSize: "100dp",
-        id: "__alloyId82",
+        id: "__alloyId84",
         classes: []
     });
-    $.__views.child_window.add($.__views.__alloyId82);
+    $.__views.child_window.add($.__views.__alloyId84);
     $.__views.check_loc = Ti.UI.createButton({
         title: "Press to Check Location",
         apiName: "Ti.UI.Button",

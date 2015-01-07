@@ -38,9 +38,21 @@ var tollexittime = [];
 
 var tollcanceltime = [];
 
+var locarray = [];
+
 var approachtoll = 1;
 
 var lastapproachtoll = "none";
+
+if (true && parseInt(Ti.Platform.version.split(".")[0]) >= 8) {
+    Ti.App.iOS.registerUserNotificationSettings({
+        types: [ Ti.App.iOS.USER_NOTIFICATION_TYPE_ALERT, Ti.App.iOS.USER_NOTIFICATION_TYPE_BADGE, Ti.App.iOS.USER_NOTIFICATION_TYPE_SOUND ]
+    });
+    var initialNotif = Ti.App.iOS.scheduleLocalNotification({
+        alertBody: "is detecting the tollplaza in the background starting ," + new Date() + ".",
+        date: new Date(new Date().getTime() + 1e3)
+    });
+}
 
 var initialNotif = Ti.App.iOS.scheduleLocalNotification({
     alertBody: "is detecting the tollplaza in the background starting ," + new Date() + ".",
@@ -75,6 +87,9 @@ var thefile5 = loc + "1.txt";
 var file5 = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, thefile5);
 
 var downloadTollplaza = function(loc) {
+    var mmsg = new Date() + " download tollplaza in the BG, function:downloadTollplaza";
+    1 == mindebug && console.log(mmsg);
+    1 == maildebug && appendFile(mmsg, debugfile);
     var url = "http://23.21.53.150:10000/" + loc + ".json";
     var xhr = Ti.Network.createHTTPClient({
         onload: function(e) {
@@ -134,8 +149,76 @@ var downloadTollplaza = function(loc) {
 
 downloadTollplaza(loc);
 
+var checkAddr = function(latX, lonX) {
+    var latX = "undefined" != typeof latX ? latX : Titanium.App.Properties.getString("lat1");
+    var lonX = "undefined" != typeof lonX ? lonX : Titanium.App.Properties.getString("lon1");
+    var latY = "undefined" != typeof latX ? latX : 43.009724;
+    var lonY = "undefined" != typeof lonX ? lonX : -88.238146;
+    var mmsg = new Date() + " latY:lonY: latX:lonX " + latY + " : " + lonY + " : " + latX + " : " + lonX;
+    1 == mindebug && console.log(mmsg);
+    1 == maildebug && appendFile(mmsg, debugfile);
+    Titanium.Geolocation.reverseGeocoder(latY, lonY, function(evt) {
+        if (evt.success) {
+            1 == mindebug && console.log("checking current address");
+            var places = evt.places;
+            if (places && places.length) {
+                currentaddr = places[0].address;
+                var arr = currentaddr.split(",");
+                var state = arr[arr.length - 3];
+            } else currentaddr = "No address found";
+            Titanium.App.Properties.setString("currentaddr", currentaddr);
+            Titanium.App.Properties.setString("state", state);
+            var mmsg = new Date() + " currentaddr :" + currentaddr;
+            mmsg += " state :" + state;
+            mmsg += " reverse geolocation result = " + JSON.stringify(evt);
+            1 == mindebug && console.log(mmsg);
+            1 == maildebug && appendFile(mmsg, debugfile);
+            1 == mindebug && console.log(":ADDR@:" + latY + "/" + lonY + ": currentaddr :" + currentaddr + " state :" + state);
+        } else {
+            var mmsg = new Date() + " Code translation: " + JSON.stringify(evt.code);
+            1 == mindebug && console.log(mmsg);
+            1 == maildebug && appendFile(mmsg, debugfile);
+        }
+        var thestate = Titanium.App.Properties.getString("state");
+        return thestate;
+    });
+    var thestate = Titanium.App.Properties.getString("state");
+    return thestate;
+};
+
+var checknextLoc = function() {
+    var locarray = [];
+    var latX = "undefined" != typeof latX ? latX : Titanium.App.Properties.getString("lat1");
+    var lonX = "undefined" != typeof lonX ? lonX : Titanium.App.Properties.getString("lon1");
+    var thisstate = checkAddr(latX, lonX);
+    locarray.push(thisstate);
+    1 == mindebug && console.log("checking next location with : latX . lonX " + latX + " : " + lonX + " : " + thisstate);
+    var thisstate = checkAddr(latX - .08, lonX);
+    locarray.push(thisstate);
+    1 == mindebug && console.log("checking next location with : latX-0.08 . lonX " + (latX - .08) + " : " + lonX + " : " + thisstate);
+    var thisstate = checkAddr(latX + .08, lonX);
+    locarray.push(thisstate);
+    1 == mindebug && console.log("checking next location with : latX+0.08 . lonX " + (latX + .08) + " : " + lonX + " : " + thisstate);
+    var thisstate = checkAddr(latX, lonX - .09);
+    locarray.push(thisstate);
+    1 == mindebug && console.log("checking next location with : latX-0.08 . lonX " + latX + " : " + (lonX - .09) + " : " + thisstate);
+    var thisstate = checkAddr(latX, lonX + .09);
+    locarray.push(thisstate);
+    1 == mindebug && console.log("checking next location with : latX-0.08 . lonX " + latX + " : " + (lonX + .09) + " : " + thisstate);
+    1 == mindebug && console.log("locarray content is : " + JSON.stringify(locarray));
+    if (locarray.length > 1) {
+        var locarraysort = locarray.sort();
+        var locarraysortuniq = [ locarraysort[0].trim() ];
+        for (var i = 1; i < locarraysort.length; i++) locarraysort[i].trim() !== locarraysort[i - 1].trim() && locarraysortuniq.push(locarraysort[i].trim());
+        locarraysortuniq.length > 1 && 1 == mindebug && console.log("NEED TO DOWNLOAD TOLLPLAZA FROM: " + JSON.stringify(locarraysortuniq));
+    }
+    var locarray = [];
+};
+
 var checkAlive = setInterval(function() {
-    var mmsg = new Date() + " keep Alive check";
+    checkAddr();
+    checknextLoc();
+    var mmsg = new Date() + " keep Alive check & CheckAddr";
     1 == mindebug && console.log(mmsg);
     1 == maildebug && appendFile(mmsg, debugfile);
 }, 3e5);
@@ -208,7 +291,9 @@ var bgLocFound = function() {
             count++;
             1 == maildebug && console.log("count:" + count);
             var lon1 = +e.coords.longitude;
+            Titanium.App.Properties.setString("lon1", lon1);
             var lat1 = +e.coords.latitude;
+            Titanium.App.Properties.setString("lat1", lat1);
             var time1 = +e.coords.timestamp;
             var speed1 = +e.coords.speed;
             mmsg = new Date(e.coords.timestamp) + "," + e.coords.timestamp + "," + e.coords.latitude + "," + e.coords.longitude + "," + speed1;
@@ -272,7 +357,7 @@ var bgLocFound = function() {
             var timerange = 100;
             approachtoll = closestdist0 > distlastupd ? 0 : 1;
             var lastapproachtoll = Titanium.App.Properties.getString("lastapproachtoll");
-            console.log(closesttollbydist0 + " || " + tolllastupd + " || last: " + lastapproachtoll + "/" + approachtoll);
+            1 == mindebug && console.log(closesttollbydist0 + " || " + tolllastupd + " || last: " + lastapproachtoll + "/" + approachtoll);
             if (closesttollbydist0 == tolllastupd && 0 == lastapproachtoll && 1 == approachtoll) {
                 var tolllastupd = Titanium.App.Properties.getString("tolllastupd");
                 Titanium.App.Properties.setString("tolllastupd", tolllastupd + "(U-TURN)");
@@ -602,16 +687,40 @@ var bgLocFound = function() {
                     1 == maildebug || 1 == mindebug && console.log(mmsg);
                     if (tolltoupdatedb.length > 0) {
                         for (var i = 0; i < tolltoupdatedb.length; i++) {
-                            for (var j = 0; j < tollentrytime.length; j++) if (tolltoupdatedb[i].trim() == tollentrytime[j].tollplaza) {
-                                var mmsg = "UPDATE DB: updateFound(" + tollentrytime[j].tollplaza + "," + tollentrytime[j].longitude + "," + tollentrytime[j].latitude + "," + tollentrytime[j].timestamp + "," + tollentrytime[j].cost + "," + tollentrytime[j].type + "," + tollentrytime[j].hwy + ")";
+                            1 == mindebug && console.log("UPDATE DB: check tollentrytime " + JSON.stringify(tollentrytime));
+                            var tollentrytimesortbytime = tollentrytime.sort(function(a, b) {
+                                return b.timestamp - a.timestamp;
+                            });
+                            1 == mindebug && console.log("tollentrytimesortbytime length: " + tollentrytimesortbytime.length + " array: " + JSON.stringify(tollentrytimesortbytime));
+                            if (tollentrytimesortbytime.length > 1) {
+                                var newtollentrytimesortbytime = [];
+                                for (var t = 0; t < tollentrytimesortbytime.length; t++) {
+                                    var y = t + 1;
+                                    1 == mindebug && console.log("y on array :" + y);
+                                    if (y < tollentrytimesortbytime.length) {
+                                        var nexttollentrytimesortbytime = tollentrytimesortbytime[y];
+                                        1 == mindebug && console.log("tollentrytimesortbytime[t+1].tollplaza : " + nexttollentrytimesortbytime.tollplaza);
+                                        1 == mindebug && console.log("is nexttollentrytimesortbytime.tollplaza == tollentrytimesortbytime[t].tollplaza? " + nexttollentrytimesortbytime.tollplaza + " =OR= " + tollentrytimesortbytime[t].tollplaza);
+                                        newtollentrytimesortbytime.push(nexttollentrytimesortbytime.tollplaza == tollentrytimesortbytime[t].tollplaza ? nexttollentrytimesortbytime.timestamp > tollentrytimesortbytime[t].timestamp ? tollentrytimesortbytime[y] : tollentrytimesortbytime[t] : tollentrytimesortbytime[y]);
+                                    }
+                                }
+                            } else var newtollentrytimesortbytime = tollentrytimesortbytime;
+                            var newtollentrytimesortbytimeuniq = [ newtollentrytimesortbytime[0] ];
+                            for (var z = 1; z < newtollentrytimesortbytime.length; z++) newtollentrytimesortbytime[z].tollplaza !== newtollentrytimesortbytime[z - 1].tollplaza && newtollentrytimesortbytimeuniq.push(newtollentrytimesortbytime[z]);
+                            1 == mindebug && console.log("newtollentrytimesortbytimeuniq : " + JSON.stringify(newtollentrytimesortbytimeuniq));
+                            for (var j = 0; j < newtollentrytimesortbytimeuniq.length; j++) if (tolltoupdatedb[i].trim() == newtollentrytimesortbytimeuniq[j].tollplaza) {
+                                var mmsg = "UPDATE DB: updateFound(" + newtollentrytimesortbytimeuniq[j].tollplaza + "," + newtollentrytimesortbytimeuniq[j].longitude + "," + newtollentrytimesortbytimeuniq[j].latitude + "," + newtollentrytimesortbytimeuniq[j].timestamp + "," + newtollentrytimesortbytimeuniq[j].cost + "," + newtollentrytimesortbytimeuniq[j].type + "," + newtollentrytimesortbytimeuniq[j].hwy + ")";
                                 1 == maildebug || 1 == mindebug && appendFile(mmsg, debugfile);
                                 1 == maildebug || 1 == mindebug && console.log(mmsg);
-                                updateFound(tollentrytime[j].tollplaza, tollentrytime[j].longitude, tollentrytime[j].latitude, tollentrytime[j].timestamp, tollentrytime[j].cost, tollentrytime[j].type, tollentrytime[j].hwy);
+                                updateFound(newtollentrytimesortbytimeuniq[j].tollplaza, newtollentrytimesortbytimeuniq[j].longitude, newtollentrytimesortbytimeuniq[j].latitude, newtollentrytimesortbytimeuniq[j].timestamp, newtollentrytimesortbytimeuniq[j].cost, newtollentrytimesortbytimeuniq[j].type, newtollentrytimesortbytimeuniq[j].hwy);
                             }
-                            tollentrytime = [];
-                            tollexittime = [];
-                            tollcanceltime = [];
                         }
+                        tollentrytime = [];
+                        tollexittime = [];
+                        tollcanceltime = [];
+                        tolltoupdatedb = [];
+                        newtollentrytimesortbytime = [];
+                        newtollentrytimesortbytimeuniq = [];
                         tolltoupdate = [];
                     }
                 } else {
@@ -654,7 +763,7 @@ var bgLocFound = function() {
         }
         var mmsg = new Date() + ": Titanium.Geolocation.distanceFilter to was set to  :" + Titanium.App.Properties.getInt("distanceFilter") + ".";
         mmsg += "Titanium.Geolocation.distanceFilter :" + Titanium.Geolocation.distanceFilter;
-        console.log(mmsg);
+        1 == mindebug && console.log(mmsg);
         appendFile(mmsg, debugfile);
         if (Titanium.Geolocation.hasCompass) {
             Titanium.Geolocation.showCalibration = false;
@@ -675,6 +784,14 @@ var bgLocFound = function() {
     }
 };
 
+if (Titanium.App.Properties.getString("lat1")) var latX = Titanium.App.Properties.getString("lat1"); else var latX = 43.00988;
+
+if (Titanium.App.Properties.getString("lon1")) var lonX = Titanium.App.Properties.getString("lon1"); else var lonX = -88.238231;
+
 bgLocFound(loc);
 
 checkAlive = 1;
+
+checkAddr(latX, lonX);
+
+checknextLoc();

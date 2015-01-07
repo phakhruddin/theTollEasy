@@ -31,14 +31,14 @@ function Controller() {
         classes: [ "container" ]
     });
     $.__views.mypoi_win && $.addTopLevelView($.__views.mypoi_win);
-    var __alloyId56 = [];
+    var __alloyId58 = [];
     $.__views.mypoi_row = Ti.UI.createTableViewRow({
         apiName: "Ti.UI.TableViewRow",
         id: "mypoi_row",
         Title: "Title Toll Plaza",
         classes: []
     });
-    __alloyId56.push($.__views.mypoi_row);
+    __alloyId58.push($.__views.mypoi_row);
     $.__views.mypoi_label = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -52,7 +52,7 @@ function Controller() {
     });
     $.__views.mypoi_row.add($.__views.mypoi_label);
     $.__views.mypoi_view = Ti.UI.createTableView({
-        data: __alloyId56,
+        data: __alloyId58,
         apiName: "Ti.UI.TableView",
         id: "mypoi_view",
         backgroundColor: "black",

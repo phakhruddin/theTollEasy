@@ -103,9 +103,9 @@ function Controller() {
         _tab.open($.loaddatawindow);
         console.debug("This is child widow tabViewOneChild.js" + _tab);
         $.loaddatatable.addEventListener("click", function(e) {
-            e.row.id;
+            var loc = e.row.title.replace(/ Toll.*/, "");
             console.log("JSON e : " + JSON.stringify(e));
-            Alloy.Globals.updateTollPlaza("newberlin");
+            Alloy.Globals.updateTollPlaza(loc);
             var tabViewLoadDataOutputController = Alloy.createController("TV1loadDataOutput");
             tabViewLoadDataOutputController.openMainWindow($.tab_loaddata);
         });

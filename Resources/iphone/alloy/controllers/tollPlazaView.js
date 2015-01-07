@@ -30,14 +30,14 @@ function Controller() {
         title: "TollPlaza",
         classes: [ "container" ]
     });
-    var __alloyId84 = [];
+    var __alloyId86 = [];
     $.__views.tittle_toll_plaza = Ti.UI.createTableViewRow({
         apiName: "Ti.UI.TableViewRow",
         id: "tittle_toll_plaza",
         Title: "Toll Plaza View > ",
         classes: []
     });
-    __alloyId84.push($.__views.tittle_toll_plaza);
+    __alloyId86.push($.__views.tittle_toll_plaza);
     $.__views.listoftoll = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -56,7 +56,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza_hit);
+    __alloyId86.push($.__views.tableview_tollplaza_hit);
     $.__views.plazahit = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -76,7 +76,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza);
+    __alloyId86.push($.__views.tableview_tollplaza);
     $.__views.plaza = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -95,7 +95,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza1);
+    __alloyId86.push($.__views.tableview_tollplaza1);
     $.__views.plaza1 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -114,7 +114,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza2);
+    __alloyId86.push($.__views.tableview_tollplaza2);
     $.__views.plaza2 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -133,7 +133,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza3);
+    __alloyId86.push($.__views.tableview_tollplaza3);
     $.__views.plaz3 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -152,7 +152,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza4);
+    __alloyId86.push($.__views.tableview_tollplaza4);
     $.__views.plaz4 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -171,7 +171,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza5);
+    __alloyId86.push($.__views.tableview_tollplaza5);
     $.__views.plaza5 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -190,7 +190,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza6);
+    __alloyId86.push($.__views.tableview_tollplaza6);
     $.__views.plaza6 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -209,7 +209,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza7);
+    __alloyId86.push($.__views.tableview_tollplaza7);
     $.__views.plaza7 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -228,7 +228,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza8);
+    __alloyId86.push($.__views.tableview_tollplaza8);
     $.__views.plaza8 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -247,7 +247,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza9);
+    __alloyId86.push($.__views.tableview_tollplaza9);
     $.__views.plaza9 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -266,7 +266,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza10);
+    __alloyId86.push($.__views.tableview_tollplaza10);
     $.__views.plaza10 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -285,7 +285,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza11);
+    __alloyId86.push($.__views.tableview_tollplaza11);
     $.__views.plaza11 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -304,7 +304,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza12);
+    __alloyId86.push($.__views.tableview_tollplaza12);
     $.__views.plaza12 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -323,7 +323,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza13);
+    __alloyId86.push($.__views.tableview_tollplaza13);
     $.__views.plaza13 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -342,7 +342,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza14);
+    __alloyId86.push($.__views.tableview_tollplaza14);
     $.__views.plaza14 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -361,7 +361,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza15);
+    __alloyId86.push($.__views.tableview_tollplaza15);
     $.__views.plaza15 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -380,7 +380,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza16);
+    __alloyId86.push($.__views.tableview_tollplaza16);
     $.__views.plaza16 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -399,7 +399,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza17);
+    __alloyId86.push($.__views.tableview_tollplaza17);
     $.__views.plaza17 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -418,7 +418,7 @@ function Controller() {
         Title: "Toll Plazas",
         classes: []
     });
-    __alloyId84.push($.__views.tableview_tollplaza18);
+    __alloyId86.push($.__views.tableview_tollplaza18);
     $.__views.plaza18 = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -432,7 +432,7 @@ function Controller() {
     });
     $.__views.tableview_tollplaza18.add($.__views.plaza18);
     $.__views.tollplazatable = Ti.UI.createTableView({
-        data: __alloyId84,
+        data: __alloyId86,
         apiName: "Ti.UI.TableView",
         id: "tollplazatable",
         backgroundColor: "black",

@@ -64,21 +64,21 @@ function Controller() {
         title: "Settings",
         classes: [ "container" ]
     });
-    var __alloyId61 = [];
-    $.__views.__alloyId62 = Ti.UI.createTableViewSection({
+    var __alloyId63 = [];
+    $.__views.__alloyId64 = Ti.UI.createTableViewSection({
         apiName: "Ti.UI.TableViewSection",
         headerTitle: "Loc Capture Options",
-        id: "__alloyId62",
+        id: "__alloyId64",
         classes: []
     });
-    __alloyId61.push($.__views.__alloyId62);
+    __alloyId63.push($.__views.__alloyId64);
     $.__views.row_contupdfg = Ti.UI.createTableViewRow({
         apiName: "Ti.UI.TableViewRow",
         id: "row_contupdfg",
         Title: "Continous FG Update",
         classes: []
     });
-    $.__views.__alloyId62.add($.__views.row_contupdfg);
+    $.__views.__alloyId64.add($.__views.row_contupdfg);
     $.__views.label_contupdfg = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -119,20 +119,20 @@ function Controller() {
         classes: []
     });
     $.__views.row_contupdfg.add($.__views.switch_contupdfg);
-    $.__views.__alloyId63 = Ti.UI.createTableViewSection({
+    $.__views.__alloyId65 = Ti.UI.createTableViewSection({
         apiName: "Ti.UI.TableViewSection",
         headerTitle: "Data (Optional)",
-        id: "__alloyId63",
+        id: "__alloyId65",
         classes: []
     });
-    __alloyId61.push($.__views.__alloyId63);
+    __alloyId63.push($.__views.__alloyId65);
     $.__views.row_loaddata = Ti.UI.createTableViewRow({
         apiName: "Ti.UI.TableViewRow",
         id: "row_loaddata",
         Title: "Load Data",
         classes: []
     });
-    $.__views.__alloyId63.add($.__views.row_loaddata);
+    $.__views.__alloyId65.add($.__views.row_loaddata);
     $.__views.label_loaddata = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -151,7 +151,7 @@ function Controller() {
         Title: "Load Data",
         classes: []
     });
-    $.__views.__alloyId63.add($.__views.row_loaddataoutput);
+    $.__views.__alloyId65.add($.__views.row_loaddataoutput);
     $.__views.label_loaddataoutput = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -164,20 +164,20 @@ function Controller() {
         classes: []
     });
     $.__views.row_loaddataoutput.add($.__views.label_loaddataoutput);
-    $.__views.__alloyId64 = Ti.UI.createTableViewSection({
+    $.__views.__alloyId66 = Ti.UI.createTableViewSection({
         apiName: "Ti.UI.TableViewSection",
         headerTitle: "Utilities",
-        id: "__alloyId64",
+        id: "__alloyId66",
         classes: []
     });
-    __alloyId61.push($.__views.__alloyId64);
+    __alloyId63.push($.__views.__alloyId66);
     $.__views.row_debug = Ti.UI.createTableViewRow({
         apiName: "Ti.UI.TableViewRow",
         id: "row_debug",
         Title: "Debug",
         classes: []
     });
-    $.__views.__alloyId64.add($.__views.row_debug);
+    $.__views.__alloyId66.add($.__views.row_debug);
     $.__views.label_debug = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -205,7 +205,7 @@ function Controller() {
         Title: "Debug",
         classes: []
     });
-    $.__views.__alloyId64.add($.__views.row_mindebug);
+    $.__views.__alloyId66.add($.__views.row_mindebug);
     $.__views.label_mindebug = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -219,7 +219,6 @@ function Controller() {
     });
     $.__views.row_mindebug.add($.__views.label_mindebug);
     $.__views.switch_mindebug = Ti.UI.createSwitch({
-        value: true,
         apiName: "Ti.UI.Switch",
         id: "switch_mindebug",
         right: "20",
@@ -234,7 +233,7 @@ function Controller() {
         Title: "Email Debug",
         classes: []
     });
-    $.__views.__alloyId64.add($.__views.row_emaildebug);
+    $.__views.__alloyId66.add($.__views.row_emaildebug);
     $.__views.label_emaildebug = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -252,7 +251,7 @@ function Controller() {
         Title: "CapLocData",
         classes: []
     });
-    $.__views.__alloyId64.add($.__views.row_caplocdata);
+    $.__views.__alloyId66.add($.__views.row_caplocdata);
     $.__views.label_caplocdata = Ti.UI.createLabel({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
@@ -266,7 +265,7 @@ function Controller() {
     $.__views.row_caplocdata.add($.__views.label_caplocdata);
     $.__views.table_settings = Ti.UI.createTableView({
         backgroundColor: "black",
-        data: __alloyId61,
+        data: __alloyId63,
         apiName: "Ti.UI.TableView",
         id: "table_settings",
         classes: []
@@ -279,14 +278,17 @@ function Controller() {
         classes: []
     });
     $.__views.tab_settings && $.addTopLevelView($.__views.tab_settings);
-    var __alloyId65 = function() {
+    var __alloyId67 = function() {
         $.switch_debug.value = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["debugvalue"] : _.template("<%=dummy.debugvalue%>", {
             dummy: Alloy.Models.dummy.toJSON()
         });
+        $.switch_mindebug.value = _.isFunction(Alloy.Models.dummy.transform) ? Alloy.Models.dummy.transform()["mindebugvalue"] : _.template("<%=dummy.mindebugvalue%>", {
+            dummy: Alloy.Models.dummy.toJSON()
+        });
     };
-    Alloy.Models.dummy.on("fetch change destroy", __alloyId65);
+    Alloy.Models.dummy.on("fetch change destroy", __alloyId67);
     exports.destroy = function() {
-        Alloy.Models.dummy.off("fetch change destroy", __alloyId65);
+        Alloy.Models.dummy.off("fetch change destroy", __alloyId67);
     };
     _.extend($, $.__views);
     arguments[0] || {};
@@ -296,6 +298,7 @@ function Controller() {
     someDummy.fetch();
     display();
     1 == Titanium.App.Properties.getInt("maildebug") && someDummy.set("debugvalue", true);
+    1 == Titanium.App.Properties.getInt("mindebug") && someDummy.set("mindebugvalue", true);
     exports.openMainWindow = function(_tab) {
         _tab.open($.win_settings);
         console.debug("This is child widow settings.js" + _tab);
@@ -334,7 +337,13 @@ function Controller() {
     $.switch_mindebug.addEventListener("change", function() {
         var switchmindebugValue = $.switch_mindebug.value;
         Ti.API.info("Minimum debugging is :" + switchmindebugValue);
-        true == switchmindebugValue ? Titanium.App.Properties.setInt("mindebug", "1") : Titanium.App.Properties.setInt("mindebug", "0");
+        if (true == switchmindebugValue) {
+            Titanium.App.Properties.setInt("mindebug", "1");
+            someDummy.set("mindebugvalue", true);
+        } else {
+            Titanium.App.Properties.setInt("mindebug", "0");
+            someDummy.set("mindebugvalue", false);
+        }
     });
     $.label_emaildebug.addEventListener("click", function() {
         sendEmail();

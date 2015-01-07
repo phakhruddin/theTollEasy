@@ -23,11 +23,11 @@ function Controller() {
     }
     var $ = this;
     var exports = {};
-    $.__views.__alloyId83 = Ti.UI.createWindow({
+    $.__views.__alloyId85 = Ti.UI.createWindow({
         apiName: "Ti.UI.Window",
         title: "Map",
         classes: [ "container" ],
-        id: "__alloyId83"
+        id: "__alloyId85"
     });
     $.__views.mapbutton = Ti.UI.createButton({
         title: "ClickForMAP Ti.MAP",
@@ -36,7 +36,7 @@ function Controller() {
         top: "40",
         classes: []
     });
-    $.__views.__alloyId83.add($.__views.mapbutton);
+    $.__views.__alloyId85.add($.__views.mapbutton);
     $.__views.mapbutton2 = Ti.UI.createButton({
         title: "ClickForMAP GMAP API V2",
         apiName: "Ti.UI.Button",
@@ -44,7 +44,7 @@ function Controller() {
         top: "100",
         classes: []
     });
-    $.__views.__alloyId83.add($.__views.mapbutton2);
+    $.__views.__alloyId85.add($.__views.mapbutton2);
     $.__views.mapbutton3 = Ti.UI.createButton({
         title: "ClickForMAP Hybrid",
         apiName: "Ti.UI.Button",
@@ -52,9 +52,9 @@ function Controller() {
         top: "160",
         classes: []
     });
-    $.__views.__alloyId83.add($.__views.mapbutton3);
+    $.__views.__alloyId85.add($.__views.mapbutton3);
     $.__views.tab_two = Ti.UI.createTab({
-        window: $.__views.__alloyId83,
+        window: $.__views.__alloyId85,
         apiName: "Ti.UI.Tab",
         id: "tab_two",
         title: "Map View",

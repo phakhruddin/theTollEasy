@@ -54,14 +54,13 @@ function Controller() {
         var latitude = args.latitude || 42.432276;
         var longitude = args.longitude || -87.952004;
         var title = args.title || "Waukegan Toll Plaza 21";
-        var subtitle = args.hwy || "I-94 Gurnee, IL";
+        args.hwy || "I-94 Gurnee, IL";
         if ("android" == Ti.Platform.osname) {
             var Map = Titanium.Map;
             var tollPlaza0 = Map.createAnnotation({
                 latitude: latitude,
                 longitude: longitude,
                 title: title,
-                subtitle: subtitle,
                 pincolor: Map.ANNOTATION_RED,
                 myid: 1
             });
@@ -84,7 +83,6 @@ function Controller() {
                 latitude: latitude,
                 longitude: longitude,
                 title: title,
-                subtitle: subtitle,
                 pincolor: Map.ANNOTATION_RED,
                 myid: 1
             });
