@@ -1,7 +1,7 @@
 //*console.log("Run geocode in the BG");
 
 !Titanium.App.Properties.getInt('maildebug') ? maildebug = 0 : maildebug = Titanium.App.Properties.getInt('maildebug');
-var mindebug = Titanium.App.Properties.getInt('mindebug',1);
+var mindebug = Titanium.App.Properties.getInt('mindebug',0);
 !Titanium.App.Properties.getString('loc') ? loc = "newberlin" : loc = Titanium.App.Properties.getString('loc');
 Titanium.App.Properties.setInt('closercount',500); // reset closer count to 500 then go down
 !Titanium.App.Properties.getInt('radius')? radius = 3000: radius = Titanium.App.Properties.getInt('radius');
@@ -373,7 +373,6 @@ var bgLocFound = function(loc){
 			   }	   		   
 			   // JSON FILE ENDS
 			maildebug == 1 && console.log("JSON distance unsort :" +JSON.stringify(distmatch));
-				console.log("JSON distance unsort :" +JSON.stringify(distmatch));
 				if (distmatch.length > 1){
 					var closestdist = distmatch.sort(function(a, b)
 					{
