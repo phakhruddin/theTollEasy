@@ -21,6 +21,7 @@ var tollentrytime = [];
 var tollexittime = [];
 var tollcanceltime = [];
 var locarray = [];
+var thearray = [];
 var approachtoll = 1;
 var lastapproachtoll = "none";
 
@@ -194,6 +195,7 @@ var checkAddr = function(latX,lonX) {
 };
 
 var checknextLoc = function() {
+	
 	var locarray = [];
 	// checking next state for Loc
 	var latX = typeof latX !== typeof undefined?latX:Titanium.App.Properties.getString('lat1');
@@ -212,15 +214,22 @@ var checknextLoc = function() {
 	mindebug == 1 && console.log("locarray content is : "+JSON.stringify(locarray));
 	if (locarray.length > 1){
 		var locarraysort = locarray.sort();
-		var locarraysortuniq = [locarraysort[0].trim()];
+		console.log("locarray length : locarraysort[0] "+locarray.length+" : "+locarraysort[0]);
+		if (locarraysort[0] != null) {
+			var locarraysortuniq = [locarraysort[0].trim()];
+		}
 		for (var i = 1; i < locarraysort.length; i++) {
-			if ( locarraysort[i].trim() !== locarraysort[i-1].trim()) {
-				locarraysortuniq.push(locarraysort[i].trim());
+			if (locarraysort[i] != null) {
+				if ( locarraysort[i].trim() !== locarraysort[i-1].trim()) {
+					locarraysortuniq.push(locarraysort[i].trim());
+				}
 			}
 		}
-		if (locarraysortuniq.length > 1){
-			mindebug == 1 && console.log("NEED TO DOWNLOAD TOLLPLAZA FROM: "+JSON.stringify(locarraysortuniq));
-		}	
+		if (locarraysort[0] != null) {
+			if (locarraysortuniq.length > 1){
+				mindebug == 1 && console.log("NEED TO DOWNLOAD TOLLPLAZA FROM: "+JSON.stringify(locarraysortuniq));
+			}	
+		}
 	}
 
 	var locarray = [];
@@ -295,8 +304,8 @@ var bgLocFound = function(loc){
 	if(contents && contents.text){
 		var preParseData = (contents.text); 
 		var json = json || JSON.parse(preParseData);
+		var mmsg = "json data : "+JSON.stringify(json.poi[0]);
 	}
-	var mmsg = "json data : "+JSON.stringify(json.poi[0]);
 	maildebug==1 && appendFile(mmsg,debugfile);
 		
 		var locationCallback = function(e)
@@ -304,6 +313,7 @@ var bgLocFound = function(loc){
 			if(e.error){
 				Ti.API.info("Error is: "+e.error);
 			} else {
+				if (json) {
 			var distmatch = [];
 			var count = Titanium.App.Properties.getInt('count');count++; // todebug count
 			maildebug == 1 && console.log("count:"+count);
@@ -326,7 +336,12 @@ var bgLocFound = function(loc){
 	        	var closestdistarray = JSON.parse(Ti.App.Properties.getString('distmatchobj'));
 	        	maildebug == 1 && console.log("checking : "+closestdistarray);
 	        };
-	        var thearray = (thedistanceNearbyFilter < 5280 )?closestdistarray:json.poi;
+	       /// var thearray = (thedistanceNearbyFilter < 5280 )?closestdistarray:json.poi;
+	        if (thedistanceNearbyFilter < 5280) {
+	        	var thearray = closestdistarray;
+	        } else {
+				var thearray = (json)?json.poi:[];
+	        }
 	        maildebug == 1 && console.log("The First Toll distance is at  "+thedistanceNearbyFilter);
 	        Titanium.App.Properties.setInt('count', count); // todebug count
 	        // reduce down to number of JSON objects
@@ -358,12 +373,13 @@ var bgLocFound = function(loc){
 			   }	   		   
 			   // JSON FILE ENDS
 			maildebug == 1 && console.log("JSON distance unsort :" +JSON.stringify(distmatch));
-			
-			
-				var closestdist = distmatch.sort(function(a, b)
-				{
-					return a.dist - b.dist;
-				});
+				console.log("JSON distance unsort :" +JSON.stringify(distmatch));
+				if (distmatch.length > 1){
+					var closestdist = distmatch.sort(function(a, b)
+					{
+						return a.dist - b.dist;
+					});
+				}	
 				maildebug == 1 && console.log("JSON closestdist : "+JSON.stringify(closestdist));
 				Ti.App.Properties.setString('distmatchobj', JSON.stringify(distmatch));
 				maildebug == 1 && console.log("set distmatchobj"); 
@@ -826,6 +842,7 @@ var bgLocFound = function(loc){
 				}
 				//*console.log(" timestamp after set prop "+Titanium.App.Properties.getString('timelastupd'));	
 				}	
+			}
 		};
 		
 		var headingCallback = function(e){
@@ -901,7 +918,9 @@ if (Titanium.App.Properties.getString('lon1')) {
 	var lonX = -88.238231;
 };
 
+
 bgLocFound(loc);
 checkAlive=1;
 checkAddr(latX,lonX);
 checknextLoc();
+
