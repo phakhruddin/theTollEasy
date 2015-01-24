@@ -42,9 +42,13 @@
 			<TableViewRow id="row_caplocdata" Title="CapLocData">
 				 <Label id="label_caplocdata" color="white" left="20" >Captured Location Data</Label>
 			</TableViewRow>
-			<!--TableViewRow id="row_payment" Title="location">
-	   		  <Label id="payment" color="gray" top="5" left="20" textid="Payment Status > " text="Payment Status > ">Payment Status > </Label>
-	   		</TableViewRow-->  
+			<TableViewRow />
+			<TableViewRow id="row_company" Title="company">
+	   		  <ImageView image="idevice-logo.png" left="10"/>
+	   		</TableViewRow>
+	   		<TableViewRow id="row_emailsupport" Title="Email Support">
+				 <Label id="label_emailsupport" color="gray" left="20" >Email Support</Label>
+			</TableViewRow>
 			</TableViewSection>
 			<!--TableViewSection headerTitle="Variables">
 			   <TableViewRow  id="row_distanceFilter" Title="Distance Filter" height="Ti.UI.Size" backgroundColor="#E0E0E0">

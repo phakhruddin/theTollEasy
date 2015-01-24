@@ -74,7 +74,7 @@ $.label_skinwhite.addEventListener("click", function(e){
 function sendEmail(loc) {	
 	var emailDialog = Ti.UI.createEmailDialog();
 	emailDialog.subject = "TheTollEasy debug data";
-	emailDialog.toRecipients = ['phakhruddin@gmail.com'];
+	emailDialog.toRecipients = ['deen@idevice.net'];
 	emailDialog.messageBody = 'Debug data on '+new Date();
 	var ftxt1 = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory,'maildebug.txt');
 	var ftxt2 = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory,loc+'.txt');
@@ -87,8 +87,20 @@ function sendEmail(loc) {
 	emailDialog.open();
 };
 
+function sendSupportEmail() {	
+	var emailDialog = Ti.UI.createEmailDialog();
+	emailDialog.subject = "TheTollEasy support";
+	emailDialog.toRecipients = ['deen@idevice.net'];
+	emailDialog.messageBody = 'TollEasy Support email on: '+new Date()+'\n Please write your message below:- \n';
+	emailDialog.open();
+};
+
 $.label_emaildebug.addEventListener("click", function(){
 	sendEmail();
+});
+
+$.label_emailsupport.addEventListener("click", function(){
+	sendSupportEmail();
 });
 
 function csvJSON(csv){
